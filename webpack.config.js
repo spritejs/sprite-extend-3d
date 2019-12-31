@@ -2,10 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const packageConfig = require('./package.json');
 
-function toCamelCase(str) {
-  return str.replace(/-([a-z])/ig, (s, p1) => p1.toUpperCase());
-}
-
 module.exports = function (env = {}) {
   return {
     mode: env.mode || 'none',
@@ -14,9 +10,8 @@ module.exports = function (env = {}) {
       path: path.resolve(__dirname, 'dist'),
       filename: `${packageConfig.name}.js`,
       publicPath: '/js/',
-      library: [toCamelCase(packageConfig.name)],
+      library: ['spritejs', 'ext3d'],
       libraryTarget: 'umd',
-      libraryExport: 'default',
       globalObject: 'this',
     },
     // resolve: {
@@ -33,13 +28,20 @@ module.exports = function (env = {}) {
             options: {babelrc: true},
           },
         },
+        {
+          test: /\.(frag|vert|glsl)$/,
+          use: {
+            loader: 'raw-loader',
+            options: {},
+          },
+        },
       ],
 
       /* Advanced module configuration (click to show) */
     },
 
     externals: {
-
+      spritejs: 'spritejs',
     },
     // Don't follow/bundle these modules, but request them at runtime from the environment
 

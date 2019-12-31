@@ -1,7 +1,7 @@
 {
-  "name": "sprite-template",
+  "name": "sprite-extend-3d",
   "version": "0.0.1",
-  "description": "The standard project template.",
+  "description": "The 3d part of spritejs v3.",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --env.server=examples --watch-poll",
@@ -27,6 +27,7 @@
     "webpack-dev-server": "^3.7.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5"
+    "@babel/runtime": "^7.4.5",
+    "ogl": "0.0.37"
   }
 }
