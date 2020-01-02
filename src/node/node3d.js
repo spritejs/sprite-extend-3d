@@ -1,7 +1,9 @@
 import {registerNode, Node} from 'spritejs';
-import Attr3d from '../attribute/geometry';
+import Attr3d from '../attribute/attr3d';
 
 const _body = Symbol('body');
+
+const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
 export default class Node3d extends Node {
   static Attr = Attr3d;
@@ -10,11 +12,45 @@ export default class Node3d extends Node {
     if(this[_body]) {
       return this[_body];
     }
-    throw new Error('No program set to this element.');
+    throw new Error('Not initialized yet.');
   }
 
   setBody(body) {
+    const oldBody = this[_body];
     this[_body] = body;
+    if(oldBody && oldBody.parent) {
+      oldBody.setParent(null);
+    }
+    if(this.parent && this.parent.body) {
+      this[_body].setParent(this.parent.body);
+    }
+
+    const _changedAttrs = Object.entries(this.attributes[changedAttrs]);
+    for(let i = 0; i < _changedAttrs.length; i++) {
+      const [key, value] = _changedAttrs[i];
+      this.onPropertyChange(key, value, value);
+    }
+    const uniforms = this.uniforms;
+    if(uniforms) {
+      this.setUniforms(uniforms);
+    }
+    if(!uniforms && _changedAttrs.length <= 0) this.forceUpdate();
+  }
+
+  /* override */
+  cloneNode() {
+    const node = super.cloneNode();
+    node.setBody(this.body);
+    return node;
+  }
+
+  /* override */
+  setUniforms(uniforms) {
+    super.setUniforms(uniforms);
+    const program = this.body.program;
+    Object.entries(uniforms).forEach(([key, value]) => {
+      program.uniforms[key] = {value};
+    });
   }
 
   /* override */
@@ -24,7 +60,8 @@ export default class Node3d extends Node {
       this.body.position[key] = newValue;
     }
     if(key === 'rotateX' || key === 'rotateY' || key === 'rotateZ') {
-      this.body.rotation[key.toLowerCase().slice(-1)] = newValue;
+      const value = newValue * Math.PI / 180;
+      this.body.rotation[key.toLowerCase().slice(-1)] = value;
     }
     if(key === 'scaleX' || key === 'scaleY' || key === 'scaleZ') {
       this.body.scale[key.toLowerCase().slice(-1)] = newValue;

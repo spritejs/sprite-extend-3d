@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Layer3D, Cube} = spritejs.ext3d;
+    const {Cube} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -34,7 +34,7 @@
       height: 600,
       mode: 'stickyHeight',
     });
-    const layer = new Layer3D({id: 'fglayer'});
+    const layer = scene.layer3d('fglayer');
 
     const vertex = `attribute vec3 position;
       uniform mat4 modelViewMatrix;
@@ -46,14 +46,26 @@
     `;
 
     const fragment = `
+      precision mediump float;
+      uniform vec4 vColor;
       void main() {
-        gl_FragColor = vec4(1.0, 0, 0, 1.0);
+        gl_FragColor = vColor;
       }
     `;
 
-    const program = layer.createProgram({vertex, fragment});
-    scene.append(layer);
+    const fragment2 = `
+      void main() {
+        gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+      }
+    `;
 
+    const program = layer.createProgram({vertex,
+      fragment,
+      uniforms: {
+        vColor: {value: [1, 0, 0, 1]},
+      },
+    });
+    const program2 = layer.createProgram({vertex, fragment: fragment2});
     const cube = new Cube(program);
     layer.append(cube);
   </script>

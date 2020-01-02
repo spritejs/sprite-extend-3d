@@ -1,15 +1,13 @@
 import {registerNode} from 'spritejs';
-import {Box, Mesh} from 'ogl';
-import Geometry from './geometry';
+import {Box} from 'ogl';
+import Mesh3d from './mesh3d';
 
-export default class Cube extends Geometry {
-  /* override */
-  setProgram(program) {
-    super.setProgram(program);
+export default class Cube extends Mesh3d {
+  constructor(program, attrs = {}) {
+    super(program, attrs);
     const gl = program.gl;
     const geometry = new Box(gl);
-    const mesh = new Mesh(gl, {geometry, program});
-    this.setBody(mesh);
+    this.setGeometry(geometry);
   }
 }
 

@@ -1,5 +1,5 @@
-import {Layer, registerNode} from 'spritejs';
-import {Renderer, Program, Transform} from 'ogl';
+import {Layer, registerNode, ENV} from 'spritejs';
+import {Renderer, Program, Geometry, Texture} from 'ogl';
 import Camera from './camera';
 import Group3d from './group3d';
 
@@ -29,7 +29,8 @@ export default class Layer3D extends Layer {
     super(options);
     const gl = this.renderer.gl;
     gl.clearColor(0, 0, 1, 0);
-    const camera = new Camera(gl, this);
+    const cameraOptions = options.camera || {};
+    const camera = new Camera(gl, {parent: this, ...cameraOptions});
     camera.attributes.z = 5;
     this.camera = camera;
     this.root = new Group3d();
@@ -44,19 +45,24 @@ export default class Layer3D extends Layer {
   setResolution({width, height}) {
     super.setResolution({width, height});
 
-    const renderer = this.renderer;
     const displayRatio = this.displayRatio;
+    const renderer = this.renderer;
 
-    width *= displayRatio;
-    height *= displayRatio;
+    this.renderer.dpr = displayRatio;
 
-    renderer.setSize(width, height);
+    renderer.width = width / displayRatio;
+    renderer.height = height / displayRatio;
+
+    const gl = renderer.gl;
+    gl.canvas.width = width;
+    gl.canvas.height = height;
 
     const camera = this.camera;
     if(camera) {
-      camera.body.perspective({
-        aspect: width / height,
-      });
+      camera.attributes.aspect = width / height;
+      // camera.body.perspective({
+      //   aspect: width / height,
+      // });
     }
   }
 
@@ -85,27 +91,38 @@ export default class Layer3D extends Layer {
     return ret;
   }
 
-  createProgram({vertex, fragment}) {
+  createProgram({vertex, fragment, uniforms = {}}) {
     const gl = this.renderer.gl;
     const program = new Program(gl, {
-      vertex: `
-          attribute vec3 position;
-
-          uniform mat4 modelViewMatrix;
-          uniform mat4 projectionMatrix;
-
-          void main() {
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-          `,
-      fragment: `
-          void main() {
-              gl_FragColor = vec4(1.0, 0, 0, 1.0);
-          }
-      `,
+      vertex,
+      fragment,
+      uniforms,
     });
 
     return program;
+  }
+
+  async loadImage(src) {
+    const image = await ENV.loadImage(src);
+    return image;
+  }
+
+  async loadModel(src) {
+    const gl = this.renderer.gl;
+    const data = await (await fetch(src)).json();
+    const geometry = new Geometry(gl, {
+      position: {size: 3, data: new Float32Array(data.position)},
+      uv: {size: 2, data: new Float32Array(data.uv)},
+      normal: {size: 3, data: new Float32Array(data.normal)},
+    });
+    return geometry;
+  }
+
+  createTexture(image) {
+    const gl = this.renderer.gl;
+    const texture = new Texture(gl);
+    texture.image = image;
+    return texture;
   }
 
   /* override */
