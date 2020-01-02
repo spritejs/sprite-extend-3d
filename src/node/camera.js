@@ -21,9 +21,11 @@ export default class _Camera extends Node3d {
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
-    if(key === 'near' || key === 'far' || key === 'fov' || key === 'aspect') {
-      const value = key === 'fov' ? newValue * (Math.PI / 180) : newValue;
-      this.body.perspective({[key]: value});
+    if(this.body) {
+      if(key === 'near' || key === 'far' || key === 'fov' || key === 'aspect') {
+        const value = key === 'fov' ? newValue * (Math.PI / 180) : newValue;
+        this.body.perspective({[key]: value});
+      }
     }
   }
 }

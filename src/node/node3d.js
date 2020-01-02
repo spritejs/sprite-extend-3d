@@ -12,7 +12,7 @@ export default class Node3d extends Node {
     if(this[_body]) {
       return this[_body];
     }
-    throw new Error('Not initialized yet.');
+    return null;
   }
 
   setBody(body) {
@@ -56,15 +56,17 @@ export default class Node3d extends Node {
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
-    if(key === 'x' || key === 'y' || key === 'z') {
-      this.body.position[key] = newValue;
-    }
-    if(key === 'rotateX' || key === 'rotateY' || key === 'rotateZ') {
-      const value = newValue * Math.PI / 180;
-      this.body.rotation[key.toLowerCase().slice(-1)] = value;
-    }
-    if(key === 'scaleX' || key === 'scaleY' || key === 'scaleZ') {
-      this.body.scale[key.toLowerCase().slice(-1)] = newValue;
+    if(this.body) {
+      if(key === 'x' || key === 'y' || key === 'z') {
+        this.body.position[key] = newValue;
+      }
+      if(key === 'rotateX' || key === 'rotateY' || key === 'rotateZ') {
+        const value = newValue * Math.PI / 180;
+        this.body.rotation[key.toLowerCase().slice(-1)] = value;
+      }
+      if(key === 'scaleX' || key === 'scaleY' || key === 'scaleZ') {
+        this.body.scale[key.toLowerCase().slice(-1)] = newValue;
+      }
     }
   }
 }
