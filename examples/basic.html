@@ -29,7 +29,6 @@
         precision highp float;
         precision highp int;
 
-        attribute vec2 uv;
         attribute vec3 position;
         attribute vec3 normal;
 
@@ -37,13 +36,10 @@
         uniform mat4 projectionMatrix;
         uniform mat3 normalMatrix;
 
-        varying vec2 vUv;
         varying vec3 vNormal;
 
         void main() {
-            vUv = uv;
             vNormal = normalize(normalMatrix * normal);
-            
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
     `;
@@ -52,25 +48,18 @@
         precision highp float;
         precision highp int;
 
-        uniform float uTime;
-        uniform sampler2D tMap;
-
-        varying vec2 vUv;
         varying vec3 vNormal;
 
         void main() {
             vec3 normal = normalize(vNormal);
-            vec3 tex = texture2D(tMap, vUv).rgb;
-            
-            vec3 light = normalize(vec3(0.5, 1.0, -0.3));
-            float shading = dot(normal, light) * 0.15;
-            gl_FragColor.rgb = tex + shading;
+            float lighting = dot(normal, normalize(vec3(-0.3, 0.8, 0.6)));
+            gl_FragColor.rgb = vec3(0.2, 0.8, 1.0) + lighting * 0.1;
             gl_FragColor.a = 1.0;
         }
     `;
 
     const {Scene} = spritejs;
-    const {Mesh3d} = spritejs.ext3d;
+    const {Plane, Sphere, Cube} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -88,42 +77,46 @@
     layer.camera.attributes.pos = [5, 3, 6];
     layer.camera.lookAt([0, 0, 0]);
 
-    (async function () {
-      const img = await layer.loadImage('assets/croissant.jpg');
-      const texture = layer.createTexture(img);
-      const program = layer.createProgram({
-        vertex,
-        fragment,
-        uniforms: {
-          tMap: {value: texture},
-        },
-      });
-      const model = await layer.loadModel('assets/croissant.json');
+    const program = layer.createProgram({
+      vertex,
+      fragment,
+      cullFace: null,
+    });
 
-      // For an accurate wireframe, triangle vertices need to be duplicated to make line pairs.
-      // Here we do so by generating indices. If your geometry is already indexed, this needs to be adjusted.
-      const index = new Uint16Array((model.position.length / 3 / 3) * 6);
-      for(let i = 0; i < model.position.length / 3; i += 3) {
-        // For every triangle, make three line pairs (start, end)
-        index.set([i, i + 1, i + 1, i + 2, i + 2, i], i * 2);
-      }
-      model.index = index;
+    const plane = new Plane(program);
+    plane.attributes.pos = [0, 1.3, 0];
+    layer.append(plane);
+    plane.animate([
+      {rotateY: 0},
+      {rotateY: -360},
+    ], {
+      duration: 10000,
+      iterations: Infinity,
+    });
 
-      // console.log(geometry);
+    const sphere = new Sphere(program);
+    sphere.attr({
+      phiLength: Math.PI,
+    });
+    layer.append(sphere);
+    sphere.animate([
+      {rotateY: 0},
+      {rotateY: -360},
+    ], {
+      duration: 7500,
+      iterations: Infinity,
+    });
 
-      const wireframeMesh = new Mesh3d(program, {
-        mode: 'LINES',
-      });
-      wireframeMesh.setGeometry(model);
-      layer.append(wireframeMesh);
-      wireframeMesh.animate([
-        {rotateY: 0},
-        {rotateY: 360},
-      ], {
-        duration: 5000,
-        iterations: Infinity,
-      });
-    }());
+    const cube = new Cube(program);
+    cube.attributes.pos = [0, -1.3, 0];
+    layer.append(cube);
+    cube.animate([
+      {rotateY: 0},
+      {rotateY: -360},
+    ], {
+      duration: 5000,
+      iterations: Infinity,
+    });
   </script>
 </body>
 </html>

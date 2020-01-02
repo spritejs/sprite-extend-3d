@@ -1,5 +1,5 @@
 import {Layer, registerNode, ENV} from 'spritejs';
-import {Renderer, Program, Geometry, Texture} from 'ogl';
+import {Renderer, Program, Texture} from 'ogl';
 import Camera from './camera';
 import Group3d from './group3d';
 
@@ -87,17 +87,14 @@ export default class Layer3D extends Layer {
 
   removeChild(el) {
     const ret = super.removeChild(el);
-    el.body.setParent(this.body);
+    el.body.setParent(null);
     return ret;
   }
 
-  createProgram({vertex, fragment, uniforms = {}}) {
+  /* {vertex, fragment, uniforms = {}} */
+  createProgram(options) {
     const gl = this.renderer.gl;
-    const program = new Program(gl, {
-      vertex,
-      fragment,
-      uniforms,
-    });
+    const program = new Program(gl, options);
 
     return program;
   }
@@ -108,14 +105,8 @@ export default class Layer3D extends Layer {
   }
 
   async loadModel(src) {
-    const gl = this.renderer.gl;
     const data = await (await fetch(src)).json();
-    const geometry = new Geometry(gl, {
-      position: {size: 3, data: new Float32Array(data.position)},
-      uv: {size: 2, data: new Float32Array(data.uv)},
-      normal: {size: 3, data: new Float32Array(data.normal)},
-    });
-    return geometry;
+    return data;
   }
 
   createTexture(image) {

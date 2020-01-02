@@ -1,10 +1,15 @@
 import {registerNode} from 'spritejs';
-import {Program, Mesh} from 'ogl';
+import {Program, Mesh, Geometry} from 'ogl';
 import Node3d from './node3d';
+
+const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
 const _program = Symbol('program');
 const _geometry = Symbol('geometry');
+const _model = Symbol('model');
 const _mode = Symbol('mode');
+
+const _shaderAttrs = Symbol('shaderAttrs');
 
 export default class Mesh3d extends Node3d {
   constructor(program, attrs = {}) {
@@ -22,16 +27,18 @@ export default class Mesh3d extends Node3d {
     if(program) {
       this.setProgram(program);
     }
+    this[_shaderAttrs] = {};
   }
 
   /* override */
-  // cloneNode() {
-  //   const node = super.cloneNode();
-  //   node[_geometry] = this[_geometry];
-  //   node[_mode] = this[_mode];
-  //   node.setProgram(this[_program]);
-  //   return node;
-  // }
+  cloneNode() {
+    const cloned = new this.constructor(this[_program]);
+    const attrs = this.attributes[changedAttrs];
+    cloned[_mode] = this[_mode];
+    cloned.setGeometry(this[_model]);
+    cloned.attr(attrs);
+    return cloned;
+  }
 
   get mode() {
     return this[_mode];
@@ -45,6 +52,10 @@ export default class Mesh3d extends Node3d {
     return this[_geometry];
   }
 
+  get shaderAttrs() {
+    return this[_shaderAttrs];
+  }
+
   setProgram(program) {
     this[_program] = program;
     const gl = program.gl;
@@ -55,14 +66,42 @@ export default class Mesh3d extends Node3d {
     }
   }
 
-  setGeometry(geometry) {
-    this[_geometry] = geometry;
+  setGeometry(model, attrs = null) {
     const program = this[_program];
     const gl = program.gl;
-    if(this[_program]) {
+    let geometry;
+    if(model instanceof Geometry) {
+      geometry = model;
+    } else {
+      attrs = Object.assign(this[_shaderAttrs], attrs);
+      const geometryData = {
+        position: {size: 3, data: new Float32Array(model.position)},
+        uv: {size: 2, data: new Float32Array(model.uv)},
+        normal: {size: 3, data: new Float32Array(model.normal)},
+        ...attrs,
+      };
+      if(model.index) {
+        geometryData.index = {data: new Uint16Array(model.index)};
+      }
+      geometry = new Geometry(gl, geometryData);
+    }
+    this[_geometry] = geometry;
+    this[_model] = model;
+    if(program) {
       const mesh = new Mesh(gl, {mode: gl[this[_mode]], geometry, program});
       this.setBody(mesh);
     }
+  }
+
+  setShaderAttribute(attrName, attr) {
+    this[_shaderAttrs] = this[_shaderAttrs] || {};
+    this[_shaderAttrs][attrName] = attr;
+    this.forceUpdate();
+  }
+
+  setShaderAttributes(attrs) {
+    this[_shaderAttrs] = {...attrs};
+    this.forceUpdate();
   }
 }
 

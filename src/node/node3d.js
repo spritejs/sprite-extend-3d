@@ -38,13 +38,6 @@ export default class Node3d extends Node {
   }
 
   /* override */
-  cloneNode() {
-    const node = super.cloneNode();
-    node.setBody(this.body);
-    return node;
-  }
-
-  /* override */
   setUniforms(uniforms) {
     super.setUniforms(uniforms);
     const program = this.body.program;

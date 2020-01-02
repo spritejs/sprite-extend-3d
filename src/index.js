@@ -1,7 +1,9 @@
 import {Scene} from 'spritejs';
 import Layer3D from './node/layer3d';
 import Mesh3d from './node/mesh3d';
+import Sphere from './node/sphere';
 import Cube from './node/cube';
+import Plane from './node/plane';
 
 Scene.prototype.layer3d = function (id, options) {
   const {displayRatio} = this.options;
@@ -19,6 +21,8 @@ Scene.prototype.layer3d = function (id, options) {
 
 export {
   Layer3D,
+  Sphere,
+  Plane,
   Cube,
   Mesh3d,
 };
