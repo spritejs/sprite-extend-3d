@@ -2,10 +2,13 @@
   "name": "sprite-extend-3d",
   "version": "0.0.1",
   "description": "The 3d part of spritejs v3.",
-  "main": "index.js",
+  "main": "dist/sprite-extend-3d.js",
+  "module": "lib/index.js",
   "scripts": {
     "start": "webpack-dev-server --env.server=examples --watch-poll",
-    "compile": "webpack --env.mode=production",
+    "compile": "rm -rf lib/* && babel src -d lib",
+    "build": "webpack --env.mode=production",
+    "prepublishOnly": "npm run compile && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
