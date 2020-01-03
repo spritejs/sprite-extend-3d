@@ -89,8 +89,7 @@
     layer.camera.lookAt([0, 1.5, 0]);
 
     (async function () {
-      const img = await layer.loadImage('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');
-      const texture = layer.createTexture(img);
+      const texture = await layer.createTexture('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');
       const program = layer.createProgram({
         vertex,
         fragment,

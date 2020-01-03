@@ -11,7 +11,6 @@ export default class GeometryAttr extends Attr3d {
     this[setDefault]({
       colors: [0, 0, 0, 1],
       colorDivisor: 3,
-      lightning: [1, 1, 1],
     });
   }
 
@@ -48,13 +47,5 @@ export default class GeometryAttr extends Attr3d {
 
   set colorDivisor(value) {
     this[setAttribute]('colorDivisor', value);
-  }
-
-  get lightning() {
-    return this[getAttribute]('lightning');
-  }
-
-  set lightning(value) {
-    this[setAttribute]('lightning', value);
   }
 }

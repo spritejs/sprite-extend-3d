@@ -1,5 +1,4 @@
 import {registerNode, requestAnimationFrame} from 'spritejs';
-import {Vec3} from 'ogl';
 import GeometryAttr from '../attribute/geometry';
 import Mesh3d from './mesh3d';
 
@@ -52,9 +51,6 @@ export default class Geometry extends Mesh3d {
       if(newValue !== oldValue) {
         this.updateMesh();
       }
-    }
-    if(key === 'lightning') {
-      this.setUniforms({lightning: new Vec3(...newValue)});
     }
   }
 }
