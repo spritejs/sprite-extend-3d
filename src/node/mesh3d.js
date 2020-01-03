@@ -56,6 +56,10 @@ export default class Mesh3d extends Node3d {
     return this[_shaderAttrs];
   }
 
+  get meshes() {
+    return this.body ? [this.body] : [];
+  }
+
   setProgram(program) {
     this[_program] = program;
     const gl = program.gl;
@@ -73,7 +77,6 @@ export default class Mesh3d extends Node3d {
     if(model instanceof Geometry) {
       geometry = model;
     } else {
-      attrs = Object.assign(this[_shaderAttrs], attrs);
       const geometryData = {
         position: {size: 3, data: new Float32Array(model.position)},
         uv: {size: 2, data: new Float32Array(model.uv)},
@@ -85,23 +88,17 @@ export default class Mesh3d extends Node3d {
       }
       geometry = new Geometry(gl, geometryData);
     }
+    if(this.shaderSetters) {
+      Object.entries(this.shaderSetters).forEach(([key, setter]) => {
+        geometry.addAttribute(key, setter(geometry.attributes.position));
+      });
+    }
     this[_geometry] = geometry;
     this[_model] = model;
     if(program) {
       const mesh = new Mesh(gl, {mode: gl[this[_mode]], geometry, program});
       this.setBody(mesh);
     }
-  }
-
-  setShaderAttribute(attrName, attr) {
-    this[_shaderAttrs] = this[_shaderAttrs] || {};
-    this[_shaderAttrs][attrName] = attr;
-    this.forceUpdate();
-  }
-
-  setShaderAttributes(attrs) {
-    this[_shaderAttrs] = {...attrs};
-    this.forceUpdate();
   }
 }
 

@@ -33,6 +33,16 @@ export default class Group3d extends Node3d {
     return this[_ordered];
   }
 
+  get meshes() {
+    const children = this.children;
+    const ret = [];
+    for(let i = 0; i < children.length; i++) {
+      const child = children[i];
+      if(child.meshes && child.meshes.length) ret.push(...child.meshes);
+    }
+    return ret;
+  }
+
   append(...els) {
     return els.map((el) => {
       return this.appendChild(el);

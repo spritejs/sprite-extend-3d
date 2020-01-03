@@ -1,9 +1,9 @@
 import {registerNode} from 'spritejs';
 import {Plane} from 'ogl';
 import PlaneAttr from '../attribute/plane';
-import Mesh3d from './mesh3d';
+import Geometry from './geometry';
 
-export default class _Plane extends Mesh3d {
+export default class _Plane extends Geometry {
   static Attr = PlaneAttr;
 
   constructor(program, attrs = {}) {
@@ -11,17 +11,15 @@ export default class _Plane extends Mesh3d {
     this.updateMesh();
   }
 
-  updateMesh() {
+  remesh() {
     const gl = this.program.gl;
     const {width, height, widthSegments, heightSegments} = this.attributes;
-    const attributes = this.shaderAttrs;
 
     const geometry = new Plane(gl, {
       width,
       height,
       widthSegments,
-      heightSegments,
-      attributes});
+      heightSegments});
     this.setGeometry(geometry);
   }
 

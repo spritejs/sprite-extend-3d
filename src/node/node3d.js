@@ -15,6 +15,10 @@ export default class Node3d extends Node {
     return null;
   }
 
+  get meshes() {
+    return [];
+  }
+
   setBody(body) {
     const oldBody = this[_body];
     this[_body] = body;
@@ -35,15 +39,18 @@ export default class Node3d extends Node {
       this.setUniforms(uniforms);
     }
     if(!uniforms && _changedAttrs.length <= 0) this.forceUpdate();
+    body._node = this;
   }
 
   /* override */
   setUniforms(uniforms) {
     super.setUniforms(uniforms);
-    const program = this.body.program;
-    Object.entries(uniforms).forEach(([key, value]) => {
-      program.uniforms[key] = {value};
-    });
+    if(this.body && this.body.program) {
+      const program = this.body.program;
+      Object.entries(uniforms).forEach(([key, value]) => {
+        program.uniforms[key] = {value};
+      });
+    }
   }
 
   /* override */
@@ -59,6 +66,9 @@ export default class Node3d extends Node {
       }
       if(key === 'scaleX' || key === 'scaleY' || key === 'scaleZ') {
         this.body.scale[key.toLowerCase().slice(-1)] = newValue;
+      }
+      if(key === 'raycast') {
+        this.body.geometry.raycast = newValue;
       }
     }
   }

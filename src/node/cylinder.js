@@ -1,10 +1,10 @@
 import {registerNode} from 'spritejs';
-import {Sphere} from 'ogl';
-import SphereAttr from '../attribute/sphere';
+import {Cylinder} from 'ogl';
+import CylinderAttr from '../attribute/cylinder';
 import Geometry from './geometry';
 
-export default class _Sphere extends Geometry {
-  static Attr = SphereAttr;
+export default class _Cylinder extends Geometry {
+  static Attr = CylinderAttr;
 
   constructor(program, attrs = {}) {
     super(program, attrs);
@@ -13,28 +13,29 @@ export default class _Sphere extends Geometry {
 
   remesh() {
     const gl = this.program.gl;
-    const {radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength} = this.attributes;
+    const {radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength} = this.attributes;
 
-    const geometry = new Sphere(gl, {
-      radius,
-      widthSegments,
+    const geometry = new Cylinder(gl, {
+      radiusTop,
+      radiusBottom,
+      height,
+      radialSegments,
       heightSegments,
-      phiStart,
-      phiLength,
+      openEnded,
       thetaStart,
       thetaLength});
-
     this.setGeometry(geometry);
   }
 
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
-    if(key === 'radius'
-      || key === 'widthSegments'
+    if(key === 'radiusTop'
+      || key === 'radiusBottom'
+      || key === 'height'
+      || key === 'radialSegments'
       || key === 'heightSegments'
-      || key === 'phiStart'
-      || key === 'phiLength'
+      || key === 'openEnded'
       || key === 'thetaStart'
       || key === 'thetaLength') {
       if(newValue !== oldValue) {
@@ -44,4 +45,4 @@ export default class _Sphere extends Geometry {
   }
 }
 
-registerNode(_Sphere, 'sphere');
+registerNode(_Cylinder, 'cylinder');

@@ -1,5 +1,5 @@
-import {Layer, registerNode, ENV} from 'spritejs';
-import {Renderer, Program, Texture} from 'ogl';
+import {Layer, registerNode, ENV, Block} from 'spritejs';
+import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast} from 'ogl';
 import Camera from './camera';
 import Group3d from './group3d';
 
@@ -7,6 +7,10 @@ const defaultOption = {
   alpha: true,
   depth: true,
 };
+
+const _controls = Symbol('orbit_controls');
+const _orbitChecker = Symbol('orbit_checker');
+const _orbitChecking = Symbol('orbit_checking');
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
@@ -39,6 +43,16 @@ export default class Layer3D extends Layer {
 
   get body() {
     return this.root.body;
+  }
+
+  get meshes() {
+    const children = this.children;
+    const ret = [];
+    for(let i = 0; i < children.length; i++) {
+      const child = children[i];
+      if(child.meshes && child.meshes.length) ret.push(...child.meshes);
+    }
+    return ret;
   }
 
   /* override */
@@ -99,6 +113,57 @@ export default class Layer3D extends Layer {
     return program;
   }
 
+  get orbitControls() {
+    return this[_controls];
+  }
+
+  setOrbit(options = {}) {
+    if(!this[_orbitChecker]) {
+      this[_orbitChecker] = [
+        () => { this[_orbitChecking] = true },
+        () => { this[_orbitChecking] = false },
+        () => { if(this[_orbitChecking]) { this.forceUpdate() } },
+        () => { this.forceUpdate() },
+      ];
+    }
+    const camera = this.camera;
+    if(this[_controls]) {
+      this[_controls].remove();
+      this.removeEventListener('mousedown', this[_orbitChecker][0]);
+      this.removeEventListener('mouseup', this[_orbitChecker][1]);
+      this.removeEventListener('mousemove', this[_orbitChecker][2]);
+      this.removeEventListener('touchstart', this[_orbitChecker][3]);
+      this.removeEventListener('touchend', this[_orbitChecker][3]);
+      this.removeEventListener('touchmove', this[_orbitChecker][3]);
+      window.removeEventListener('wheel', this[_orbitChecker][3], false);
+    }
+    if(options == null) {
+      delete this[_controls];
+      return null;
+    }
+    const target = options.target || [0, 0, 0];
+    options.target = new Vec3(...target);
+    options.element = this.canvas;
+    this[_controls] = new Orbit(camera.body, options);
+    this.addEventListener('mousedown', this[_orbitChecker][0]);
+    this.addEventListener('mouseup', this[_orbitChecker][1]);
+    this.addEventListener('mousemove', this[_orbitChecker][2]);
+    this.addEventListener('touchstart', this[_orbitChecker][3]);
+    this.addEventListener('touchend', this[_orbitChecker][3]);
+    this.addEventListener('touchmove', this[_orbitChecker][3]);
+    window.addEventListener('wheel', this[_orbitChecker][3], false);
+    return this[_controls];
+  }
+
+  setRaycast(enable = true) {
+    if(enable) {
+      const gl = this.renderer.gl;
+      this.raycast = new Raycast(gl);
+    } else {
+      delete this.raycast;
+    }
+  }
+
   async loadImage(src) {
     const image = await ENV.loadImage(src);
     return image;
@@ -109,7 +174,7 @@ export default class Layer3D extends Layer {
     return data;
   }
 
-  createTexture(image) {
+  createTexture(image /* or imageList */) {
     const gl = this.renderer.gl;
     const texture = new Texture(gl);
     texture.image = image;
@@ -117,7 +182,33 @@ export default class Layer3D extends Layer {
   }
 
   /* override */
+  dispatchPointerEvent(event) {
+    const raycast = this.raycast;
+    if(raycast) {
+      const mouse = new Vec2();
+      const renderer = this.renderer;
+      mouse.set(
+        2.0 * (event.x / renderer.width) - 1.0,
+        2.0 * (1.0 - event.y / renderer.height) - 1.0
+      );
+      raycast.castMouse(this.camera.body, mouse);
+      const hits = raycast.intersectBounds(this.meshes);
+      if(hits && hits.length) {
+        const target = hits[0];
+        event.target = target._node;
+        event.mouse = mouse;
+        target._node.dispatchEvent(event);
+        return true;
+      }
+    }
+    return Block.prototype.dispatchPointerEvent.call(this, event);
+  }
+
+  /* override */
   render() {
+    if(this[_controls]) {
+      this[_controls].update();
+    }
     this.renderer.render({scene: this.root.body, camera: this.camera.body});
     if(this.prepareRender) {
       if(this.prepareRender._requestID) {

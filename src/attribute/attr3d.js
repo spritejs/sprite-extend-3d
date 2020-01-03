@@ -1,6 +1,4 @@
-import {Node, helpers} from 'spritejs';
-
-const {toNumber, toArray} = helpers;
+import {Node} from 'spritejs';
 
 const Attr = Node.Attr;
 
@@ -22,6 +20,7 @@ export default class Attr3d extends Attr {
       scaleY: 0,
       scaleZ: 0,
       /* scale */
+      raycast: undefined,
     });
     this[declareAlias]('rotate', 'scale');
   }
@@ -31,7 +30,15 @@ export default class Attr3d extends Attr {
   }
 
   set z(value) {
-    this[setAttribute]('z', toNumber(value));
+    this[setAttribute]('z', value);
+  }
+
+  get raycast() {
+    return this[getAttribute]('raycast');
+  }
+
+  set raycast(value) {
+    this[setAttribute]('raycast', value);
   }
 
   /* override */
@@ -40,8 +47,7 @@ export default class Attr3d extends Attr {
   }
 
   set pos(value) {
-    value = toArray(value);
-    if(!Array.isArray(value)) value = [value, value, 0];
+    if(!Array.isArray(value)) value = [value, value, value];
     this.x = value[0] || 0;
     this.y = value[1] || 0;
     this.z = value[2] || 0;
@@ -52,7 +58,7 @@ export default class Attr3d extends Attr {
   }
 
   set rotateX(value) {
-    this[setAttribute]('rotateX', toNumber(value));
+    this[setAttribute]('rotateX', value);
   }
 
   get rotateY() {
@@ -60,7 +66,7 @@ export default class Attr3d extends Attr {
   }
 
   set rotateY(value) {
-    this[setAttribute]('rotateY', toNumber(value));
+    this[setAttribute]('rotateY', value);
   }
 
   get rotateZ() {
@@ -68,7 +74,7 @@ export default class Attr3d extends Attr {
   }
 
   set rotateZ(value) {
-    this[setAttribute]('rotateZ', toNumber(value));
+    this[setAttribute]('rotateZ', value);
   }
 
   /* override */
@@ -77,7 +83,6 @@ export default class Attr3d extends Attr {
   }
 
   set rotate(value) {
-    value = toArray(value);
     if(!Array.isArray(value)) value = [value, 0, 0];
     this.rotateX = value[0] || 0;
     this.rotateY = value[1] || 0;
@@ -89,7 +94,7 @@ export default class Attr3d extends Attr {
   }
 
   set scaleX(value) {
-    this[setAttribute]('scaleX', toNumber(value));
+    this[setAttribute]('scaleX', value);
   }
 
   get scaleY() {
@@ -97,7 +102,7 @@ export default class Attr3d extends Attr {
   }
 
   set scaleY(value) {
-    this[setAttribute]('scaleY', toNumber(value));
+    this[setAttribute]('scaleY', value);
   }
 
   get scaleZ() {
@@ -105,7 +110,7 @@ export default class Attr3d extends Attr {
   }
 
   set scaleZ(value) {
-    this[setAttribute]('scaleZ', toNumber(value));
+    this[setAttribute]('scaleZ', value);
   }
 
   /* override */
@@ -114,7 +119,6 @@ export default class Attr3d extends Attr {
   }
 
   set scale(value) {
-    value = toArray(value);
     if(!Array.isArray(value)) value = [value, 0, 0];
     this.scaleX = value[0] || 0;
     this.scaleY = value[1] || 0;

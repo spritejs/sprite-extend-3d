@@ -4,6 +4,7 @@ import Mesh3d from './node/mesh3d';
 import Sphere from './node/sphere';
 import Cube from './node/cube';
 import Plane from './node/plane';
+import Cylinder from './node/cylinder';
 
 Scene.prototype.layer3d = function (id, options) {
   const {displayRatio} = this.options;
@@ -24,5 +25,6 @@ export {
   Sphere,
   Plane,
   Cube,
+  Cylinder,
   Mesh3d,
 };

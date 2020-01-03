@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
+    "color-rgba": "^2.1.1",
     "ogl": "0.0.37"
   }
 }

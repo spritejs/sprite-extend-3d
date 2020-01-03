@@ -1,10 +1,10 @@
-import Attr3d from './attr3d';
+import GeometryAttr from './geometry';
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
 const setDefault = Symbol.for('spritejs_setAttributeDefault');
 
-export default class PlaneAttr extends Attr3d {
+export default class PlaneAttr extends GeometryAttr {
   constructor(subject) {
     super(subject);
     this[setDefault]({
