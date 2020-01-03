@@ -7,7 +7,7 @@ import Plane from './node/plane';
 import Cylinder from './node/cylinder';
 import * as shaders from './shader';
 
-Scene.prototype.layer3d = function (id, options) {
+Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
   const {displayRatio} = this.options;
   options = Object.assign({dpr: displayRatio}, this.options, options);
   options.id = id;

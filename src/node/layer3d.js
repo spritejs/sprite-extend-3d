@@ -143,7 +143,7 @@ export default class Layer3D extends Layer {
     }
     const target = options.target || [0, 0, 0];
     options.target = new Vec3(...target);
-    options.element = this.canvas;
+    options.element = options.element || this.parent.container;
     this[_controls] = new Orbit(camera.body, options);
     this.addEventListener('mousedown', this[_orbitChecker][0]);
     this.addEventListener('mouseup', this[_orbitChecker][1]);
