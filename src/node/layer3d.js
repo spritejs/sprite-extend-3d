@@ -216,13 +216,7 @@ export default class Layer3D extends Layer {
       this[_controls].update();
     }
     this.renderer.render({scene: this.root.body, camera: this.camera.body});
-    if(this.prepareRender) {
-      if(this.prepareRender._requestID) {
-        cancelAnimationFrame(this.prepareRender._requestID);
-      }
-      this.prepareRender._resolve();
-      delete this.prepareRender;
-    }
+    this._prepareRenderFinished();
   }
 }
 
