@@ -5,6 +5,7 @@ import Sphere from './node/sphere';
 import Cube from './node/cube';
 import Plane from './node/plane';
 import Cylinder from './node/cylinder';
+import Group3d from './node/group3d';
 import * as shaders from './shader';
 
 Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
@@ -28,5 +29,6 @@ export {
   Cube,
   Cylinder,
   Mesh3d,
+  Group3d,
   shaders,
 };

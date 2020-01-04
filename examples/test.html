@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Cube} = spritejs.ext3d;
+    const {Cube, Group3d} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -67,7 +67,11 @@
     });
     const program2 = layer.createProgram({vertex, fragment: fragment2});
     const cube = new Cube(program);
-    layer.append(cube);
+
+    const group = new Group3d();
+
+    group.append(cube);
+    layer.append(group);
   </script>
 </body>
 </html>

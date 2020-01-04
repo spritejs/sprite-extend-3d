@@ -72,6 +72,24 @@ export default class Node3d extends Node {
       }
     }
   }
+
+  /* override */
+  connect(parent, zOrder) {
+    super.connect(parent, zOrder);
+    if(parent.body && this.body) {
+      if(this.body !== parent.body) {
+        this.body.setParent(parent.body);
+      }
+    }
+  }
+
+  /* override */
+  disconnect(parent, zOrder) {
+    super.disconnect(parent, zOrder);
+    if(this.body) {
+      this.body.setParent(null);
+    }
+  }
 }
 
 registerNode(Node3d, 'node3d');

@@ -42,7 +42,7 @@ export default class Layer3D extends Layer {
   }
 
   get body() {
-    return this.root.body;
+    return this.root ? this.root.body : null;
   }
 
   get meshes() {
@@ -80,30 +80,30 @@ export default class Layer3D extends Layer {
     }
   }
 
-  appendChild(el) {
-    const ret = super.appendChild(el);
-    el.body.setParent(this.body);
-    return ret;
-  }
+  // appendChild(el) {
+  //   const ret = super.appendChild(el);
+  //   el.body.setParent(this.body);
+  //   return ret;
+  // }
 
-  insertBefore(el, ref) {
-    const ret = super.insertBefore(el, ref);
-    el.body.setParent(this.body);
-    return ret;
-  }
+  // insertBefore(el, ref) {
+  //   const ret = super.insertBefore(el, ref);
+  //   el.body.setParent(this.body);
+  //   return ret;
+  // }
 
-  replaceChild(el, ref) {
-    const ret = super.replaceChild(el, ref);
-    ref.body.setParent(null);
-    el.body.setParent(this.body);
-    return ret;
-  }
+  // replaceChild(el, ref) {
+  //   const ret = super.replaceChild(el, ref);
+  //   ref.body.setParent(null);
+  //   el.body.setParent(this.body);
+  //   return ret;
+  // }
 
-  removeChild(el) {
-    const ret = super.removeChild(el);
-    el.body.setParent(null);
-    return ret;
-  }
+  // removeChild(el) {
+  //   const ret = super.removeChild(el);
+  //   el.body.setParent(null);
+  //   return ret;
+  // }
 
   /* {vertex, fragment, uniforms = {}} */
   createProgram(options) {
