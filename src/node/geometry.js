@@ -34,12 +34,16 @@ export default class Geometry extends Mesh3d {
     if(!this.body) {
       this.remesh();
     } else if(!this.prepareMeshUpdate && this.remesh) {
-      this.prepareMeshUpdate = new Promise((resolve) => {
-        requestAnimationFrame(() => {
-          delete this.prepareMeshUpdate;
-          this.remesh();
-          resolve();
-        });
+      // this.prepareMeshUpdate = new Promise((resolve) => {
+      //   requestAnimationFrame(() => {
+      //     delete this.prepareMeshUpdate;
+      //     this.remesh();
+      //     resolve();
+      //   });
+      // });
+      this.prepareMeshUpdate = Promise.resolve().then(() => {
+        delete this.prepareMeshUpdate;
+        this.remesh();
       });
     }
   }
