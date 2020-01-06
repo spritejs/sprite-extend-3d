@@ -88,9 +88,10 @@ export default class Mesh3d extends Node3d {
       }
       geometry = new Geometry(gl, geometryData);
     }
-    if(this.shaderSetters) {
-      Object.entries(this.shaderSetters).forEach(([key, setter]) => {
-        geometry.addAttribute(key, setter(geometry.attributes.position));
+    const extraAttrs = program.extraAttribute;
+    if(extraAttrs) {
+      Object.entries(extraAttrs).forEach(([key, setter]) => {
+        geometry.addAttribute(key, setter(this, geometry));
       });
     }
     this[_geometry] = geometry;

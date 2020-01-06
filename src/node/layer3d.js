@@ -4,7 +4,6 @@ import Camera from './camera';
 import Group3d from './group3d';
 
 const defaultOption = {
-  alpha: true,
   depth: true,
 };
 
@@ -32,7 +31,7 @@ export default class Layer3D extends Layer {
     }
     super(options);
     const gl = this.renderer.gl;
-    gl.clearColor(0, 0, 1, 0);
+    gl.clearColor(1, 1, 1, 0);
     const cameraOptions = options.camera || {};
     const camera = new Camera(gl, {parent: this, ...cameraOptions});
     camera.attributes.z = 5;
@@ -80,36 +79,11 @@ export default class Layer3D extends Layer {
     }
   }
 
-  // appendChild(el) {
-  //   const ret = super.appendChild(el);
-  //   el.body.setParent(this.body);
-  //   return ret;
-  // }
-
-  // insertBefore(el, ref) {
-  //   const ret = super.insertBefore(el, ref);
-  //   el.body.setParent(this.body);
-  //   return ret;
-  // }
-
-  // replaceChild(el, ref) {
-  //   const ret = super.replaceChild(el, ref);
-  //   ref.body.setParent(null);
-  //   el.body.setParent(this.body);
-  //   return ret;
-  // }
-
-  // removeChild(el) {
-  //   const ret = super.removeChild(el);
-  //   el.body.setParent(null);
-  //   return ret;
-  // }
-
   /* {vertex, fragment, uniforms = {}} */
-  createProgram(options) {
+  createProgram({attributes, ...options} = {}, extraAttributes) {
     const gl = this.renderer.gl;
     const program = new Program(gl, options);
-
+    program.extraAttribute = Object.assign({}, attributes, extraAttributes);
     return program;
   }
 

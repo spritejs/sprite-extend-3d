@@ -1,4 +1,4 @@
-import rgba from 'color-rgba';
+import {Color} from 'spritejs';
 import Attr3d from './attr3d';
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
@@ -22,16 +22,14 @@ export default class GeometryAttr extends Attr3d {
     if(typeof value === 'string') {
       value = value.replace(/\s*,\s*/g, ',');
       let colors = value.split(/\s+/g);
-      colors = colors.map((color) => {
-        const c = rgba(color);
-        return [c[0] / 255, c[1] / 255, c[2] / 255, c[3]];
+      colors = colors.map((c) => {
+        return new Color(c);
       });
       value = colors.reduce((a, b) => [...a, ...b]);
     } else if(Array.isArray(value)) {
       if(typeof value[0] === 'string') {
         value = value.reduce((a, b) => {
-          const c = rgba(b);
-          a.push(c[0] / 255, c[1] / 255, c[2] / 255, c[3]);
+          a.push(...(new Color(b)));
           return a;
         }, []);
       } else if(Array.isArray(value[0])) {

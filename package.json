@@ -1,6 +1,6 @@
 {
   "name": "sprite-extend-3d",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
   "module": "lib/index.js",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "color-rgba": "^2.1.1",
-    "ogl": "0.0.37"
+    "ogl": "0.0.37",
+    "spritejs": "^3.1.13"
   }
 }

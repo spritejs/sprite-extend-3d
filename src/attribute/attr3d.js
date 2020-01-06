@@ -119,7 +119,7 @@ export default class Attr3d extends Attr {
   }
 
   set scale(value) {
-    if(!Array.isArray(value)) value = [value, 0, 0];
+    if(!Array.isArray(value)) value = [value, value, value];
     this.scaleX = value[0] || 0;
     this.scaleY = value[1] || 0;
     this.scaleZ = value[2] || 0;
