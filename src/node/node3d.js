@@ -19,6 +19,50 @@ export default class Node3d extends Node {
     return [];
   }
 
+  get localMatrix() {
+    if(this[_body]) {
+      return this[_body].matrix;
+    }
+    return null;
+  }
+
+  get renderMatrix() {
+    if(this[_body]) {
+      return this[_body].worldMatrix;
+    }
+    return null;
+  }
+
+  // the matrix with camera
+  get modelViewMatrix() {
+    if(this[_body]) {
+      return this[_body].modelViewMatrix;
+    }
+    return null;
+  }
+
+  // normal transform matrix
+  get normalMatrix() {
+    if(this[_body]) {
+      return this[_body].normalMatrix;
+    }
+    return null;
+  }
+
+  get isVisible() {
+    if(this[_body]) {
+      return this[_body].visible;
+    }
+    return false;
+  }
+
+  get zDepth() {
+    if(this[_body]) {
+      return this[_body].zDepth;
+    }
+    return null;
+  }
+
   setBody(body) {
     const oldBody = this[_body];
     this[_body] = body;

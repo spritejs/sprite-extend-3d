@@ -99,7 +99,56 @@ export default class Mesh3d extends Node3d {
     if(program) {
       const mesh = new Mesh(gl, {mode: gl[this[_mode]], geometry, program});
       this.setBody(mesh);
+      let listeners = this.getListeners('beforerender');
+      if(listeners.length) {
+        mesh.onBeforeRender.push(...listeners);
+      }
+      listeners = this.getListeners('afterrender');
+      if(listeners.length) {
+        mesh.onAfterRender.push(...listeners);
+      }
     }
+  }
+
+  /* override */
+  addEventListener(type, listener, options = {}) {
+    super.addEventListener(type, listener, options);
+    if(this.body && type === 'beforerender') {
+      this.body.onBeforeRender(listener);
+    } else if(this.body && type === 'afterrender') {
+      this.body.onAfterRender(listener);
+    }
+    return this;
+  }
+
+  /* override */
+  removeAllListeners(type, options = {}) {
+    super.removeEventListener(type, options);
+    if(this.body && type === 'beforerender') {
+      this.body.beforeRenderCallbacks.length = 0;
+    } else if(this.body && type === 'afterrender') {
+      this.body.afterRenderCallbacks.length = 0;
+    }
+    return this;
+  }
+
+  /* override */
+  removeEventListener(type, listener, options = {}) {
+    super.removeEventListener(type, listener, options);
+    if(this.body && type === 'beforerender') {
+      const list = this.body.beforeRenderCallbacks;
+      const idx = list.indexOf(listener);
+      if(idx >= 0) {
+        list.splice(idx, 1);
+      }
+    } else if(this.body && type === 'afterrender') {
+      const list = this.body.afterRenderCallbacks;
+      const idx = list.indexOf(listener);
+      if(idx >= 0) {
+        list.splice(idx, 1);
+      }
+    }
+    return this;
   }
 }
 

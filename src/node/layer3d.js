@@ -169,12 +169,12 @@ export default class Layer3D extends Layer {
     const gl = this.renderer.gl;
     const texture = new Texture(gl);
     if(typeof image === 'string') {
-      return this.loadImage(image).then((res) => {
+      this.loadImage(image).then((res) => {
         texture.image = res;
-        return texture;
       });
+    } else {
+      texture.image = image;
     }
-    texture.image = image;
     return texture;
   }
 
