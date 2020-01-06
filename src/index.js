@@ -1,3 +1,4 @@
+import {TextureLoader} from 'ogl';
 import {Scene} from 'spritejs';
 import Layer3D from './node/layer3d';
 import Mesh3d from './node/mesh3d';
@@ -30,5 +31,6 @@ export {
   Cylinder,
   Mesh3d,
   Group3d,
+  TextureLoader,
   shaders,
 };

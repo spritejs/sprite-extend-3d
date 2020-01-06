@@ -46,6 +46,10 @@ export default class Layer3D extends Layer {
     return this.root ? this.root.body : null;
   }
 
+  get gl() {
+    return this.renderer.gl;
+  }
+
   get meshes() {
     const children = this.children;
     const ret = [];
