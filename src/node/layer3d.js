@@ -10,6 +10,7 @@ const defaultOption = {
 const _controls = Symbol('orbit_controls');
 const _orbitChecker = Symbol('orbit_checker');
 const _orbitChecking = Symbol('orbit_checking');
+const _utime = Symbol('utime');
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
@@ -38,6 +39,7 @@ export default class Layer3D extends Layer {
     this.camera = camera;
     this.root = new Group3d();
     this.root.connect(this, 0);
+    this[_utime] = [];
   }
 
   get body() {
@@ -138,6 +140,21 @@ export default class Layer3D extends Layer {
     }
   }
 
+  bindTime(program) {
+    program.timeline = this.timeline.fork();
+    this[_utime].push(program);
+    this.forceUpdate();
+  }
+
+  unbindTime(program) {
+    const idx = this[_utime].indexOf(program);
+    if(idx >= 0) {
+      this[_utime].splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
   async loadImage(src) {
     const image = await ENV.loadImage(src);
     return image;
@@ -191,6 +208,12 @@ export default class Layer3D extends Layer {
     }
     this.renderer.render({scene: this.root.body, camera: this.camera.body});
     this._prepareRenderFinished();
+    if(this[_utime].length) {
+      this[_utime].forEach((program) => {
+        program.uniforms.uTime = {value: program.timeline.currentTime * 0.001};
+      });
+      this.forceUpdate();
+    }
   }
 }
 
