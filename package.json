@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "ogl": "0.0.37",
+    "ogl": "github:oframe/ogl",
     "spritejs": "^3.1.13"
   }
 }

@@ -9,10 +9,8 @@ const _geometry = Symbol('geometry');
 const _model = Symbol('model');
 const _mode = Symbol('mode');
 
-const _shaderAttrs = Symbol('shaderAttrs');
-
 export default class Mesh3d extends Node3d {
-  constructor(program, attrs = {}) {
+  constructor(program, {model, ...attrs} = {}) {
     if(program && !(program instanceof Program)) {
       attrs = program;
       program = null;
@@ -27,7 +25,9 @@ export default class Mesh3d extends Node3d {
     if(program) {
       this.setProgram(program);
     }
-    this[_shaderAttrs] = {};
+    if(model) {
+      this.setGeometry(model);
+    }
   }
 
   /* override */
@@ -50,10 +50,6 @@ export default class Mesh3d extends Node3d {
 
   get geometry() {
     return this[_geometry];
-  }
-
-  get shaderAttrs() {
-    return this[_shaderAttrs];
   }
 
   get meshes() {

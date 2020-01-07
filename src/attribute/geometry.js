@@ -9,7 +9,7 @@ export default class GeometryAttr extends Attr3d {
   constructor(subject) {
     super(subject);
     this[setDefault]({
-      colors: [0, 0, 0, 1],
+      colors: [0.5, 0.5, 0.5, 1],
       colorDivisor: 3,
     });
   }

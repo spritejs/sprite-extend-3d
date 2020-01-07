@@ -5,16 +5,29 @@ attribute vec3 position;
 attribute vec3 normal;
 attribute vec4 color;
 
+uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 uniform mat3 normalMatrix;
 
+uniform mat4 shadowViewMatrix;
+uniform mat4 shadowProjectionMatrix;
+
 varying vec3 vNormal;
 varying vec4 vColor;
+varying vec4 vLightNDC;
 
 uniform vec3 pointLightPosition; //点光源位置
 uniform vec4 pointLightColor; // 点光源颜色
 uniform vec4 ambientColor; // 环境光
+
+// Matrix to shift range from -1->1 to 0->1
+const mat4 depthScaleMatrix = mat4(
+    0.5, 0, 0, 0, 
+    0, 0.5, 0, 0, 
+    0, 0, 0.5, 0, 
+    0.5, 0.5, 0.5, 1
+);
 
 void main() {
   vNormal = normalize(normalMatrix * normal);
@@ -27,5 +40,6 @@ void main() {
   vColor = vec4(diffuse + ambient, color.a);
   // vColor = color;
 
+  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

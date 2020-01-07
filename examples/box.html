@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Cylinder, Sphere, Cube, shaders} = spritejs.ext3d;
+    const {Camera, Cube, Plane, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -41,40 +41,24 @@
       },
     });
 
-    layer.camera.attributes.pos = [5, 3, 6];
+    layer.camera.attributes.pos = [3, 6, 6];
     layer.camera.lookAt([0, 0, 0]);
 
     const program = layer.createProgram({
-      ...shaders.BASE_GEOMETRY,
+      ...shaders.GEOMETRY_WITH_SHADOW,
       cullFace: null,
     });
 
-    const cylinder = new Cylinder(program);
-    cylinder.attributes.pos = [0, 1.3, 0];
-    layer.append(cylinder);
-    cylinder.animate([
-      {rotateY: 0},
-      {rotateY: -360},
-    ], {
-      duration: 10000,
-      iterations: Infinity,
-    });
-
-    const sphere = new Sphere(program);
-    sphere.attr({
-      phiLength: Math.PI,
-    });
-    layer.append(sphere);
-    sphere.animate([
-      {rotateY: 0},
-      {rotateY: -360},
-    ], {
-      duration: 7500,
-      iterations: Infinity,
-    });
+    const plane = new Plane(program);
+    plane.attributes.pos = [0, -2, 0];
+    plane.attributes.colors = '#ccc';
+    plane.attributes.scale = 3;
+    plane.attributes.rotateX = 90;
+    layer.append(plane);
 
     const cube = new Cube(program);
-    cube.attributes.pos = [0, -1.3, 0];
+    cube.attributes.pos = [0.5, 1.3, 1.5];
+    cube.attributes.colors = 'orange blue';
     layer.append(cube);
     cube.animate([
       {rotateY: 0},
@@ -84,20 +68,21 @@
       iterations: Infinity,
     });
 
-    layer.setRaycast();
-
-    layer.addEventListener('click', (evt) => {
-      if(evt.target === cube) {
-        const colors = [];
-        for(let i = 0; i < 3; i++) {
-          const randomColor = `hsl(${Math.floor(360 * Math.random())}, 50%, 50%)`;
-          colors.push(randomColor, randomColor);
-        }
-        evt.target.attributes.colors = colors;
-      } else if(evt.target !== layer) {
-        evt.target.attributes.colors = `hsl(${Math.floor(360 * Math.random())}, 50%, 50%)`;
-      }
+    const light = new Camera(layer.gl, {
+      left: -3,
+      right: 3,
+      bottom: -3,
+      top: 3,
+      // fov: 30,
+      near: 1,
+      far: 20,
     });
+    light.attributes.pos = [3, 10, 5];
+    light.lookAt([0, 0, 0]);
+    const shadow = layer.createShadow({light});
+    shadow.add({mesh: plane.body});
+    shadow.add({mesh: cube.body});
+    layer.setShadow(shadow);
   </script>
 </body>
 </html>

@@ -1,16 +1,23 @@
 import {Layer, registerNode, ENV, Block} from 'spritejs';
-import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast} from 'ogl';
+import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Shadow} from 'ogl';
 import Camera from './camera';
 import Group3d from './group3d';
 
 const defaultOption = {
   depth: true,
+  alpha: true,
 };
 
 const _controls = Symbol('orbit_controls');
 const _orbitChecker = Symbol('orbit_checker');
 const _orbitChecking = Symbol('orbit_checking');
 const _utime = Symbol('utime');
+const _shadow = Symbol('shadow');
+
+const _directionalLight = Symbol('directionalLight');
+const _pointLightPosition = Symbol('pointLightPosition');
+const _pointLightColor = Symbol('pointLightColor');
+const _ambientColor = Symbol('ambientColor');
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
@@ -31,15 +38,23 @@ export default class Layer3D extends Layer {
       };
     }
     super(options);
+
+    this[_utime] = [];
+    this[_directionalLight] = options.directionalLight || [1, 0, 0, 0];
+    this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
+    this[_pointLightColor] = options.pointLightColor || [0, 0, 0, 0];
+    this[_ambientColor] = options.ambientColor || [1, 1, 1, 0];
+
     const gl = this.renderer.gl;
-    gl.clearColor(1, 1, 1, 0);
+    gl.clearColor(...this[_ambientColor]);
+
     const cameraOptions = options.camera || {};
     const camera = new Camera(gl, {parent: this, ...cameraOptions});
-    camera.attributes.z = 5;
+    // camera.attributes.z = 5;
+    camera.connect(this, 0);
     this.camera = camera;
     this.root = new Group3d();
     this.root.connect(this, 0);
-    this[_utime] = [];
   }
 
   get body() {
@@ -85,11 +100,39 @@ export default class Layer3D extends Layer {
     }
   }
 
+  setUniforms(program, uniforms) {
+    super.setUniforms(uniforms);
+    Object.entries(uniforms).forEach(([key, value]) => {
+      program.uniforms[key] = {value};
+    });
+    this.forceUpdate();
+  }
+
+  setLights(program, {directionalLight, pointLightPosition, pointLightColor, ambientColor}) {
+    program.uniforms.directionalLight = {value: directionalLight};
+    program.uniforms.pointLightPosition = {value: pointLightPosition};
+    program.uniforms.pointLightColor = {value: pointLightColor};
+    program.uniforms.ambientColor = {value: ambientColor};
+    this.forceUpdate();
+  }
+
   /* {vertex, fragment, uniforms = {}} */
-  createProgram({attributes, ...options} = {}, extraAttributes) {
+  createProgram({attributes, texture, uniforms, ...options} = {}, {attributes: extraAttributes, uniforms: extraUniforms} = {}) {
     const gl = this.renderer.gl;
+    if(uniforms) {
+      options.uniforms = {...uniforms};
+    }
     const program = new Program(gl, options);
-    program.extraAttribute = Object.assign({}, attributes, extraAttributes);
+    if(extraAttributes) program.extraAttribute = Object.assign({}, attributes, extraAttributes);
+
+    program.uniforms.directionalLight = {value: this[_directionalLight]};
+    program.uniforms.pointLightPosition = {value: this[_pointLightPosition]};
+    program.uniforms.pointLightColor = {value: this[_pointLightColor]};
+    program.uniforms.ambientColor = {value: this[_ambientColor]};
+
+    if(texture) program.uniforms.tMap = {value: texture};
+
+    if(extraUniforms) Object.assign(program.uniforms, extraUniforms);
     return program;
   }
 
@@ -115,7 +158,7 @@ export default class Layer3D extends Layer {
       this.removeEventListener('touchstart', this[_orbitChecker][3]);
       this.removeEventListener('touchend', this[_orbitChecker][3]);
       this.removeEventListener('touchmove', this[_orbitChecker][3]);
-      window.removeEventListener('wheel', this[_orbitChecker][3], false);
+      this.removeEventListener('wheel', this[_orbitChecker][3], false);
     }
     if(options == null) {
       delete this[_controls];
@@ -131,7 +174,7 @@ export default class Layer3D extends Layer {
     this.addEventListener('touchstart', this[_orbitChecker][3]);
     this.addEventListener('touchend', this[_orbitChecker][3]);
     this.addEventListener('touchmove', this[_orbitChecker][3]);
-    window.addEventListener('wheel', this[_orbitChecker][3], false);
+    this.addEventListener('wheel', this[_orbitChecker][3], false);
     return this[_controls];
   }
 
@@ -169,17 +212,41 @@ export default class Layer3D extends Layer {
     return data;
   }
 
-  createTexture(image /* or imageList */) {
+  createTexture(opts) {
     const gl = this.renderer.gl;
-    const texture = new Texture(gl);
-    if(typeof image === 'string') {
-      this.loadImage(image).then((res) => {
+    let src;
+    if(typeof opts === 'string') {
+      src = opts;
+      opts = {};
+    }
+    if(typeof opts.image === 'string') {
+      src = opts.image;
+      opts = {...opts};
+      delete opts.image;
+    }
+    const texture = new Texture(gl, opts);
+    if(src) {
+      this.loadImage(src).then((res) => {
         texture.image = res;
+        this.forceUpdate();
       });
-    } else {
-      texture.image = image;
+      return texture;
     }
     return texture;
+  }
+
+  createShadow({width = this.canvas.width, height = this.canvas.height, light = this.camera} = {}) {
+    const gl = this.renderer.gl;
+    return new Shadow(gl, {width, height, light: light.body});
+  }
+
+  setShadow(shadow) {
+    this[_shadow] = shadow;
+    this.forceUpdate();
+  }
+
+  get shadow() {
+    return this[_shadow];
   }
 
   /* override */
@@ -209,6 +276,9 @@ export default class Layer3D extends Layer {
   render() {
     if(this[_controls]) {
       this[_controls].update();
+    }
+    if(this[_shadow]) {
+      this[_shadow].render({scene: this.root.body});
     }
     this.renderer.render({scene: this.root.body, camera: this.camera.body});
     this._prepareRenderFinished();

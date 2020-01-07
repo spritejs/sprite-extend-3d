@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Cylinder, Sphere, Cube, shaders} = spritejs.ext3d;
+    const {Cylinder, Sphere, Cube, Camera, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -36,6 +36,9 @@
       // mode: 'stickyHeight',
     });
     const layer = scene.layer3d('fglayer', {
+      directionalLight: [1, 0, 0, 0.5],
+      pointLightColor: [1, 0, 0, 1],
+      pointLightPosition: [5, 3, 6],
       camera: {
         fov: 35,
       },
@@ -47,9 +50,6 @@
     const program = layer.createProgram({
       ...shaders.BASE_GEOMETRY,
       cullFace: null,
-      uniforms: {
-        lighting: {value: [0.3, 0.8, 0.6, 0.1]},
-      },
     });
 
     const texture = layer.createTexture('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');
@@ -57,7 +57,6 @@
       ...shaders.GEOMETRY_WITH_TEXTURE,
       cullFace: null,
       uniforms: {
-        lighting: {value: [0.3, 0.8, 0.6, 0.1]},
         tMap: {value: texture},
       },
     });
@@ -87,6 +86,7 @@
     const sphere = new Sphere(program);
     sphere.attr({
       phiLength: Math.PI,
+      colors: '#7c0',
     });
     layer.append(sphere);
     sphere.animate([

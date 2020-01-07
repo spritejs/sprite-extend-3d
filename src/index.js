@@ -1,8 +1,9 @@
-import {TextureLoader} from 'ogl';
+import {TextureLoader, Texture} from 'ogl';
 import {Scene} from 'spritejs';
 import Layer3D from './node/layer3d';
 import Mesh3d from './node/mesh3d';
 import Sphere from './node/sphere';
+import Camera from './node/camera';
 import Cube from './node/cube';
 import Plane from './node/plane';
 import Cylinder from './node/cylinder';
@@ -27,10 +28,12 @@ export {
   Layer3D,
   Sphere,
   Plane,
+  Camera,
   Cube,
   Cylinder,
   Mesh3d,
   Group3d,
+  Texture,
   TextureLoader,
   shaders,
 };

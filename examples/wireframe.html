@@ -90,7 +90,7 @@
 
     (async function () {
       const img = await layer.loadImage('assets/croissant.jpg');
-      const texture = layer.createTexture(img);
+      const texture = layer.createTexture({image: img});
       const program = layer.createProgram({
         vertex,
         fragment,

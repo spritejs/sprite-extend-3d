@@ -33,14 +33,15 @@ export default class Geometry extends Mesh3d {
   /* override */
   updateMesh() {
     if(this.program) {
-      if(!this.body) {
-        this.remesh();
-      } else if(!this.prepareMeshUpdate && this.remesh) {
-        this.prepareMeshUpdate = Promise.resolve().then(() => {
-          delete this.prepareMeshUpdate;
-          this.remesh();
-        });
-      }
+      // if(!this.body) {
+      //   this.remesh();
+      // } else if(!this.prepareMeshUpdate && this.remesh) {
+      //   this.prepareMeshUpdate = Promise.resolve().then(() => {
+      //     delete this.prepareMeshUpdate;
+      //     this.remesh();
+      //   });
+      // }
+      this.remesh();
     }
   }
 

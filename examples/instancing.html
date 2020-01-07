@@ -97,23 +97,25 @@
         lighting: {value: [-0.3, 0.8, 0.6, 0.1]},
       },
     }, {
-      offset(node, geometry) {
-        const data = new Float32Array(5 * 5 * 3);
-        for(let i = 0; i < 5; i++) {
-          const p = -5 + 2 * i;
-          for(let j = 0; j < 5; j++) {
-            const q = -5 + 2 * j;
-            data.set([p, q, 0], (i * 5 + j) * 3);
+      attributes: {
+        offset(node, geometry) {
+          const data = new Float32Array(5 * 5 * 3);
+          for(let i = 0; i < 5; i++) {
+            const p = -5 + 2 * i;
+            for(let j = 0; j < 5; j++) {
+              const q = -5 + 2 * j;
+              data.set([p, q, 0], (i * 5 + j) * 3);
+            }
           }
-        }
-        return {instanced: 1, size: 3, data};
-      },
-      random(node, geometry) {
-        const data = new Float32Array(5 * 5 * 2);
-        for(let i = 0; i < 25; i++) {
-          data.set([Math.random() * 2 - 1, Math.random() * 2 - 1], i * 2);
-        }
-        return {instanced: 1, size: 2, data};
+          return {instanced: 1, size: 3, data};
+        },
+        random(node, geometry) {
+          const data = new Float32Array(5 * 5 * 2);
+          for(let i = 0; i < 25; i++) {
+            data.set([Math.random() * 2 - 1, Math.random() * 2 - 1], i * 2);
+          }
+          return {instanced: 1, size: 2, data};
+        },
       },
     });
 

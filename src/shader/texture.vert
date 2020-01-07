@@ -11,7 +11,6 @@ uniform mat4 projectionMatrix;
 uniform mat3 normalMatrix;
 
 varying vec3 vNormal;
-varying vec4 vColor;
 varying vec2 vUv;
 
 varying float fCos;
@@ -25,9 +24,6 @@ void main() {
   float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值
   
   fCos = cos;
-
-  // vColor = vec4(diffuse + ambient, color.a);
-  vColor = color;
 
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
