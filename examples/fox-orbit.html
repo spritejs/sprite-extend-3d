@@ -90,7 +90,7 @@
 
     (async function () {
       const img = await layer.loadImage('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');
-      const texture = layer.createTexture(img);
+      const texture = layer.createTexture({image: img});
       const program = layer.createProgram({
         vertex,
         fragment,
