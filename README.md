@@ -97,6 +97,7 @@ For more details, see [here](https://spritejs.org/#/zh-cn/guide/3d).
 
 ## Roadmap
 
+- [ ] Shared Geometry?
 - [ ] RenderTarget
 - [ ] GPGPU
 - [ ] Polyline 3D

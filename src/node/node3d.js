@@ -88,6 +88,9 @@ export default class Node3d extends Node {
     }
     if(!uniforms && _changedAttrs.length <= 0) this.forceUpdate();
     body._node = this;
+    if(this.groupBody) {
+      this.groupBody.setParent(body);
+    }
   }
 
   /* override */
@@ -124,8 +127,9 @@ export default class Node3d extends Node {
   /* override */
   connect(parent, zOrder) {
     super.connect(parent, zOrder);
-    if(parent.body && this.body) {
-      if(this.body !== parent.body) {
+    if(this.body) {
+      const parentBody = parent.groupBody || parent.body;
+      if(parentBody && parentBody !== this.body) {
         this.body.setParent(parent.body);
       }
     }

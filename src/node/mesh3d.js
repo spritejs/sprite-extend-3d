@@ -1,6 +1,6 @@
 import {registerNode} from 'spritejs';
 import {Program, Mesh, Geometry} from 'ogl';
-import Node3d from './node3d';
+import Group3d from './group3d';
 
 const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
@@ -9,7 +9,7 @@ const _geometry = Symbol('geometry');
 const _model = Symbol('model');
 const _mode = Symbol('mode');
 
-export default class Mesh3d extends Node3d {
+export default class Mesh3d extends Group3d {
   constructor(program, {model, ...attrs} = {}) {
     if(program && !(program instanceof Program)) {
       attrs = program;
@@ -21,6 +21,7 @@ export default class Mesh3d extends Node3d {
       delete attrs.mode;
     }
     super(attrs);
+    this.groupBody = this.body;
     this[_mode] = mode || 'TRIANGLES';
     if(program) {
       this.setProgram(program);
@@ -53,7 +54,12 @@ export default class Mesh3d extends Node3d {
   }
 
   get meshes() {
-    return this.body ? [this.body] : [];
+    const meshes = this.body ? [this.body] : [];
+    const childMeshes = super.meshes;
+    if(childMeshes && childMeshes.length) {
+      meshes.push(...childMeshes);
+    }
+    return meshes;
   }
 
   setProgram(program) {

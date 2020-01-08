@@ -14,13 +14,13 @@ export default class Group3d extends Node3d {
   }
 
   /* override */
-  setBody(body) {
-    if(!this.body) {
-      super.setBody(body);
-    } else {
-      throw new Error('Cannot reset the body of group3d.');
-    }
-  }
+  // setBody(body) {
+  //   if(!this.body) {
+  //     super.setBody(body);
+  //   } else {
+  //     throw new Error('Cannot reset the body of group3d.');
+  //   }
+  // }
 
   get childNodes() {
     return this[_children];
