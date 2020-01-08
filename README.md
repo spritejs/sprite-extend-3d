@@ -97,4 +97,8 @@ For more details, see [here](https://spritejs.org/#/zh-cn/guide/3d).
 
 ## Roadmap
 
-[] Polyline 3D
+- [ ] RenderTarget
+- [ ] GPGPU
+- [ ] Polyline 3D
+- [ ] Documentation
+- [ ] More examples
