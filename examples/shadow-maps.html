@@ -82,8 +82,8 @@
       });
       layer.append(ground);
 
-      shadow.add({mesh: plane.body});
-      shadow.add({mesh: ground.body});
+      shadow.add(plane);
+      shadow.add(ground);
       layer.setShadow(shadow);
 
       requestAnimationFrame(update);

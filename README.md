@@ -94,3 +94,7 @@ layer.camera.lookAt([0, 1.5, 0]);
 ```
 
 For more details, see [here](https://spritejs.org/#/zh-cn/guide/3d).
+
+## Roadmap
+
+[] Polyline 3D

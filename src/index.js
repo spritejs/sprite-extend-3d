@@ -1,4 +1,4 @@
-import {TextureLoader, Texture} from 'ogl';
+import {TextureLoader, Texture, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler} from 'ogl';
 import {Scene} from 'spritejs';
 import Layer3D from './node/layer3d';
 import Mesh3d from './node/mesh3d';
@@ -36,4 +36,11 @@ export {
   Texture,
   TextureLoader,
   shaders,
+  Vec2,
+  Vec3,
+  Vec4,
+  Mat3,
+  Mat4,
+  Quat,
+  Euler,
 };

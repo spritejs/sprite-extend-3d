@@ -15,6 +15,10 @@ export default class Node3d extends Node {
     return null;
   }
 
+  get mesh() {
+    return this.body;
+  }
+
   get meshes() {
     return [];
   }
