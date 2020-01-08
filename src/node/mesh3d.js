@@ -66,21 +66,48 @@ export default class Mesh3d extends Node3d {
     }
   }
 
-  setGeometry(model, attrs = null) {
+  setGeometry(model) {
+    function parseData(data, size = 3) {
+      let d = data.data || data;
+      if(Array.isArray(d)) d = new Float32Array(d);
+      const s = data.size || size;
+      if(data.data) {
+        data.data = d;
+        data.size = s;
+        return data;
+      }
+      return {size: s, data: d};
+    }
     const program = this[_program];
     const gl = program.gl;
     let geometry;
     if(model instanceof Geometry) {
       geometry = model;
     } else {
-      const geometryData = {
-        position: {size: 3, data: new Float32Array(model.position)},
-        uv: {size: 2, data: new Float32Array(model.uv)},
-        normal: {size: 3, data: new Float32Array(model.normal)},
-        ...attrs,
-      };
-      if(model.index) {
-        geometryData.index = {data: new Uint16Array(model.index)};
+      const {position, uv, normal, index, ...others} = model;
+      const geometryData = {};
+      if(position) geometryData.position = parseData(position);
+      if(uv) geometryData.uv = parseData(uv, 2);
+      if(normal) geometryData.normal = parseData(normal);
+      if(index) {
+        let data = index.data || index;
+        if(Array.isArray(data)) data = new Uint16Array(data);
+        geometryData.index = {data};
+      }
+      if(others) {
+        let positionCount;
+        const position = geometryData.position;
+        if(position) {
+          positionCount = position.data.length / position.size;
+        }
+        Object.entries(others).forEach(([key, value]) => {
+          let size = 3;
+          if(!value.size) {
+            const length = value.data ? value.data.length : value.length;
+            if(length && positionCount) size = length / positionCount;
+          }
+          geometryData[key] = parseData(value, size);
+        });
       }
       geometry = new Geometry(gl, geometryData);
     }

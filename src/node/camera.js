@@ -7,9 +7,10 @@ import CameraAttr from '../attribute/camera';
 export default class _Camera extends Node3d {
   static Attr = CameraAttr;
 
-  constructor(gl, {parent, fov = 45, near = 0.1, far = 100, aspect = 1, left, right, bottom, top}) {
+  constructor(gl, {parent, fov = 45, near = 0.1, far = 100, aspect = 1, left, right, bottom, top, ...attrs}) {
     super();
     this.setBody(new Camera(gl, {fov, near, far, aspect, left, right, bottom, top}));
+    if(attrs) this.attr(attrs);
   }
 
   lookAt(target) {

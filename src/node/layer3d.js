@@ -50,7 +50,6 @@ export default class Layer3D extends Layer {
 
     const cameraOptions = options.camera || {};
     const camera = new Camera(gl, {parent: this, ...cameraOptions});
-    // camera.attributes.z = 5;
     camera.connect(this, 0);
     this.camera = camera;
     this.root = new Group3d();
