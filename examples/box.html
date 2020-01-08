@@ -80,9 +80,14 @@
     light.attributes.pos = [3, 10, 5];
     light.lookAt([0, 0, 0]);
     const shadow = layer.createShadow({light});
-    shadow.add({mesh: plane.body});
-    shadow.add({mesh: cube.body});
+    shadow.add(plane);
+    shadow.add(cube);
     layer.setShadow(shadow);
+    cube.addEventListener('updatemesh', (evt) => {
+      const oldMesh = evt.detail.oldMesh;
+      shadow.castMeshes = shadow.castMeshes.filter(mesh => mesh !== oldMesh);
+      shadow.add(cube);
+    });
   </script>
 </body>
 </html>

@@ -41,7 +41,10 @@ export default class Geometry extends Mesh3d {
       //     this.remesh();
       //   });
       // }
+      const oldMesh = this.mesh;
       this.remesh();
+      const newMesh = this.mesh;
+      this.dispatchEvent({type: 'updatemesh', detail: {oldMesh, newMesh}});
     }
   }
 

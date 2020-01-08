@@ -13,8 +13,30 @@ export default class Cube extends Geometry {
 
   remesh() {
     const gl = this.program.gl;
-    const geometry = new Box(gl);
+    const {width, height, depth, widthSegments, heightSegments, depthSegments} = this.attributes;
+    const geometry = new Box(gl, {
+      width,
+      height,
+      depth,
+      widthSegments,
+      heightSegments,
+      depthSegments});
     this.setGeometry(geometry);
+  }
+
+  /* override */
+  onPropertyChange(key, newValue, oldValue) {
+    super.onPropertyChange(key, newValue, oldValue);
+    if(key === 'width'
+      || key === 'height'
+      || key === 'depth'
+      || key === 'widthSegments'
+      || key === 'heightSegments'
+      || key === 'depthSegments') {
+      if(newValue !== oldValue) {
+        this.updateMesh();
+      }
+    }
   }
 }
 
