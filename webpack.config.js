@@ -1,8 +1,17 @@
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const packageConfig = require('./package.json');
 
+let babelConf;
+
 module.exports = function (env = {}) {
+  const babelRC = env.esnext ? './.es6.babelrc' : './.babelrc';
+  if(fs.existsSync(babelRC)) {
+    babelConf = JSON.parse(fs.readFileSync(babelRC));
+    babelConf.babelrc = false;
+  }
+
   return {
     mode: env.mode || 'none',
     entry: './src/index',
@@ -22,10 +31,10 @@ module.exports = function (env = {}) {
       rules: [
         {
           test: /\.js$/,
-          exclude: /node_modules\/.*/,
+          exclude: /node_modules\/(?!ogl).*/,
           use: {
             loader: 'babel-loader',
-            options: {babelrc: true},
+            options: babelConf,
           },
         },
         {

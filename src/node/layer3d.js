@@ -1,5 +1,6 @@
 import {Layer, registerNode, ENV, Block} from 'spritejs';
-import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Shadow} from 'ogl';
+import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast} from 'ogl';
+import Shadow from '../helper/shadow';
 import Camera from './camera';
 import Group3d from './group3d';
 

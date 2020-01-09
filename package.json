@@ -8,6 +8,7 @@
     "start": "webpack-dev-server --env.server=examples --watch-poll",
     "compile": "rm -rf lib/* && babel src -d lib",
     "build": "webpack --env.mode=production",
+    "build:dev": "webpack --env.mode=none",
     "prepublishOnly": "npm run compile && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

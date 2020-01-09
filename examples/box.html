@@ -83,11 +83,6 @@
     shadow.add(plane);
     shadow.add(cube);
     layer.setShadow(shadow);
-    cube.addEventListener('updatemesh', (evt) => {
-      const oldMesh = evt.detail.oldMesh;
-      shadow.castMeshes = shadow.castMeshes.filter(mesh => mesh !== oldMesh);
-      shadow.add(cube);
-    });
   </script>
 </body>
 </html>
