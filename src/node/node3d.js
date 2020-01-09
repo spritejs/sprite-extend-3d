@@ -130,7 +130,7 @@ export default class Node3d extends Node {
     if(this.body) {
       const parentBody = parent.groupBody || parent.body;
       if(parentBody && parentBody !== this.body) {
-        this.body.setParent(parent.body);
+        this.body.setParent(parentBody);
       }
     }
   }
