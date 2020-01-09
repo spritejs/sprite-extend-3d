@@ -16,6 +16,7 @@ export default class GameraAttr extends Attr3d {
       right: undefined,
       bottom: undefined,
       top: undefined,
+      mode: 'perspective', // perspective - 透视相机， orthographic - 正交投影相机
     });
   }
 
@@ -81,5 +82,16 @@ export default class GameraAttr extends Attr3d {
 
   set bottom(value) {
     this[setAttribute]('bottom', value);
+  }
+
+  get mode() {
+    return this[getAttribute]('mode');
+  }
+
+  set mode(value) {
+    if(value && value !== 'perspective' && value !== 'orthographic') {
+      throw new TypeError('Invalid camera mode.');
+    }
+    this[setAttribute]('mode', value);
   }
 }

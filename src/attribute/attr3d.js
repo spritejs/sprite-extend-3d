@@ -20,7 +20,7 @@ export default class Attr3d extends Attr {
       scaleY: 0,
       scaleZ: 0,
       /* scale */
-      raycast: undefined,
+      raycast: undefined, // 碰撞的形状，默认是立方体bounds，设为sphere可以检测球形
     });
     this[declareAlias]('rotate', 'scale');
   }

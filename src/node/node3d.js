@@ -10,51 +10,6 @@ const changedAttrs = Symbol.for('spritejs_changedAttrs');
 export default class Node3d extends Node {
   static Attr = Attr3d;
 
-  constructor(attrs = {}) {
-    super(attrs);
-    const attributes = this.attributes;
-    this[_rotation] = {
-      get x() {
-        return attributes.rotateX * Math.PI / 180;
-      },
-      set x(value) {
-        attributes.rotateX = value * 180 / Math.PI;
-      },
-      get y() {
-        return attributes.rotateY * Math.PI / 180;
-      },
-      set y(value) {
-        attributes.rotateY = value * 180 / Math.PI;
-      },
-      get z() {
-        return attributes.rotateZ * Math.PI / 180;
-      },
-      set z(value) {
-        attributes.rotateZ = value * 180 / Math.PI;
-      },
-    };
-    this[_position] = {
-      get x() {
-        return attributes.x;
-      },
-      set x(value) {
-        attributes.x = value;
-      },
-      get y() {
-        return attributes.y;
-      },
-      set y(value) {
-        attributes.y = value;
-      },
-      get z() {
-        return attributes.z;
-      },
-      set z(value) {
-        attributes.z = value;
-      },
-    };
-  }
-
   get position() {
     return this[_position];
   }
@@ -122,7 +77,7 @@ export default class Node3d extends Node {
     return null;
   }
 
-  setBody(body) {
+  setBody(body, update = true) {
     const oldBody = this[_body];
     this[_body] = body;
     if(oldBody && oldBody.parent) {
@@ -132,30 +87,18 @@ export default class Node3d extends Node {
       this[_body].setParent(this.parent.body);
     }
 
-    const _changedAttrs = Object.entries(this.attributes[changedAttrs]);
-    for(let i = 0; i < _changedAttrs.length; i++) {
-      const [key, value] = _changedAttrs[i];
-      this.onPropertyChange(key, value, value);
+    if(update) {
+      const _changedAttrs = Object.entries(this.attributes[changedAttrs]);
+      for(let i = 0; i < _changedAttrs.length; i++) {
+        const [key, value] = _changedAttrs[i];
+        this.onPropertyChange(key, value, value);
+      }
+      if(_changedAttrs.length <= 0) this.forceUpdate();
     }
-    const uniforms = this.uniforms;
-    if(uniforms) {
-      this.setUniforms(uniforms);
-    }
-    if(!uniforms && _changedAttrs.length <= 0) this.forceUpdate();
+
     body._node = this;
     if(this.groupBody) {
       this.groupBody.setParent(body);
-    }
-  }
-
-  /* override */
-  setUniforms(uniforms) {
-    super.setUniforms(uniforms);
-    if(this.body && this.body.program) {
-      const program = this.body.program;
-      Object.entries(uniforms).forEach(([key, value]) => {
-        program.uniforms[key] = {value};
-      });
     }
   }
 
@@ -175,6 +118,9 @@ export default class Node3d extends Node {
       }
       if(key === 'raycast') {
         this.body.geometry.raycast = newValue;
+      }
+      if(key === 'display') {
+        this.body.visible = newValue !== 'none';
       }
     }
   }
