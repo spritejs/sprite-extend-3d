@@ -13,16 +13,23 @@ export default class Mesh3d extends Group3d {
   constructor(program, {model, ...attrs} = {}) {
     if(program && !(program instanceof Program)) {
       attrs = program;
-      program = null;
+      program = attrs.program;
     }
-    const mode = attrs.mode;
-    if(mode) {
+    if(!program) {
+      throw new Error('No program specified!');
+    }
+    const gl = program.gl;
+    let mode = attrs.mode || gl.TRIANGLES;
+    if(attrs.mode) {
       attrs = {...attrs};
       delete attrs.mode;
     }
     super(attrs);
     this.groupBody = this.body;
-    this[_mode] = mode || 'TRIANGLES';
+    if(typeof mode === 'string') {
+      mode = gl[mode];
+    }
+    this[_mode] = mode;
     if(program) {
       this.setProgram(program);
     }
@@ -67,7 +74,7 @@ export default class Mesh3d extends Group3d {
     const gl = program.gl;
     const geometry = this[_geometry];
     if(geometry) {
-      const mesh = new Mesh(gl, {mode: gl[this[_mode]], geometry, program});
+      const mesh = new Mesh(gl, {mode: this[_mode], geometry, program});
       this.setBody(mesh);
     }
   }
@@ -126,15 +133,19 @@ export default class Mesh3d extends Group3d {
     this[_geometry] = geometry;
     this[_model] = model;
     if(program) {
-      const mesh = new Mesh(gl, {mode: gl[this[_mode]], geometry, program});
+      const mesh = new Mesh(gl, {mode: this[_mode], geometry, program});
       this.setBody(mesh);
       let listeners = this.getListeners('beforerender');
       if(listeners.length) {
-        mesh.onBeforeRender.push(...listeners);
+        mesh.onBeforeRender((args) => {
+          this.dispatchEvent({type: 'beforerender', detail: args});
+        });
       }
       listeners = this.getListeners('afterrender');
       if(listeners.length) {
-        mesh.onAfterRender.push(...listeners);
+        mesh.onAfterRender((args) => {
+          this.dispatchEvent({type: 'afterrender', detail: args});
+        });
       }
     }
   }
@@ -143,9 +154,19 @@ export default class Mesh3d extends Group3d {
   addEventListener(type, listener, options = {}) {
     super.addEventListener(type, listener, options);
     if(this.body && type === 'beforerender') {
-      this.body.onBeforeRender(listener);
+      const listeners = this.getListeners('beforerender');
+      if(listeners.length === 1) {
+        this.body.onBeforeRender((args) => {
+          this.dispatchEvent({type: 'beforerender', detail: args});
+        });
+      }
     } else if(this.body && type === 'afterrender') {
-      this.body.onAfterRender(listener);
+      const listeners = this.getListeners('afterrender');
+      if(listeners.length === 1) {
+        this.body.onAfterRender((args) => {
+          this.dispatchEvent({type: 'afterrender', detail: args});
+        });
+      }
     }
     return this;
   }
@@ -165,17 +186,11 @@ export default class Mesh3d extends Group3d {
   removeEventListener(type, listener, options = {}) {
     super.removeEventListener(type, listener, options);
     if(this.body && type === 'beforerender') {
-      const list = this.body.beforeRenderCallbacks;
-      const idx = list.indexOf(listener);
-      if(idx >= 0) {
-        list.splice(idx, 1);
-      }
+      const listeners = this.getListeners('beforerender');
+      if(listeners.length === 0) this.body.beforeRenderCallbacks.length = 0;
     } else if(this.body && type === 'afterrender') {
-      const list = this.body.afterRenderCallbacks;
-      const idx = list.indexOf(listener);
-      if(idx >= 0) {
-        list.splice(idx, 1);
-      }
+      const listeners = this.getListeners('afterrender');
+      if(listeners.length === 0) this.body.afterRenderCallbacks.length = 0;
     }
     return this;
   }

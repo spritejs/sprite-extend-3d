@@ -50,7 +50,7 @@ export default class Layer3D extends Layer {
     gl.clearColor(...this[_ambientColor]);
 
     const cameraOptions = options.camera || {};
-    const camera = new Camera(gl, {parent: this, ...cameraOptions});
+    const camera = new Camera(gl, cameraOptions);
     camera.connect(this, 0);
     this.camera = camera;
     this.root = new Group3d();
@@ -278,6 +278,7 @@ export default class Layer3D extends Layer {
 
   /* override */
   render() {
+    this.dispatchEvent({type: 'beforerender', detail: {camera: this.camera.body}});
     if(this[_controls]) {
       this[_controls].update();
     }
@@ -292,6 +293,7 @@ export default class Layer3D extends Layer {
       });
       this.forceUpdate();
     }
+    this.dispatchEvent({type: 'afterrender', detail: {camera: this.camera.body}});
   }
 }
 
