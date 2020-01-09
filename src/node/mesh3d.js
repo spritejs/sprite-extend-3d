@@ -9,6 +9,9 @@ const _geometry = Symbol('geometry');
 const _model = Symbol('model');
 const _mode = Symbol('mode');
 
+const _beforeRender = Symbol('beforeRender');
+const _afterRender = Symbol('afterRender');
+
 export default class Mesh3d extends Group3d {
   constructor(program, {model, ...attrs} = {}) {
     if(program && !(program instanceof Program)) {
@@ -36,6 +39,12 @@ export default class Mesh3d extends Group3d {
     if(model) {
       this.setGeometry(model);
     }
+    this[_beforeRender] = (args) => {
+      this.dispatchEvent({type: 'beforerender', detail: args});
+    };
+    this[_afterRender] = (args) => {
+      this.dispatchEvent({type: 'afterrender', detail: args});
+    };
   }
 
   /* override */
@@ -137,15 +146,11 @@ export default class Mesh3d extends Group3d {
       this.setBody(mesh);
       let listeners = this.getListeners('beforerender');
       if(listeners.length) {
-        mesh.onBeforeRender((args) => {
-          this.dispatchEvent({type: 'beforerender', detail: args});
-        });
+        mesh.onBeforeRender(this[_beforeRender]);
       }
       listeners = this.getListeners('afterrender');
       if(listeners.length) {
-        mesh.onAfterRender((args) => {
-          this.dispatchEvent({type: 'afterrender', detail: args});
-        });
+        mesh.onAfterRender(this[_afterRender]);
       }
     }
   }
@@ -156,16 +161,12 @@ export default class Mesh3d extends Group3d {
     if(this.body && type === 'beforerender') {
       const listeners = this.getListeners('beforerender');
       if(listeners.length === 1) {
-        this.body.onBeforeRender((args) => {
-          this.dispatchEvent({type: 'beforerender', detail: args});
-        });
+        this.body.onBeforeRender(this[_beforeRender]);
       }
     } else if(this.body && type === 'afterrender') {
       const listeners = this.getListeners('afterrender');
       if(listeners.length === 1) {
-        this.body.onAfterRender((args) => {
-          this.dispatchEvent({type: 'afterrender', detail: args});
-        });
+        this.body.onAfterRender(this[_afterRender]);
       }
     }
     return this;
@@ -173,11 +174,13 @@ export default class Mesh3d extends Group3d {
 
   /* override */
   removeAllListeners(type, options = {}) {
-    super.removeEventListener(type, options);
+    super.removeAllListeners(type, options);
     if(this.body && type === 'beforerender') {
-      this.body.beforeRenderCallbacks.length = 0;
+      const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
+      if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
     } else if(this.body && type === 'afterrender') {
-      this.body.afterRenderCallbacks.length = 0;
+      const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
+      if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
     }
     return this;
   }
@@ -187,10 +190,16 @@ export default class Mesh3d extends Group3d {
     super.removeEventListener(type, listener, options);
     if(this.body && type === 'beforerender') {
       const listeners = this.getListeners('beforerender');
-      if(listeners.length === 0) this.body.beforeRenderCallbacks.length = 0;
+      if(listeners.length === 0) {
+        const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
+        if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
+      }
     } else if(this.body && type === 'afterrender') {
       const listeners = this.getListeners('afterrender');
-      if(listeners.length === 0) this.body.afterRenderCallbacks.length = 0;
+      if(listeners.length === 0) {
+        const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
+        if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
+      }
     }
     return this;
   }
