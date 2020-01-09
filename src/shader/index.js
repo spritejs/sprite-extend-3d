@@ -1,3 +1,6 @@
+import normalFrag from './normal.frag';
+import normalVert from './normal.vert';
+
 import geometryFrag from './geometry.frag';
 import geometryVert from './geometry.vert';
 
@@ -15,6 +18,11 @@ import geometryShadowVert from './geometry_with_shadow.vert';
 
 import geometryTextureShadowFrag from './geometry_with_texture_and_shadow.frag';
 import geometryTextureShadowVert from './geometry_with_texture_and_shadow.vert';
+
+export const NORMAL = {
+  vertex: normalVert,
+  fragment: normalFrag,
+};
 
 export const BASE_GEOMETRY = {
   vertex: geometryVert,

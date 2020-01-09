@@ -116,6 +116,10 @@ export default class Layer3D extends Layer {
     this.forceUpdate();
   }
 
+  traverse(callback) {
+    return this.root.traverse(callback);
+  }
+
   /* {vertex, fragment, uniforms = {}} */
   createProgram({attributes, texture, uniforms, ...options} = {}, {attributes: extraAttributes, uniforms: extraUniforms} = {}) {
     const gl = this.renderer.gl;

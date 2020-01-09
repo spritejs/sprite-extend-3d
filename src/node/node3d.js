@@ -6,6 +6,12 @@ const _body = Symbol('body');
 const changedAttrs = Symbol.for('spritejs_changedAttrs');
 const setAttribute = Symbol.for('spritejs_setAttribute');
 
+function updateRotation({attributes}, {rotation}) {
+  attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
+  attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
+  attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+}
+
 export default class Node3d extends Node {
   static Attr = Attr3d;
 
@@ -75,11 +81,7 @@ export default class Node3d extends Node {
         target = target.body.position;
       }
       body.lookAt(target, invert);
-      const rotation = body.rotation;
-      const attributes = this.attributes;
-      attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
-      attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
-      attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+      updateRotation(this, body);
       this.forceUpdate();
     }
   }
@@ -110,15 +112,10 @@ export default class Node3d extends Node {
     const body = this.body;
     if(body) {
       body.decompose();
-      const rotation = body.rotation;
-      const attributes = this.attributes;
-      attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
-      attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
-      attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+      updateRotation(this, body);
       this.forceUpdate();
     }
   }
-
 
   setBody(body, update = true) {
     const oldBody = this[_body];
@@ -149,22 +146,26 @@ export default class Node3d extends Node {
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
-    if(this.body) {
+    const body = this.body;
+    if(body) {
       if(key === 'x' || key === 'y' || key === 'z') {
-        this.body.position[key] = newValue;
+        body.position[key] = newValue;
       }
       if(key === 'rotateX' || key === 'rotateY' || key === 'rotateZ') {
         const value = newValue * Math.PI / 180;
-        this.body.rotation[key.toLowerCase().slice(-1)] = value;
+        body.rotation[key.toLowerCase().slice(-1)] = value;
       }
       if(key === 'scaleX' || key === 'scaleY' || key === 'scaleZ') {
-        this.body.scale[key.toLowerCase().slice(-1)] = newValue;
+        body.scale[key.toLowerCase().slice(-1)] = newValue;
       }
       if(key === 'raycast') {
-        this.body.geometry.raycast = newValue;
+        body.geometry.raycast = newValue;
       }
       if(key === 'display') {
-        this.body.visible = newValue !== 'none';
+        body.visible = newValue !== 'none';
+      }
+      if(key === 'rotateOrder') {
+        body.rotation.reorder(newValue);
       }
     }
   }

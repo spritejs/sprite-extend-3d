@@ -16,6 +16,7 @@ export default class Attr3d extends Attr {
       rotateY: 0,
       rotateZ: 0,
       /* rotate */
+      rotateOrder: 'YXZ',
       scaleX: 0,
       scaleY: 0,
       scaleZ: 0,
@@ -87,6 +88,14 @@ export default class Attr3d extends Attr {
     this.rotateX = value[0] || 0;
     this.rotateY = value[1] || 0;
     this.rotateZ = value[2] || 0;
+  }
+
+  get rotateOrder() {
+    return this[getAttribute]('rotateOrder');
+  }
+
+  set rotateOrder(value) {
+    this[setAttribute]('rotateOrder', value);
   }
 
   get scaleX() {

@@ -68,7 +68,7 @@
     `;
 
     const {Scene} = spritejs;
-    const {Mesh3d} = spritejs.ext3d;
+    const {Camera, Mesh3d, Cylinder, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -105,12 +105,61 @@
         tree.attributes.scale = 0.8 + Math.random() * 0.3;
       }
 
+      const cameraProgram = layer.createProgram({
+        ...shaders.NORMAL,
+        cullFace: null,
+      });
+
+      // const frustumTransform = new Group3d();
+
+      const cameraShape = new Cylinder(cameraProgram, {
+        radiusBottom: 0.2,
+        height: 0.7,
+        radialSegments: 4,
+        openEnded: true,
+        rotateOrder: 'XYZ',
+        rotateX: -90,
+        rotateY: 45,
+      });
+
+      function cameraPath(time, y) {
+        const x = 4 * Math.sin(time);
+        const z = 2 * Math.sin(time * 2);
+        return [x, y, z];
+      }
+
+      // Add camera used for demonstrating frustum culling
+      const frustumCamera = new Camera(layer.gl, {
+        fov: 65,
+        far: 10,
+      });
+      frustumCamera.append(cameraShape);
+      layer.append(frustumCamera);
+
+      layer.setOrbit();
+
       requestAnimationFrame(update);
       function update(t) {
         requestAnimationFrame(update);
 
+        frustumCamera.attributes.pos = cameraPath(t * 0.001, 2);
+        const target = cameraPath(t * 0.001 + 1, 1);
+        frustumCamera.lookAt(target);
+        frustumCamera.updateMatrixWorld();
+        frustumCamera.updateFrustum();
+
+        // Traverse all meshes in the scene
+        layer.traverse((node) => {
+          if(!node.body.draw) return;
+          if(node === cameraShape) return;
+
+          // perform the frustum test using the demo camera
+          node.attributes.display = frustumCamera.frustumIntersects(node) ? '' : 'none';
+        });
+
         layer.render();
       }
+      window.layer = layer;
     }());
   </script>
 </body>
