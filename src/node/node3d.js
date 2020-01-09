@@ -2,21 +2,12 @@ import {registerNode, Node} from 'spritejs';
 import Attr3d from '../attribute/attr3d';
 
 const _body = Symbol('body');
-const _rotation = Symbol('rotation');
-const _position = Symbol('position');
 
 const changedAttrs = Symbol.for('spritejs_changedAttrs');
+const setAttribute = Symbol.for('spritejs_setAttribute');
 
 export default class Node3d extends Node {
   static Attr = Attr3d;
-
-  get position() {
-    return this[_position];
-  }
-
-  get rotation() {
-    return this[_rotation];
-  }
 
   get body() {
     if(this[_body]) {
@@ -77,11 +68,64 @@ export default class Node3d extends Node {
     return null;
   }
 
+  lookAt(target, invert = false) {
+    const body = this.body;
+    if(body) {
+      if(target instanceof Node3d) {
+        target = target.body.position;
+      }
+      body.lookAt(target, invert);
+      const rotation = body.rotation;
+      const attributes = this.attributes;
+      attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
+      attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
+      attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+      this.forceUpdate();
+    }
+  }
+
+  updateMatrix() {
+    if(this.body) {
+      this.body.updateMatrix();
+      this.forceUpdate();
+    }
+  }
+
+  updateMatrixWorld(force = false) {
+    if(this.body) {
+      this.body.updateMatrixWorld();
+      this.forceUpdate();
+    }
+  }
+
+  traverse(callback) {
+    if(this.body) {
+      this.body.traverse((body) => {
+        if(body._node) callback(body._node);
+      });
+    }
+  }
+
+  decompose() {
+    const body = this.body;
+    if(body) {
+      body.decompose();
+      const rotation = body.rotation;
+      const attributes = this.attributes;
+      attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
+      attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
+      attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+      this.forceUpdate();
+    }
+  }
+
+
   setBody(body, update = true) {
     const oldBody = this[_body];
     this[_body] = body;
-    if(oldBody && oldBody.parent) {
+    if(oldBody) {
       oldBody.setParent(null);
+      delete oldBody._node;
     }
     if(this.parent && this.parent.body) {
       this[_body].setParent(this.parent.body);
