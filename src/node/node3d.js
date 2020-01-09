@@ -2,11 +2,66 @@ import {registerNode, Node} from 'spritejs';
 import Attr3d from '../attribute/attr3d';
 
 const _body = Symbol('body');
+const _rotation = Symbol('rotation');
+const _position = Symbol('position');
 
 const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
 export default class Node3d extends Node {
   static Attr = Attr3d;
+
+  constructor(attrs = {}) {
+    super(attrs);
+    const attributes = this.attributes;
+    this[_rotation] = {
+      get x() {
+        return attributes.rotateX * Math.PI / 180;
+      },
+      set x(value) {
+        attributes.rotateX = value * 180 / Math.PI;
+      },
+      get y() {
+        return attributes.rotateY * Math.PI / 180;
+      },
+      set y(value) {
+        attributes.rotateY = value * 180 / Math.PI;
+      },
+      get z() {
+        return attributes.rotateZ * Math.PI / 180;
+      },
+      set z(value) {
+        attributes.rotateZ = value * 180 / Math.PI;
+      },
+    };
+    this[_position] = {
+      get x() {
+        return attributes.x;
+      },
+      set x(value) {
+        attributes.x = value;
+      },
+      get y() {
+        return attributes.y;
+      },
+      set y(value) {
+        attributes.y = value;
+      },
+      get z() {
+        return attributes.z;
+      },
+      set z(value) {
+        attributes.z = value;
+      },
+    };
+  }
+
+  get position() {
+    return this[_position];
+  }
+
+  get rotation() {
+    return this[_rotation];
+  }
 
   get body() {
     if(this[_body]) {

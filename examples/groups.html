@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+
+    const vertex = /* glsl */ `
+        precision highp float;
+        precision highp int;
+
+        attribute vec3 position;
+        attribute vec3 normal;
+
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        uniform mat3 normalMatrix;
+
+        varying vec3 vNormal;
+        varying vec4 vMVPos;
+
+        void main() {
+            vNormal = normalize(normalMatrix * normal);
+            
+            vMVPos = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * vMVPos;
+        }
+    `;
+
+    const fragment = /* glsl */ `
+        precision highp float;
+        precision highp int;
+
+        varying vec3 vNormal;
+        varying vec4 vMVPos;
+
+        void main() {
+            vec3 normal = normalize(vNormal);
+            float lighting = dot(normal, normalize(vec3(-0.3, 0.8, 0.6)));
+            vec3 color = vec3(1.0, 0.5, 0.2) * (1.0 - 0.5 * lighting) + vMVPos.xzy * 0.1;
+            
+            float dist = length(vMVPos);
+            float fog = smoothstep(4.0, 10.0, dist);
+            color = mix(color, vec3(1.0), fog);
+            
+            gl_FragColor.rgb = color;
+            gl_FragColor.a = 1.0;
+        }
+    `;
+
+    const {Scene} = spritejs;
+    const {Sphere, Cube} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      autoRender: false,
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [1, 7, 0];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      vertex,
+      fragment,
+    });
+
+    const sphere = new Sphere(program, {
+      radius: 0.15,
+      colors: 'rgb(255, 128, 26)',
+    });
+    sphere.speed = -0.5;
+    layer.append(sphere);
+
+    const cube = new Cube(program, {width: 0.3, height: 0.3, depth: 0.3});
+    const shapes = [sphere];
+
+    // Create random array of shapes
+    for(let i = 0; i < 50; i++) {
+      const mesh = Math.random() > 0.5 ? cube : sphere;
+      const shape = mesh.cloneNode();
+      shape.attr({
+        scale: Math.random() * 0.3 + 0.7,
+        x: (Math.random() - 0.5) * 3,
+        y: (Math.random() - 0.5) * 3,
+        z: (Math.random() - 0.5) * 3,
+      });
+      shape.speed = (Math.random() - 0.5) * 0.7;
+
+      // Attach them to a random, previously created shape
+      const parent = shapes[Math.floor(Math.random() * shapes.length)];
+      parent.append(shape);
+      shapes.push(shape);
+    }
+    requestAnimationFrame(update);
+    function update(t) {
+      requestAnimationFrame(update);
+
+      shapes.forEach((shape) => {
+        shape.attributes.rotateY += 2 * shape.speed;
+        shape.attributes.rotateX += 1.5 * shape.speed;
+        shape.attributes.rotateZ += shape.speed;
+      });
+
+      layer.render();
+    }
+  </script>
+</body>
+</html>

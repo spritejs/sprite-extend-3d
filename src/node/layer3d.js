@@ -1,4 +1,4 @@
-import {Layer, registerNode, ENV, Block} from 'spritejs';
+import {Layer, registerNode, ENV, Block, Color} from 'spritejs';
 import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast} from 'ogl';
 import Shadow from '../helper/shadow';
 import Camera from './camera';
@@ -43,8 +43,8 @@ export default class Layer3D extends Layer {
     this[_utime] = [];
     this[_directionalLight] = options.directionalLight || [1, 0, 0, 0];
     this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
-    this[_pointLightColor] = options.pointLightColor || [0, 0, 0, 0];
-    this[_ambientColor] = options.ambientColor || [1, 1, 1, 0];
+    this[_pointLightColor] = new Color(options.pointLightColor || [0, 0, 0, 0]);
+    this[_ambientColor] = new Color(options.ambientColor || [1, 1, 1, 0]);
 
     const gl = this.renderer.gl;
     gl.clearColor(...this[_ambientColor]);
@@ -111,8 +111,8 @@ export default class Layer3D extends Layer {
   setLights(program, {directionalLight, pointLightPosition, pointLightColor, ambientColor}) {
     program.uniforms.directionalLight = {value: directionalLight};
     program.uniforms.pointLightPosition = {value: pointLightPosition};
-    program.uniforms.pointLightColor = {value: pointLightColor};
-    program.uniforms.ambientColor = {value: ambientColor};
+    program.uniforms.pointLightColor = {value: new Color(pointLightColor)};
+    program.uniforms.ambientColor = {value: new Color(ambientColor)};
     this.forceUpdate();
   }
 
