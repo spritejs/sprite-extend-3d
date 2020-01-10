@@ -20,6 +20,8 @@ const _pointLightPosition = Symbol('pointLightPosition');
 const _pointLightColor = Symbol('pointLightColor');
 const _ambientColor = Symbol('ambientColor');
 
+const _targets = Symbol('targets');
+
 export default class Layer3D extends Layer {
   constructor(options = {}) {
     if(options.contextType === '2d') {
@@ -41,6 +43,7 @@ export default class Layer3D extends Layer {
     super(options);
 
     this[_utime] = [];
+    this[_targets] = [];
     this[_directionalLight] = options.directionalLight || [1, 0, 0, 0];
     this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
     this[_pointLightColor] = new Color(options.pointLightColor || [0, 0, 0, 0]);
@@ -276,9 +279,27 @@ export default class Layer3D extends Layer {
     return Block.prototype.dispatchPointerEvent.call(this, event);
   }
 
+  bindTarget(target) {
+    this[_targets].push(target);
+  }
+
+  unbindTarget(target) {
+    const idx = this[_targets].indexOf(target);
+    if(idx >= 0) {
+      this[_targets].splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
   /* override */
   render() {
     this.dispatchEvent({type: 'beforerender', detail: {camera: this.camera.body}});
+    if(this[_targets].length) {
+      this[_targets].forEach((target) => {
+        target.renderBy(this);
+      });
+    }
     if(this[_controls]) {
       this[_controls].update();
     }

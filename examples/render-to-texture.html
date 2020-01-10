@@ -74,6 +74,7 @@
       displayRatio: 2,
     });
     const layer = scene.layer3d('fglayer', {
+      autoRender: false,
       camera: {
         fov: 35,
       },
@@ -130,10 +131,26 @@
     target.addEventListener('afterrender', (e) => {
       layer.gl.clearColor(1, 1, 1, 0);
     });
-    target.renderBy(layer);
 
     const mesh2 = new Cube(targetProgram);
     layer.append(mesh2);
+
+    layer.bindTarget(target);
+
+    requestAnimationFrame(update);
+    function update() {
+      requestAnimationFrame(update);
+
+      mesh.attributes.rotateY -= 1.5;
+      mesh2.attributes.rotateY -= 0.9;
+      mesh2.attributes.rotateX -= 1;
+
+      // Add target property to render call
+      // target.renderBy(layer);
+
+      // Omit target to render to canvas
+      layer.render();
+    }
 
     // console.log(target.renderBy(layer.renderer));
   </script>
