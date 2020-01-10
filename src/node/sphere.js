@@ -6,11 +6,6 @@ import Geometry from './geometry';
 export default class _Sphere extends Geometry {
   static Attr = SphereAttr;
 
-  constructor(program, attrs = {}) {
-    super(program, attrs);
-    this.updateMesh();
-  }
-
   remesh() {
     const gl = this.program.gl;
     const {radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength} = this.attributes;

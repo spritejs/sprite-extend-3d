@@ -6,11 +6,6 @@ import CubeAttr from '../attribute/cube';
 export default class Cube extends Geometry {
   static Attr = CubeAttr;
 
-  constructor(program, attrs = {}) {
-    super(program, attrs);
-    this.updateMesh();
-  }
-
   remesh() {
     const gl = this.program.gl;
     const {width, height, depth, widthSegments, heightSegments, depthSegments} = this.attributes;

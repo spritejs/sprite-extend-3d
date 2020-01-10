@@ -6,11 +6,6 @@ import Geometry from './geometry';
 export default class _Plane extends Geometry {
   static Attr = PlaneAttr;
 
-  constructor(program, attrs = {}) {
-    super(program, attrs);
-    this.updateMesh();
-  }
-
   remesh() {
     const gl = this.program.gl;
     const {width, height, widthSegments, heightSegments} = this.attributes;

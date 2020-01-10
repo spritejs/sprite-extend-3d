@@ -79,8 +79,9 @@
     });
     
     const count = 3000;
+    const cubeModel = new Cube(program, {color: false}); // shared model
     for(let i = 0; i < count; ++i) {
-      const cube = new Cube(program);
+      const cube = cubeModel.cloneNode();
       cube.attributes.pos = [
         -100 + Math.random() * 200,
         -100 + Math.random() * 200,

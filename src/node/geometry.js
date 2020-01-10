@@ -21,26 +21,32 @@ function colorAttribute(node, geometry) {
   return {size: 4, data: color};
 }
 
+const changedAttrs = Symbol.for('spritejs_changedAttrs');
+
 export default class Geometry extends Mesh3d {
   static Attr = GeometryAttr;
 
-  constructor(program, attrs = {}) {
+  constructor(program, {color, ...attrs} = {}) {
     super(program, attrs);
     program.extraAttribute = program.extraAttribute || {};
-    if(!program.extraAttribute.color) program.extraAttribute.color = colorAttribute;
+    this.hasColorAttribute = color !== false;
+    if(this.hasColorAttribute && !program.extraAttribute.color) program.extraAttribute.color = colorAttribute;
+    if(!attrs.model) this.updateMesh();
+  }
+
+  cloneNode() {
+    const attrs = this.attributes[changedAttrs];
+    const cloned = new this.constructor(this.program, {color: this.hasColorAttribute, ...attrs, model: this.geometry});
+    return cloned;
+  }
+
+  remesh() {
+    /* for override */
   }
 
   /* override */
   updateMesh() {
     if(this.program) {
-      // if(!this.body) {
-      //   this.remesh();
-      // } else if(!this.prepareMeshUpdate && this.remesh) {
-      //   this.prepareMeshUpdate = Promise.resolve().then(() => {
-      //     delete this.prepareMeshUpdate;
-      //     this.remesh();
-      //   });
-      // }
       const oldMesh = this.mesh;
       this.remesh();
       const newMesh = this.mesh;
