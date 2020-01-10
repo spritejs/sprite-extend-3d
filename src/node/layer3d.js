@@ -29,8 +29,9 @@ export default class Layer3D extends Layer {
     }
 
     if(!options.Renderer) {
+      options = Object.assign({}, defaultOption, options);
       options.Renderer = function (canvas, opts) {
-        opts = Object.assign({}, defaultOption, opts);
+        opts = Object.assign({}, opts);
         const renderer = new Renderer({canvas, ...opts});
         // TODO: 支持粘连模式??
         renderer.globalTransformMatrix = [1, 0, 0, 1, 0, 0];

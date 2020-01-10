@@ -138,7 +138,7 @@ export default class Node3d extends Node {
     }
 
     body._node = this;
-    if(this.groupBody) {
+    if(this.groupBody && this.children && this.children.length > 0) {
       this.groupBody.setParent(body);
     }
   }
@@ -177,6 +177,9 @@ export default class Node3d extends Node {
       const parentBody = parent.groupBody || parent.body;
       if(parentBody && parentBody !== this.body) {
         this.body.setParent(parentBody);
+        if(parent.groupBody && parent.groupBody.parent == null) {
+          parent.groupBody.setParent(parent.body);
+        }
       }
     }
   }
@@ -186,6 +189,10 @@ export default class Node3d extends Node {
     super.disconnect(parent, zOrder);
     if(this.body) {
       this.body.setParent(null);
+      const parentBody = parent.groupBody;
+      if(parentBody && parentBody.children && parentBody.children.length <= 0) {
+        parentBody.setParent(null);
+      }
     }
   }
 }
