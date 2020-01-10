@@ -26,17 +26,16 @@ const changedAttrs = Symbol.for('spritejs_changedAttrs');
 export default class Geometry extends Mesh3d {
   static Attr = GeometryAttr;
 
-  constructor(program, {color, ...attrs} = {}) {
+  constructor(program, attrs = {}) {
     super(program, attrs);
     program.extraAttribute = program.extraAttribute || {};
-    this.hasColorAttribute = color !== false;
-    if(this.hasColorAttribute && !program.extraAttribute.color) program.extraAttribute.color = colorAttribute;
+    if(program.attributeLocations.has('color') && !program.extraAttribute.color) program.extraAttribute.color = colorAttribute;
     if(!attrs.model) this.updateMesh();
   }
 
   cloneNode() {
     const attrs = this.attributes[changedAttrs];
-    const cloned = new this.constructor(this.program, {color: this.hasColorAttribute, ...attrs, model: this.geometry});
+    const cloned = new this.constructor(this.program, {...attrs, model: this.geometry});
     return cloned;
   }
 
