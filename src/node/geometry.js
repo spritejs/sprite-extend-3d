@@ -3,9 +3,11 @@ import GeometryAttr from '../attribute/geometry';
 import Mesh3d from './mesh3d';
 
 function colorAttribute(node, geometry) {
+  const updateColor = geometry.attributes.color;
+
   const positions = geometry.attributes.position.data;
   const len = positions.length / 3;
-  const color = new Float32Array(4 * len);
+  const color = updateColor ? updateColor.data : new Float32Array(4 * len);
   const colors = node.attributes.colors;
   const colorLen = colors.length / 4;
   const colorDivisor = node.attributes.colorDivisor;
@@ -18,6 +20,9 @@ function colorAttribute(node, geometry) {
     color[4 * i + 2] = colors[idx * 4 + 2];
     color[4 * i + 3] = colors[idx * 4 + 3];
   }
+
+  if(updateColor) updateColor.needsUpdate = true;
+
   return {size: 4, data: color};
 }
 
@@ -58,7 +63,11 @@ export default class Geometry extends Mesh3d {
     super.onPropertyChange(key, newValue, oldValue);
     if(key === 'colors' || key === 'colorDivisor') {
       if(newValue !== oldValue) {
-        this.updateMesh();
+        const program = this.program;
+        if(program.extraAttribute.color) {
+          const geometry = this.geometry;
+          colorAttribute(this, geometry);
+        }
       }
     }
   }
