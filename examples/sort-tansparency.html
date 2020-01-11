@@ -88,7 +88,7 @@
     });
 
     layer.camera.attributes.pos = [0, 0, 7];
-    layer.camera.attributes.rotateZ = -0.3;
+    layer.camera.attributes.rotateZ = -18;
 
     (async function () {
       const texture = await layer.createTexture('https://p2.ssl.qhimg.com/t0113945ca7cafb3c7c.jpg');
@@ -141,7 +141,7 @@
           if(mesh.attributes.y < -3) mesh.attributes.y += 6;
         });
 
-        layer.root.attributes.rotationY += 0.015;
+        layer.root.attributes.rotateY += 0.9;
         layer.render();
       }
     }());

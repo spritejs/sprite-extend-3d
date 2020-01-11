@@ -8,7 +8,7 @@ import Cube from './node/cube';
 import Plane from './node/plane';
 import Cylinder from './node/cylinder';
 import Group3d from './node/group3d';
-import RenderTarget from  './node/render-target';
+import RenderTarget from './node/render-target';
 import * as shaders from './shader';
 
 Scene.prototype.layer3d = function (id = 'default3d', options = {}) {

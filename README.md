@@ -101,6 +101,7 @@ For more details, see [here](https://spritejs.org/#/zh-cn/guide/3d).
 - [x] RenderTarget
 - [ ] GPGPU
 - [ ] Polyline 3D
+- [ ] Flowmap
 - [ ] Cubic Bezier Curve 3D
 - [ ] Documentation
 - [ ] More examples
