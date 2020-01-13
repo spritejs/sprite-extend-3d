@@ -1,5 +1,5 @@
 import {Layer, registerNode, ENV, Block, Color} from 'spritejs';
-import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast} from 'ogl';
+import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Post} from 'ogl';
 import Shadow from '../helper/shadow';
 import Camera from './camera';
 import Group3d from './group3d';
@@ -21,6 +21,7 @@ const _pointLightColor = Symbol('pointLightColor');
 const _ambientColor = Symbol('ambientColor');
 
 const _targets = Symbol('targets');
+const _post = Symbol('post');
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
@@ -53,6 +54,11 @@ export default class Layer3D extends Layer {
     const gl = this.renderer.gl;
     gl.clearColor(...this[_ambientColor]);
 
+    if(options.post) {
+      if(typeof options.post === 'boolean') options.post = {};
+      this[_post] = new Post(gl, options.post);
+    }
+
     const cameraOptions = options.camera || {};
     const camera = new Camera(gl, cameraOptions);
     camera.connect(this, 0);
@@ -69,6 +75,10 @@ export default class Layer3D extends Layer {
     return this.renderer.gl;
   }
 
+  get post() {
+    return this[_post];
+  }
+
   get meshes() {
     const children = this.children;
     const ret = [];
@@ -77,6 +87,14 @@ export default class Layer3D extends Layer {
       if(child.meshes && child.meshes.length) ret.push(...child.meshes);
     }
     return ret;
+  }
+
+  get autoClear() {
+    return this.renderer.autoClear;
+  }
+
+  set autoClear(value) {
+    this.renderer.autoClear = value;
   }
 
   /* override */
@@ -101,6 +119,9 @@ export default class Layer3D extends Layer {
       // camera.body.perspective({
       //   aspect: width / height,
       // });
+    }
+    if(this[_post]) {
+      this[_post].resize();
     }
   }
 
@@ -330,11 +351,18 @@ export default class Layer3D extends Layer {
     if(this[_shadow]) {
       this[_shadow].render({scene: this.root.body});
     }
-    this.renderer.render({scene: this.root.body, camera: this.camera.body});
+    if(this[_post]) {
+      if(this.postRender) {
+        this.postRender(this.renderer);
+      }
+      this[_post].render({scene: this.root.body, camera: this.camera.body});
+    } else {
+      this.renderer.render({scene: this.root.body, camera: this.camera.body});
+    }
     this._prepareRenderFinished();
     if(this[_utime].length) {
       this[_utime].forEach((program) => {
-        program.uniforms.uTime = {value: program.timeline.currentTime * 0.001};
+        program.uniforms.uTime.value = program.timeline.currentTime * 0.001;
       });
       this.forceUpdate();
     }

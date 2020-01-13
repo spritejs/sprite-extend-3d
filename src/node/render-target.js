@@ -39,7 +39,7 @@ export default class _RenderTarget extends Group3d {
       format,
       internalFormat,
       unpackAlignment,
-      premultiplyAlpha} = {});
+      premultiplyAlpha});
 
     cameraOptions = cameraOptions || {};
     const camera = new Camera(gl, cameraOptions);
