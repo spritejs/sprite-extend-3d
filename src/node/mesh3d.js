@@ -33,9 +33,7 @@ export default class Mesh3d extends Group3d {
       mode = gl[mode];
     }
     this[_mode] = mode;
-    if(program) {
-      this.setProgram(program);
-    }
+    this.setProgram(program);
     if(model) {
       if(typeof model.then === 'function') {
         this[_model] = model.then((res) => {

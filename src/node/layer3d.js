@@ -220,6 +220,11 @@ export default class Layer3D extends Layer {
     return res;
   }
 
+  async loadShader({vertex, fragment}) {
+    const data = await Promise.all([(await fetch(vertex)).text(), (await fetch(fragment)).text()]);
+    return {vertex: data[0], fragment: data[1]};
+  }
+
   async loadModel(src) {
     const data = await (await fetch(src)).json();
     return data;
