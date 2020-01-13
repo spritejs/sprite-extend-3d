@@ -37,7 +37,13 @@ export default class Mesh3d extends Group3d {
       this.setProgram(program);
     }
     if(model) {
-      this.setGeometry(model);
+      if(typeof model.then === 'function') {
+        this[_model] = model.then((res) => {
+          this.setGeometry(res);
+        });
+      } else {
+        this.setGeometry(model);
+      }
     }
     this[_beforeRender] = (args) => {
       this.dispatchEvent({type: 'beforerender', detail: args});
@@ -49,16 +55,17 @@ export default class Mesh3d extends Group3d {
 
   /* override */
   cloneNode() {
-    const cloned = new this.constructor(this[_program]);
     const attrs = this.attributes[changedAttrs];
-    cloned[_mode] = this[_mode];
-    cloned.setGeometry(this[_model]);
-    cloned.attr(attrs);
+    const cloned = new this.constructor(this[_program], {...attrs, mode: this[_mode], model: this[_geometry]});
     return cloned;
   }
 
   get mode() {
     return this[_mode];
+  }
+
+  get model() {
+    return this[_model];
   }
 
   get program() {
@@ -70,11 +77,8 @@ export default class Mesh3d extends Group3d {
   }
 
   get meshes() {
-    const meshes = this.body ? [this.body] : [];
-    const childMeshes = super.meshes;
-    if(childMeshes && childMeshes.length) {
-      meshes.push(...childMeshes);
-    }
+    const meshes = super.meshes;
+    if(this.body && this.body.geometry) meshes.unshift(this.body);
     return meshes;
   }
 

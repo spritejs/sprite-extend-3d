@@ -2,7 +2,8 @@ import {Shadow} from 'ogl';
 
 // https://github.com/oframe/ogl/blob/master/src/extras/Shadow.js
 export default class _Shadow extends Shadow {
-  add(node, opts = {}) {
+  async add(node, opts = {}) {
+    await node.model;
     opts.mesh = node.body;
     node.addEventListener('updatemesh', (evt) => {
       const oldMesh = evt.detail.oldMesh;

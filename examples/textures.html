@@ -52,7 +52,6 @@
         precision highp float;
         precision highp int;
 
-        uniform float uTime;
         uniform sampler2D tMap;
 
         varying vec2 vUv;
@@ -64,44 +63,87 @@
             
             vec3 light = normalize(vec3(0.5, 1.0, -0.3));
             float shading = dot(normal, light) * 0.15;
+            
             gl_FragColor.rgb = tex + shading;
             gl_FragColor.a = 1.0;
         }
     `;
 
     const {Scene} = spritejs;
-    const {Mesh3d} = spritejs.ext3d;
+    const {Mesh3d, Cube} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
-      // width: 600,
-      // height: 600,
       displayRatio: 2,
-      // mode: 'stickyHeight',
     });
     const layer = scene.layer3d('fglayer', {
+      autoRender: false,
       camera: {
-        fov: 35,
+        fov: 45,
       },
     });
 
-    layer.camera.attributes.pos = [8, 5, 15];
-    layer.camera.lookAt([0, 1.5, 0]);
+    layer.camera.attributes.pos = [3, 1.5, 4];
+    layer.camera.lookAt([1, 0.2, 0]);
 
-    const texture = layer.createTexture('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');
+    const texture = layer.createTexture('https://p5.ssl.qhimg.com/t0110e2451e92de6193.jpg');
     const program = layer.createProgram({
       vertex,
       fragment,
       texture,
     });
-    const model = layer.loadModel('https://s5.ssl.qhres.com/static/1eb3e9b91a296abd.json');
-    const fox = new Mesh3d(program, {model});
-    layer.append(fox);
-    layer.setOrbit();
-    layer.setRaycast();
-    fox.addEventListener('click', (evt) => {
-      console.log(evt);
+    const model = layer.loadModel('https://s5.ssl.qhres.com/static/f545f86e6da07b9d.json');
+    const mesh = new Mesh3d(program, {model});
+    layer.append(mesh);
+
+    const videoTexture = layer.createTexture({
+      generateMipmaps: false,
+      width: 1024,
+      height: 512,
     });
+
+    // Create video with attributes that let it autoplay
+    // Check update loop to see when video is attached to texture
+    const video = document.createElement('video');
+    video.src = 'assets/laputa.mp4';
+
+    // Disclaimer: video autoplay is a confusing, constantly-changing browser feature.
+    // The best approach is to never assume that it will work, and therefore prepare for a fallback.
+    // Tested on mac: Chrome, Safari, Firefox; android: chrome
+    video.loop = true;
+    video.muted = true;
+    video.play();
+
+    const videoProgram = layer.createProgram({
+      vertex,
+      fragment,
+      texture: videoTexture,
+      cullFace: null,
+    });
+
+    const videoMesh = new Cube(videoProgram, {
+      width: 1.78,
+      height: 1,
+      depth: 1.78,
+    });
+    videoMesh.attributes.pos = [0, 0.5, -4];
+    videoMesh.attributes.scale = 1.5;
+    layer.append(videoMesh);
+
+    requestAnimationFrame(update);
+    function update(t) {
+      requestAnimationFrame(update);
+
+      // Attach video and/or update texture when video is ready
+      if(video.readyState >= video.HAVE_ENOUGH_DATA) {
+        if(!videoTexture.image) videoTexture.image = video;
+        videoTexture.needsUpdate = true;
+      }
+
+      if(mesh) mesh.attributes.rotateY -= 0.3;
+      videoMesh.attributes.rotateY += 0.2;
+      layer.render();
+    }
   </script>
 </body>
 </html>
