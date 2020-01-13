@@ -215,6 +215,11 @@ export default class Layer3D extends Layer {
     return image;
   }
 
+  async loadImages(imgs) {
+    const res = await Promise.all(imgs.map(src => ENV.loadImage(src, {useImageBitmap: false})));
+    return res;
+  }
+
   async loadModel(src) {
     const data = await (await fetch(src)).json();
     return data;
@@ -223,18 +228,31 @@ export default class Layer3D extends Layer {
   createTexture(opts) {
     const gl = this.renderer.gl;
     let src;
-    if(typeof opts === 'string') {
+
+    function isImage(opts) {
+      return typeof opts === 'string' || Array.isArray(opts) && typeof opts[0] === 'string';
+    }
+
+    if(isImage(opts)) {
       src = opts;
       opts = {};
-    }
-    if(typeof opts.image === 'string') {
+    } else if(isImage(opts.image)) {
       src = opts.image;
       opts = {...opts};
       delete opts.image;
+    } else if(Array.isArray(opts)) {
+      opts = {image: opts};
     }
+
     const texture = new Texture(gl, opts);
     if(src) {
-      this.loadImage(src).then((res) => {
+      let task;
+      if(Array.isArray(src)) {
+        task = this.loadImages(src);
+      } else {
+        task = this.loadImage(src);
+      }
+      task.then((res) => {
         texture.image = res;
         this.forceUpdate();
       });

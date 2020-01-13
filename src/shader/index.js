@@ -7,6 +7,9 @@ import geometryVert from './geometry.vert';
 import textureFrag from './texture.frag';
 import textureVert from './texture.vert';
 
+import textureCubeFrag from './texture_cube.frag';
+import textureCubeVert from './texture_cube.vert';
+
 import textureShadowFrag from './texture_with_shadow.frag';
 import textureShadowVert from './texture_with_shadow.vert';
 
@@ -32,6 +35,11 @@ export const BASE_GEOMETRY = {
 export const BASE_TEXTURE = {
   vertex: textureVert,
   fragment: textureFrag,
+};
+
+export const TEXTURE_CUBE = {
+  vertex: textureCubeVert,
+  fragment: textureCubeFrag,
 };
 
 export const TEXTURE_WITH_SHADOW = {

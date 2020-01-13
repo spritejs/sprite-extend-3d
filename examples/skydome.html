@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="Info">Skydome. Image credit <a href="https://www.flickr.com/photos/charlesashaw/6264765128" target="_blank">charlesashaw</a>.</div>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Sphere, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 45,
+      },
+    });
+
+    layer.camera.attributes.pos = [0, 0, 8];
+    const texture = layer.createTexture('https://p5.ssl.qhimg.com/t01e4a8428b9cc12bca.jpg');
+
+    const program = layer.createProgram({
+      ...shaders.GEOMETRY_WITH_TEXTURE,
+      texture,
+      // Need inside of sphere to be visible
+      cullFace: null,
+    });
+
+    const sphere = new Sphere(program, {radius: 1, widthSegments: 64});
+    layer.append(sphere);
+
+    const skyBox = sphere.cloneNode();
+    skyBox.attributes.scale = 10;
+    layer.append(skyBox);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="Info">Cube Map. Texture by <a href="http://www.humus.name" target="_blank">Humus</a></div>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Cube, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 45,
+      },
+    });
+
+    layer.camera.attributes.pos = [-2, 1, -3];
+
+    const gl = layer.gl;
+
+    const boxImages = [
+      './assets/cube/posx.jpg',
+      './assets/cube/negx.jpg',
+      './assets/cube/posy.jpg',
+      './assets/cube/negy.jpg',
+      './assets/cube/posz.jpg',
+      './assets/cube/negz.jpg',
+    ];
+
+    const texture = layer.createTexture({
+      target: gl.TEXTURE_CUBE_MAP,
+      image: boxImages,
+    });
+
+    const program = layer.createProgram({
+      ...shaders.TEXTURE_CUBE,
+      texture,
+      cullFace: null,
+    });
+
+    const cube = new Cube(program);
+    layer.append(cube);
+
+    const skybox = cube.cloneNode();
+    skybox.attributes.scale = 20;
+    layer.append(skybox);
+
+    cube.animate([
+      {rotateY: 0},
+      {rotateY: 360},
+    ], {
+      duration: 20000,
+      iterations: Infinity,
+    });
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>
