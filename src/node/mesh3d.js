@@ -1,6 +1,7 @@
 import {registerNode} from 'spritejs';
 import {Program, Mesh, Geometry} from 'ogl';
 import Group3d from './group3d';
+import Mesh3dAttr from '../attribute/mesh3d';
 
 const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
@@ -12,7 +13,33 @@ const _mode = Symbol('mode');
 const _beforeRender = Symbol('beforeRender');
 const _afterRender = Symbol('afterRender');
 
+function colorAttribute(node, geometry) {
+  const updateColor = geometry.attributes.color;
+
+  const positions = geometry.attributes.position.data;
+  const len = positions.length / 3;
+  const color = updateColor ? updateColor.data : new Float32Array(4 * len);
+  const colors = node.attributes.colors;
+  const colorLen = colors.length / 4;
+  const colorDivisor = node.attributes.colorDivisor;
+
+  for(let i = 0; i < len; i++) {
+    // const color = colors
+    const idx = Math.floor(i / colorDivisor) % colorLen;
+    color[4 * i] = colors[idx * 4];
+    color[4 * i + 1] = colors[idx * 4 + 1];
+    color[4 * i + 2] = colors[idx * 4 + 2];
+    color[4 * i + 3] = colors[idx * 4 + 3];
+  }
+
+  if(updateColor) updateColor.needsUpdate = true;
+
+  return {size: 4, data: color};
+}
+
 export default class Mesh3d extends Group3d {
+  static Attr = Mesh3dAttr;
+
   constructor(program, {model, ...attrs} = {}) {
     if(program && !(program instanceof Program)) {
       attrs = program;
@@ -49,6 +76,14 @@ export default class Mesh3d extends Group3d {
     this[_afterRender] = (args) => {
       this.dispatchEvent({type: 'afterrender', detail: args});
     };
+
+    program.extraAttribute = program.extraAttribute || {};
+    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
+      program.extraAttribute.color = colorAttribute;
+    }
+    if(!model && this.remesh) {
+      this.updateMesh();
+    }
   }
 
   /* override */
@@ -204,6 +239,34 @@ export default class Mesh3d extends Group3d {
       }
     }
     return this;
+  }
+
+  /* remesh() {
+    for override
+  } */
+
+  /* override */
+  updateMesh() {
+    if(this.program && this.remesh) {
+      const oldMesh = this.mesh;
+      this.remesh();
+      const newMesh = this.mesh;
+      this.dispatchEvent({type: 'updatemesh', detail: {oldMesh, newMesh}});
+    }
+  }
+
+  /* override */
+  onPropertyChange(key, newValue, oldValue) {
+    super.onPropertyChange(key, newValue, oldValue);
+    if(key === 'colors' || key === 'colorDivisor') {
+      if(newValue !== oldValue) {
+        const program = this.program;
+        if(program && program.extraAttribute.color) {
+          const geometry = this.geometry;
+          colorAttribute(this, geometry);
+        }
+      }
+    }
   }
 }
 

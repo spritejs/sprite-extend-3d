@@ -7,7 +7,7 @@ const getAttribute = Symbol.for('spritejs_getAttribute');
 const setDefault = Symbol.for('spritejs_setAttributeDefault');
 const declareAlias = Symbol.for('spritejs_declareAlias');
 
-export default class Attr3d extends Attr {
+export default class Node3dAttr extends Attr {
   constructor(subject) {
     super(subject);
     this[setDefault]({

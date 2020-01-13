@@ -1,9 +1,9 @@
 import {registerNode} from 'spritejs';
 import {Cylinder} from 'ogl';
 import CylinderAttr from '../attribute/cylinder';
-import Geometry from './geometry';
+import Mesh3d from './mesh3d';
 
-export default class _Cylinder extends Geometry {
+export default class _Cylinder extends Mesh3d {
   static Attr = CylinderAttr;
 
   remesh() {

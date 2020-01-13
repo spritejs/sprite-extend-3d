@@ -1,9 +1,9 @@
 import {registerNode} from 'spritejs';
 import {Box} from 'ogl';
-import Geometry from './geometry';
+import Mesh3d from './mesh3d';
 import CubeAttr from '../attribute/cube';
 
-export default class Cube extends Geometry {
+export default class Cube extends Mesh3d {
   static Attr = CubeAttr;
 
   remesh() {

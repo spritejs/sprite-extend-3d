@@ -1,9 +1,9 @@
 import {registerNode} from 'spritejs';
 import {Sphere} from 'ogl';
 import SphereAttr from '../attribute/sphere';
-import Geometry from './geometry';
+import Mesh3d from './mesh3d';
 
-export default class _Sphere extends Geometry {
+export default class _Sphere extends Mesh3d {
   static Attr = SphereAttr;
 
   remesh() {

@@ -1,5 +1,5 @@
 import {registerNode, Node} from 'spritejs';
-import Attr3d from '../attribute/attr3d';
+import Node3dAttr from '../attribute/node3d';
 
 const _body = Symbol('body');
 
@@ -13,7 +13,7 @@ function updateRotation({attributes}, {rotation}) {
 }
 
 export default class Node3d extends Node {
-  static Attr = Attr3d;
+  static Attr = Node3dAttr;
 
   get body() {
     if(this[_body]) {

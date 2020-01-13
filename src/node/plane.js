@@ -1,9 +1,9 @@
 import {registerNode} from 'spritejs';
 import {Plane} from 'ogl';
 import PlaneAttr from '../attribute/plane';
-import Geometry from './geometry';
+import Mesh3d from './mesh3d';
 
-export default class _Plane extends Geometry {
+export default class _Plane extends Mesh3d {
   static Attr = PlaneAttr;
 
   remesh() {

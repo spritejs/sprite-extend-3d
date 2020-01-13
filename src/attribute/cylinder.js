@@ -1,10 +1,10 @@
-import GeometryAttr from './geometry';
+import Mesh3dAttr from './mesh3d';
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
 const setDefault = Symbol.for('spritejs_setAttributeDefault');
 
-export default class CylinderAttr extends GeometryAttr {
+export default class CylinderAttr extends Mesh3dAttr {
   constructor(subject) {
     super(subject);
     this[setDefault]({
