@@ -18,6 +18,7 @@ function colorAttribute(node, geometry) {
 
   const positions = geometry.attributes.position.data;
   const len = positions.length / 3;
+
   const color = updateColor ? updateColor.data : new Float32Array(4 * len);
   const colors = node.attributes.colors;
   const colorLen = colors.length / 4;
@@ -61,6 +62,12 @@ export default class Mesh3d extends Group3d {
     }
     this[_mode] = mode;
     this.setProgram(program);
+
+    program.extraAttribute = program.extraAttribute || {};
+    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
+      program.extraAttribute.color = colorAttribute;
+    }
+
     if(model) {
       if(typeof model.then === 'function') {
         this[_model] = model.then((res) => {
@@ -77,10 +84,6 @@ export default class Mesh3d extends Group3d {
       this.dispatchEvent({type: 'afterrender', detail: args});
     };
 
-    program.extraAttribute = program.extraAttribute || {};
-    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
-      program.extraAttribute.color = colorAttribute;
-    }
     if(!model && this.remesh) {
       this.updateMesh();
     }
@@ -143,11 +146,20 @@ export default class Mesh3d extends Group3d {
     if(model instanceof Geometry) {
       geometry = model;
     } else {
-      const {position, uv, normal, index, ...others} = model;
+      let {position, uv, normal, index, ...others} = model;
       const geometryData = {};
       if(position) geometryData.position = parseData(position);
       if(uv) geometryData.uv = parseData(uv, 2);
-      if(normal) geometryData.normal = parseData(normal);
+      if(!normal) {
+        const len = position.length;
+        normal = new Float32Array(len);
+        for(let i = 0; i < len; i += 3) {
+          normal.set([-1, 0, 0], i);
+        }
+        geometryData.normal = {size: 3, data: normal};
+      } else {
+        geometryData.normal = parseData(normal);
+      }
       if(index) {
         let data = index.data || index;
         if(Array.isArray(data)) data = new Uint16Array(data);
