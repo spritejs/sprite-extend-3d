@@ -49,7 +49,7 @@ export default class Mesh3d extends Group3d {
       throw new Error('No program specified!');
     }
     const gl = program.gl;
-    let mode = attrs.mode || gl.TRIANGLES;
+    let mode = attrs.mode != null ? attrs.mode : gl.TRIANGLES;
     if(attrs.mode) {
       attrs = {...attrs};
       delete attrs.mode;
