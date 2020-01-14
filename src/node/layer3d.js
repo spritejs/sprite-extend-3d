@@ -23,6 +23,8 @@ const _ambientColor = Symbol('ambientColor');
 const _targets = Symbol('targets');
 const _post = Symbol('post');
 
+const _renderOptions = Symbol('renderOptions');
+
 export default class Layer3D extends Layer {
   constructor(options = {}) {
     if(options.contextType === '2d') {
@@ -50,6 +52,12 @@ export default class Layer3D extends Layer {
     this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
     this[_pointLightColor] = new Color(options.pointLightColor || [0, 0, 0, 0]);
     this[_ambientColor] = new Color(options.ambientColor || [1, 1, 1, 0]);
+    this[_renderOptions] = {
+      update: true,
+      sort: true,
+      frustumCull: true,
+      clear: undefined,
+    };
 
     const gl = this.renderer.gl;
     gl.clearColor(...this[_ambientColor]);
@@ -324,8 +332,8 @@ export default class Layer3D extends Layer {
     return Block.prototype.dispatchPointerEvent.call(this, event);
   }
 
-  bindTarget(target) {
-    this[_targets].push(target);
+  bindTarget(target, options = {}) {
+    this[_targets].push({target, options});
   }
 
   unbindTarget(target) {
@@ -337,27 +345,40 @@ export default class Layer3D extends Layer {
     return false;
   }
 
+  renderTarget(target, options = {}) {
+    return target.renderBy(this, options);
+  }
+
+  setRenderOptions(opts) {
+    Object.assign(this[_renderOptions], opts);
+  }
+
+  get renderOptions() {
+    return this[_renderOptions];
+  }
+
   /* override */
   render() {
-    this.dispatchEvent({type: 'beforerender', detail: {camera: this.camera.body}});
+    const {camera, root} = this;
+    this.dispatchEvent({type: 'beforerender', detail: {camera: camera.body}});
     if(this[_targets].length) {
-      this[_targets].forEach((target) => {
-        target.renderBy(this);
+      this[_targets].forEach(({target, options}) => {
+        target.renderBy(this, options);
       });
     }
     if(this[_controls]) {
       this[_controls].update();
     }
     if(this[_shadow]) {
-      this[_shadow].render({scene: this.root.body});
+      this[_shadow].render({scene: root.body});
     }
     if(this[_post]) {
       if(this.postRender) {
-        this.postRender(this.renderer);
+        this.postRender();
       }
-      this[_post].render({scene: this.root.body, camera: this.camera.body});
+      this[_post].render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     } else {
-      this.renderer.render({scene: this.root.body, camera: this.camera.body});
+      this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     }
     this._prepareRenderFinished();
     if(this[_utime].length) {
@@ -366,7 +387,7 @@ export default class Layer3D extends Layer {
       });
       this.forceUpdate();
     }
-    this.dispatchEvent({type: 'afterrender', detail: {camera: this.camera.body}});
+    this.dispatchEvent({type: 'afterrender', detail: {camera: camera.body}});
   }
 }
 

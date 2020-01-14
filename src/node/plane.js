@@ -1,16 +1,16 @@
 import {registerNode} from 'spritejs';
-import {Plane} from 'ogl';
+import {Plane as _Plane} from 'ogl';
 import PlaneAttr from '../attribute/plane';
 import Mesh3d from './mesh3d';
 
-export default class _Plane extends Mesh3d {
+export default class Plane extends Mesh3d {
   static Attr = PlaneAttr;
 
   remesh() {
     const gl = this.program.gl;
     const {width, height, widthSegments, heightSegments} = this.attributes;
 
-    const geometry = new Plane(gl, {
+    const geometry = new _Plane(gl, {
       width,
       height,
       widthSegments,
@@ -32,4 +32,4 @@ export default class _Plane extends Mesh3d {
   }
 }
 
-registerNode(_Plane, 'plane');
+registerNode(Plane, 'plane');

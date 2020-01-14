@@ -1,6 +1,6 @@
-import {TextureLoader} from 'ogl';
+import {TextureLoader as _TextureLoader} from 'ogl';
 
-TextureLoader.loadKTX = function (src, texture) {
+_TextureLoader.loadKTX = function (src, texture) {
   fetch(src)
     .then(res => res.arrayBuffer())
     .then(buffer => texture.parseBuffer(buffer))
@@ -9,9 +9,9 @@ TextureLoader.loadKTX = function (src, texture) {
     });
 };
 
-export default class _TextureLoader {
+export default class TextureLoader {
   static load(layer, opts) {
-    const texture = TextureLoader.load(layer.gl, opts);
+    const texture = _TextureLoader.load(layer.gl, opts);
     texture.onLoaded = () => {
       layer.forceUpdate();
     };

@@ -1,5 +1,5 @@
 import {registerNode} from 'spritejs';
-import {Camera} from 'ogl';
+import {Camera as _Camera} from 'ogl';
 import Group3d from './group3d';
 import Node3d from './node3d';
 
@@ -7,13 +7,13 @@ import CameraAttr from '../attribute/camera';
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 
-export default class _Camera extends Group3d {
+export default class Camera extends Group3d {
   static Attr = CameraAttr;
 
   constructor(gl, {fov = 45, near = 0.1, far = 100, aspect = 1, left, right, bottom, top, ...attrs}) {
     super({fov, near, far, aspect, left, right, bottom, top});
     this.groupBody = this.body;
-    this.setBody(new Camera(gl, {fov, near, far, aspect, left, right, bottom, top}), false);
+    this.setBody(new _Camera(gl, {fov, near, far, aspect, left, right, bottom, top}), false);
     this.attributes[setAttribute]('mode', this.body.type);
     if(attrs) this.attr(attrs);
   }
@@ -80,4 +80,4 @@ export default class _Camera extends Group3d {
   }
 }
 
-registerNode(_Camera, 'camera');
+registerNode(Camera, 'camera');

@@ -1,7 +1,7 @@
-import {Shadow} from 'ogl';
+import {Shadow as _Shadow} from 'ogl';
 
 // https://github.com/oframe/ogl/blob/master/src/extras/Shadow.js
-export default class _Shadow extends Shadow {
+export default class Shadow extends _Shadow {
   async add(node, opts = {}) {
     await node.model;
     opts.mesh = node.body;

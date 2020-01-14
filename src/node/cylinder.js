@@ -1,16 +1,16 @@
 import {registerNode} from 'spritejs';
-import {Cylinder} from 'ogl';
+import {Cylinder as _Cylinder} from 'ogl';
 import CylinderAttr from '../attribute/cylinder';
 import Mesh3d from './mesh3d';
 
-export default class _Cylinder extends Mesh3d {
+export default class Cylinder extends Mesh3d {
   static Attr = CylinderAttr;
 
   remesh() {
     const gl = this.program.gl;
     const {radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength} = this.attributes;
 
-    const geometry = new Cylinder(gl, {
+    const geometry = new _Cylinder(gl, {
       radiusTop,
       radiusBottom,
       height,
@@ -40,4 +40,4 @@ export default class _Cylinder extends Mesh3d {
   }
 }
 
-registerNode(_Cylinder, 'cylinder');
+registerNode(Cylinder, 'cylinder');
