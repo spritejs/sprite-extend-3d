@@ -27,6 +27,7 @@
     "eslint-config-sprite": "^1.0.6",
     "eslint-plugin-html": "^5.0.5",
     "raw-loader": "^4.0.0",
+    "webgl-obj-loader": "^2.0.6",
     "webpack": "^4.33.0",
     "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1"
