@@ -27,12 +27,12 @@ export const NORMAL = {
   fragment: normalFrag,
 };
 
-export const BASE_GEOMETRY = {
+export const NORMAL_GEOMETRY = {
   vertex: geometryVert,
   fragment: geometryFrag,
 };
 
-export const BASE_TEXTURE = {
+export const NORMAL_TEXTURE = {
   vertex: textureVert,
   fragment: textureFrag,
 };

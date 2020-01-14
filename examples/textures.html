@@ -44,7 +44,7 @@
 
     const texture = layer.createTexture('https://p5.ssl.qhimg.com/t0110e2451e92de6193.jpg');
     const program = layer.createProgram({
-      ...shaders.BASE_TEXTURE,
+      ...shaders.NORMAL_TEXTURE,
       texture,
     });
     const model = layer.loadModel('https://s5.ssl.qhres.com/static/f545f86e6da07b9d.json');
@@ -70,7 +70,7 @@
     video.play();
 
     const videoProgram = layer.createProgram({
-      ...shaders.BASE_TEXTURE,
+      ...shaders.NORMAL_TEXTURE,
       texture: videoTexture,
       cullFace: null,
     });
