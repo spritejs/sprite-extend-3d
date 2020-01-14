@@ -67,8 +67,8 @@ export default class Layer3D extends Layer {
       this[_post] = new Post(gl, options.post);
     }
 
-    const cameraOptions = options.camera || {};
-    const camera = new Camera(gl, cameraOptions);
+    options.camera = options.camera || {};
+    const camera = new Camera(gl, options.camera);
     camera.connect(this, 0);
     this.camera = camera;
     this.root = new Group3d();
@@ -122,11 +122,8 @@ export default class Layer3D extends Layer {
     gl.canvas.height = height;
 
     const camera = this.camera;
-    if(camera) {
+    if(camera && this.options.camera.preserveAspect !== false) {
       camera.attributes.aspect = width / height;
-      // camera.body.perspective({
-      //   aspect: width / height,
-      // });
     }
     if(this[_post]) {
       this[_post].resize();
