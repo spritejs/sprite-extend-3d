@@ -239,6 +239,16 @@ export default class Layer3D extends Layer {
     return false;
   }
 
+  createText(text, {font, fillColor = '#000', strokeColor, strokeWidth = 1}) {
+    const textImage = ENV.createText(text, {font, fillColor, strokeColor, strokeWidth}).image;
+    return this.createTexture({
+      image: textImage,
+      generateMipmaps: false,
+      width: textImage.width,
+      height: textImage.height,
+    });
+  }
+
   async loadImage(src) {
     const image = await ENV.loadImage(src);
     return image;
