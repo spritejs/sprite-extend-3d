@@ -9,6 +9,7 @@ export default class Mesh3dAttr extends Node3dAttr {
   constructor(subject) {
     super(subject);
     this[setDefault]({
+      mode: 'TRIANGLES', // POINTS, LINES, LINE_LOOP,  LINE_STRIP, TRIANGLES
       colors: [0.5, 0.5, 0.5, 1],
       colorDivisor: 3,
     });
@@ -45,5 +46,19 @@ export default class Mesh3dAttr extends Node3dAttr {
 
   set colorDivisor(value) {
     this[setAttribute]('colorDivisor', value);
+  }
+
+  get mode() {
+    return this[getAttribute]('mode');
+  }
+
+  set mode(value) {
+    if(typeof value === 'number' && value >= 0 && value < 5) {
+      value = ['POINTS', 'LINES', 'LINE_LOOP', 'LINE_STRIP', 'TRIANGLES'][value];
+    }
+    if(value && value !== 'TRIANGLES' && value !== 'POINTS' && value !== 'LINES' && value !== 'LINE_LOOP' && value !== 'LINE_STRIP') {
+      throw new TypeError('Invalid mode value.');
+    }
+    this[setAttribute]('mode', value);
   }
 }

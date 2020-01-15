@@ -75,7 +75,7 @@ export default class Node3d extends Node {
   }
 
   lookAt(target, invert = false) {
-    const body = this.body;
+    const body = this[_body];
     if(body) {
       if(target instanceof Node3d) {
         target = target.body.position;
@@ -87,29 +87,29 @@ export default class Node3d extends Node {
   }
 
   updateMatrix() {
-    if(this.body) {
-      this.body.updateMatrix();
+    if(this[_body]) {
+      this[_body].updateMatrix();
       this.forceUpdate();
     }
   }
 
   updateMatrixWorld(force = false) {
-    if(this.body) {
-      this.body.updateMatrixWorld();
+    if(this[_body]) {
+      this[_body].updateMatrixWorld();
       this.forceUpdate();
     }
   }
 
   traverse(callback) {
-    if(this.body) {
-      this.body.traverse((body) => {
+    if(this[_body]) {
+      this[_body].traverse((body) => {
         if(body._node) callback(body._node);
       });
     }
   }
 
   decompose() {
-    const body = this.body;
+    const body = this[_body];
     if(body) {
       body.decompose();
       updateRotation(this, body);
@@ -146,7 +146,7 @@ export default class Node3d extends Node {
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
-    const body = this.body;
+    const body = this[_body];
     if(body) {
       if(key === 'x' || key === 'y' || key === 'z') {
         body.position[key] = newValue;
@@ -173,10 +173,10 @@ export default class Node3d extends Node {
   /* override */
   connect(parent, zOrder) {
     super.connect(parent, zOrder);
-    if(this.body) {
+    if(this[_body]) {
       const parentBody = parent.groupBody || parent.body;
-      if(parentBody && parentBody !== this.body) {
-        this.body.setParent(parentBody);
+      if(parentBody && parentBody !== this[_body]) {
+        this[_body].setParent(parentBody);
         if(parent.groupBody && parent.groupBody.parent == null) {
           parent.groupBody.setParent(parent.body);
         }
@@ -187,8 +187,8 @@ export default class Node3d extends Node {
   /* override */
   disconnect(parent, zOrder) {
     super.disconnect(parent, zOrder);
-    if(this.body) {
-      this.body.setParent(null);
+    if(this[_body]) {
+      this[_body].setParent(null);
       const parentBody = parent.groupBody;
       if(parentBody && parentBody.children && parentBody.children.length <= 0) {
         parentBody.setParent(null);

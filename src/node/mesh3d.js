@@ -8,7 +8,6 @@ const changedAttrs = Symbol.for('spritejs_changedAttrs');
 const _program = Symbol('program');
 const _geometry = Symbol('geometry');
 const _model = Symbol('model');
-const _mode = Symbol('mode');
 
 const _beforeRender = Symbol('beforeRender');
 const _afterRender = Symbol('afterRender');
@@ -49,24 +48,11 @@ export default class Mesh3d extends Group3d {
     if(!program) {
       throw new Error('No program specified!');
     }
-    const gl = program.gl;
-    let mode = attrs.mode != null ? attrs.mode : gl.TRIANGLES;
-    if(attrs.mode) {
-      attrs = {...attrs};
-      delete attrs.mode;
-    }
+
     super(attrs);
     this.groupBody = this.body;
-    if(typeof mode === 'string') {
-      mode = gl[mode];
-    }
-    this[_mode] = mode;
-    this.setProgram(program);
 
-    program.extraAttribute = program.extraAttribute || {};
-    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
-      program.extraAttribute.color = colorAttribute;
-    }
+    this.setProgram(program);
 
     if(model) {
       if(typeof model.then === 'function') {
@@ -92,12 +78,8 @@ export default class Mesh3d extends Group3d {
   /* override */
   cloneNode() {
     const attrs = this.attributes[changedAttrs];
-    const cloned = new this.constructor(this[_program], {...attrs, mode: this[_mode], model: this[_geometry]});
+    const cloned = new this.constructor(this[_program], {...attrs, model: this[_geometry]});
     return cloned;
-  }
-
-  get mode() {
-    return this[_mode];
   }
 
   get model() {
@@ -114,16 +96,23 @@ export default class Mesh3d extends Group3d {
 
   get meshes() {
     const meshes = super.meshes;
-    if(this.body && this.body.geometry) meshes.unshift(this.body);
+    if(this.body.geometry) meshes.unshift(this.body);
     return meshes;
   }
 
   setProgram(program) {
     this[_program] = program;
     const gl = program.gl;
+
+    program.extraAttribute = program.extraAttribute || {};
+    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
+      program.extraAttribute.color = colorAttribute;
+    }
+
     const geometry = this[_geometry];
     if(geometry) {
-      const mesh = new Mesh(gl, {mode: this[_mode], geometry, program});
+      const mode = this.attributes.mode;
+      const mesh = new Mesh(program.gl, {mode: gl[mode], geometry, program});
       this.setBody(mesh);
     }
   }
@@ -140,6 +129,7 @@ export default class Mesh3d extends Group3d {
       }
       return {size: s, data: d};
     }
+    this[_model] = model;
     const program = this[_program];
     const gl = program.gl;
     let geometry;
@@ -189,30 +179,28 @@ export default class Mesh3d extends Group3d {
       });
     }
     this[_geometry] = geometry;
-    this[_model] = model;
-    if(program) {
-      const mesh = new Mesh(gl, {mode: this[_mode], geometry, program});
-      this.setBody(mesh);
-      let listeners = this.getListeners('beforerender');
-      if(listeners.length) {
-        mesh.onBeforeRender(this[_beforeRender]);
-      }
-      listeners = this.getListeners('afterrender');
-      if(listeners.length) {
-        mesh.onAfterRender(this[_afterRender]);
-      }
+    const mode = this.attributes.mode;
+    const mesh = new Mesh(gl, {mode: gl[mode], geometry, program});
+    this.setBody(mesh);
+    let listeners = this.getListeners('beforerender');
+    if(listeners.length) {
+      mesh.onBeforeRender(this[_beforeRender]);
+    }
+    listeners = this.getListeners('afterrender');
+    if(listeners.length) {
+      mesh.onAfterRender(this[_afterRender]);
     }
   }
 
   /* override */
   addEventListener(type, listener, options = {}) {
     super.addEventListener(type, listener, options);
-    if(this.body && type === 'beforerender') {
+    if(this.body.onBeforeRender && type === 'beforerender') {
       const listeners = this.getListeners('beforerender');
       if(listeners.length === 1) {
         this.body.onBeforeRender(this[_beforeRender]);
       }
-    } else if(this.body && type === 'afterrender') {
+    } else if(this.body.onAfterRender && type === 'afterrender') {
       const listeners = this.getListeners('afterrender');
       if(listeners.length === 1) {
         this.body.onAfterRender(this[_afterRender]);
@@ -224,10 +212,10 @@ export default class Mesh3d extends Group3d {
   /* override */
   removeAllListeners(type, options = {}) {
     super.removeAllListeners(type, options);
-    if(this.body && type === 'beforerender') {
+    if(this.body.onBeforeRender && type === 'beforerender') {
       const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
       if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
-    } else if(this.body && type === 'afterrender') {
+    } else if(this.body.onAfterRender && type === 'afterrender') {
       const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
       if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
     }
@@ -237,13 +225,13 @@ export default class Mesh3d extends Group3d {
   /* override */
   removeEventListener(type, listener, options = {}) {
     super.removeEventListener(type, listener, options);
-    if(this.body && type === 'beforerender') {
+    if(this.body.onBeforeRender && type === 'beforerender') {
       const listeners = this.getListeners('beforerender');
       if(listeners.length === 0) {
         const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
         if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
       }
-    } else if(this.body && type === 'afterrender') {
+    } else if(this.body.onAfterRender && type === 'afterrender') {
       const listeners = this.getListeners('afterrender');
       if(listeners.length === 0) {
         const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
@@ -277,6 +265,12 @@ export default class Mesh3d extends Group3d {
           const geometry = this.geometry;
           colorAttribute(this, geometry);
         }
+      }
+    }
+    if(key === 'mode') {
+      const program = this.program;
+      if(program) {
+        this.body.mode = program.gl[newValue];
       }
     }
   }
