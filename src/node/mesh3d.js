@@ -54,15 +54,6 @@ export default class Mesh3d extends Group3d {
 
     this.setProgram(program);
 
-    if(model) {
-      if(typeof model.then === 'function') {
-        this[_model] = model.then((res) => {
-          this.setGeometry(res);
-        });
-      } else {
-        this.setGeometry(model);
-      }
-    }
     this[_beforeRender] = (args) => {
       this.dispatchEvent({type: 'beforerender', detail: args});
     };
@@ -70,15 +61,28 @@ export default class Mesh3d extends Group3d {
       this.dispatchEvent({type: 'afterrender', detail: args});
     };
 
-    if(!model && this.remesh) {
-      this.updateMesh();
+    if(model && typeof model.then === 'function') {
+      this[_model] = model.then((res) => {
+        this[_model] = res;
+        this.remesh();
+      });
+    } else if(!model) {
+      this.remesh();
+    } else {
+      this.setGeometry(model);
     }
   }
 
   /* override */
-  cloneNode() {
+  cloneNode(deep = false) {
     const attrs = this.attributes[changedAttrs];
     const cloned = new this.constructor(this[_program], {...attrs, model: this[_geometry]});
+    if(deep) {
+      this.children.forEach((child) => {
+        const childNode = child.cloneNode(deep);
+        cloned.appendChild(childNode);
+      });
+    }
     return cloned;
   }
 
@@ -117,7 +121,8 @@ export default class Mesh3d extends Group3d {
     }
   }
 
-  setGeometry(model) {
+  setGeometry(model = this[_model]) {
+    if(!model) return;
     function parseData(data, size = 3) {
       let d = data.data || data;
       if(Array.isArray(d)) d = new Float32Array(d);
@@ -129,7 +134,6 @@ export default class Mesh3d extends Group3d {
       }
       return {size: s, data: d};
     }
-    this[_model] = model;
     const program = this[_program];
     const gl = program.gl;
     let geometry;
@@ -175,10 +179,13 @@ export default class Mesh3d extends Group3d {
     const extraAttrs = program.extraAttribute;
     if(extraAttrs) {
       Object.entries(extraAttrs).forEach(([key, setter]) => {
-        geometry.addAttribute(key, setter(this, geometry));
+        if(!geometry.attributes[key]) {
+          geometry.addAttribute(key, setter(this, geometry));
+        }
       });
     }
     this[_geometry] = geometry;
+    this[_model] = geometry.attributes;
     const mode = this.attributes.mode;
     const mesh = new Mesh(gl, {mode: gl[mode], geometry, program});
     this.setBody(mesh);
@@ -241,13 +248,13 @@ export default class Mesh3d extends Group3d {
     return this;
   }
 
-  /* remesh() {
-    for override
-  } */
+  remesh() {
+    this.setGeometry();
+  }
 
   /* override */
   updateMesh() {
-    if(this.program && this.remesh) {
+    if(this.program) {
       const oldMesh = this.mesh;
       this.remesh();
       const newMesh = this.mesh;
