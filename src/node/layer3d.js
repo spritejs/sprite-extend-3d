@@ -138,9 +138,9 @@ export default class Layer3D extends Layer {
     this.forceUpdate();
   }
 
-  setLights(program, {directionalLight = this[_ambientColor],
+  setLights(program, {directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],
-    pointLightColor = this[_pointLightPosition],
+    pointLightColor = this[_pointLightColor],
     ambientColor = this[_ambientColor]} = {}) {
     program.uniforms.directionalLight = {value: directionalLight};
     program.uniforms.pointLightPosition = {value: pointLightPosition};
