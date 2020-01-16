@@ -1,5 +1,6 @@
 import {registerNode} from 'spritejs';
-import {Program, Mesh, Geometry} from 'ogl';
+import {Program, Mesh, Geometry as _Geometry} from 'ogl';
+import Geometry from '../helper/geometry';
 import Group3d from './group3d';
 import Mesh3dAttr from '../attribute/mesh3d';
 
@@ -35,6 +36,23 @@ function colorAttribute(node, geometry) {
   if(updateColor) updateColor.needsUpdate = true;
 
   return {size: 4, data: color};
+}
+
+function normalize(v) {
+  const len = Math.hypot(...v);
+  return [v[0] / len, v[1] / len, v[2] / len];
+}
+
+// 两个向量的叉积就是这个向量的法向量
+function getNormal(a, b, c) {
+  const ab = [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+  const bc = [b[0] - c[0], b[1] - c[1], b[2] - c[2]];
+
+  return normalize([
+    ab[1] * bc[2] - ab[2] * bc[1],
+    ab[0] * bc[2] - ab[2] * bc[0],
+    ab[0] * bc[1] - ab[1] * bc[0],
+  ]);
 }
 
 export default class Mesh3d extends Group3d {
@@ -123,58 +141,34 @@ export default class Mesh3d extends Group3d {
 
   setGeometry(model = this[_model]) {
     if(!model) return;
-    function parseData(data, size = 3) {
-      let d = data.data || data;
-      if(Array.isArray(d)) d = new Float32Array(d);
-      const s = data.size || size;
-      if(data.data) {
-        data.data = d;
-        data.size = s;
-        return data;
-      }
-      return {size: s, data: d};
-    }
     const program = this[_program];
     const gl = program.gl;
     let geometry;
-    if(model instanceof Geometry) {
+    if(model instanceof _Geometry) {
       geometry = model;
     } else {
-      let {position, uv, normal, index, ...others} = model;
-      const geometryData = {};
-      if(position) geometryData.position = parseData(position);
-      if(uv) geometryData.uv = parseData(uv, 2);
-      if(!normal) {
-        const len = position.length;
-        normal = new Float32Array(len);
+      geometry = new Geometry(gl, model);
+    }
+    if(!geometry.attributes.normal && program.attributeLocations.has('normal')) {
+      const position = geometry.attributes.position.data;
+      const len = geometry.attributes.position.data.length;
+      const normal = new Float32Array(len);
+      if(len % 9 === 0) {
+        // 自动计算法向量
+        for(let i = 0; i < len; i += 9) {
+          const a = [position[i], position[i + 1], position[i + 2]],
+            b = [position[i + 3], position[i + 4], position[i + 5]],
+            c = [position[i + 6], position[i + 7], position[i + 8]];
+
+          const norm = getNormal(a, b, c);
+          normal.set([...norm, ...norm, ...norm], i);
+        }
+      } else {
         for(let i = 0; i < len; i += 3) {
           normal.set([-1, 0, 0], i);
         }
-        geometryData.normal = {size: 3, data: normal};
-      } else {
-        geometryData.normal = parseData(normal);
       }
-      if(index) {
-        let data = index.data || index;
-        if(Array.isArray(data)) data = new Uint16Array(data);
-        geometryData.index = {data};
-      }
-      if(others) {
-        let positionCount;
-        const position = geometryData.position;
-        if(position) {
-          positionCount = position.data.length / position.size;
-        }
-        Object.entries(others).forEach(([key, value]) => {
-          let size = 3;
-          if(!value.size) {
-            const length = value.data ? value.data.length : value.length;
-            if(length && positionCount) size = length / positionCount;
-          }
-          geometryData[key] = parseData(value, size);
-        });
-      }
-      geometry = new Geometry(gl, geometryData);
+      geometry.addAttribute('normal', {size: 3, data: normal});
     }
     const extraAttrs = program.extraAttribute;
     if(extraAttrs) {
