@@ -394,9 +394,6 @@ export default class Layer3D extends Layer {
       this[_shadow].render({scene: root.body});
     }
     if(this[_post]) {
-      if(this.postRender) {
-        this.postRender();
-      }
       this[_post].render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     } else {
       this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
