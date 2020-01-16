@@ -332,11 +332,22 @@ export default class Layer3D extends Layer {
       raycast.castMouse(this.camera.body, mouse);
       const hits = raycast.intersectBounds(this.meshes);
       if(hits && hits.length) {
-        const target = hits[0];
-        event.target = target._node;
-        event.mouse = mouse;
-        target._node.dispatchEvent(event);
-        return true;
+        let target;
+        for(let i = 0; i < hits.length; i++) {
+          const node = hits[i]._node;
+          const pointerEvents = node.attributes.pointerEvents;
+          if(pointerEvents !== 'none'
+            && (node.isVisible || pointerEvents !== 'visible')) {
+            target = node;
+            break;
+          }
+        }
+
+        if(target) {
+          event.mouse = mouse;
+          target.dispatchEvent(event);
+          return true;
+        }
       }
     }
     return Block.prototype.dispatchPointerEvent.call(this, event);
