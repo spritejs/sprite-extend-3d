@@ -17,9 +17,9 @@ export default class Node3dAttr extends Attr {
       rotateZ: 0,
       /* rotate */
       rotateOrder: 'YXZ',
-      scaleX: 0,
-      scaleY: 0,
-      scaleZ: 0,
+      scaleX: 1,
+      scaleY: 1,
+      scaleZ: 1,
       /* scale */
       raycast: undefined, // 碰撞的形状，默认是立方体bounds，设为sphere可以检测球形
     });
@@ -49,9 +49,9 @@ export default class Node3dAttr extends Attr {
 
   set pos(value) {
     if(!Array.isArray(value)) value = [value, value, value];
-    this.x = value[0] || 0;
-    this.y = value[1] || 0;
-    this.z = value[2] || 0;
+    this.x = value[0];
+    this.y = value[1];
+    this.z = value[2];
   }
 
   get rotateX() {
@@ -85,9 +85,9 @@ export default class Node3dAttr extends Attr {
 
   set rotate(value) {
     if(!Array.isArray(value)) value = [value, 0, 0];
-    this.rotateX = value[0] || 0;
-    this.rotateY = value[1] || 0;
-    this.rotateZ = value[2] || 0;
+    this.rotateX = value[0];
+    this.rotateY = value[1];
+    this.rotateZ = value[2];
   }
 
   get rotateOrder() {
@@ -129,8 +129,8 @@ export default class Node3dAttr extends Attr {
 
   set scale(value) {
     if(!Array.isArray(value)) value = [value, value, value];
-    this.scaleX = value[0] || 0;
-    this.scaleY = value[1] || 0;
-    this.scaleZ = value[2] || 0;
+    this.scaleX = value[0];
+    this.scaleY = value[1];
+    this.scaleZ = value[2];
   }
 }
