@@ -337,7 +337,7 @@ export default class Layer3D extends Layer {
           const node = hits[i]._node;
           const pointerEvents = node.attributes.pointerEvents;
           if(pointerEvents !== 'none'
-            && (node.isVisible || pointerEvents !== 'visible')) {
+            && (node.isVisible || pointerEvents === 'all')) {
             target = node;
             break;
           }
