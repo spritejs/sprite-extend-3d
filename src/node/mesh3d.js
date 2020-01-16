@@ -163,7 +163,7 @@ export default class Mesh3d extends Group3d {
           const norm = getNormal(a, b, c);
           normal.set([...norm, ...norm, ...norm], i);
         }
-      } else {
+      } else if(len % 3 === 0) {
         for(let i = 0; i < len; i += 3) {
           normal.set([-1, 0, 0], i);
         }
