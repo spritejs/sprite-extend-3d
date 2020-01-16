@@ -22,30 +22,31 @@ export default class Node3d extends Node {
     return null;
   }
 
-  get mesh() {
-    return this.body;
-  }
-
-  get meshes() {
-    return [];
+  /* override */
+  get isVisible() {
+    if(this[_body]) {
+      return this[_body].visible;
+    }
+    return false;
   }
 
   get localMatrix() {
+    return this.matrix;
+  }
+
+  get matrix() {
     if(this[_body]) {
       return this[_body].matrix;
     }
     return null;
   }
 
-  get renderMatrix() {
-    return this.worldMatrix;
+  get mesh() {
+    return this.body.draw ? this.body : null;
   }
 
-  get worldMatrix() {
-    if(this[_body]) {
-      return this[_body].worldMatrix;
-    }
-    return null;
+  get meshes() {
+    return [];
   }
 
   // the matrix with camera
@@ -64,11 +65,15 @@ export default class Node3d extends Node {
     return null;
   }
 
-  get isVisible() {
+  get renderMatrix() {
+    return this.worldMatrix;
+  }
+
+  get worldMatrix() {
     if(this[_body]) {
-      return this[_body].visible;
+      return this[_body].worldMatrix;
     }
-    return false;
+    return null;
   }
 
   get zDepth() {
@@ -78,37 +83,18 @@ export default class Node3d extends Node {
     return null;
   }
 
-  lookAt(target, invert = false) {
-    const body = this[_body];
-    if(body) {
-      if(target instanceof Node3d) {
-        target = target.body.position;
+
+  /* override */
+  connect(parent, zOrder) {
+    super.connect(parent, zOrder);
+    if(this[_body]) {
+      const parentBody = parent.groupBody || parent.body;
+      if(parentBody && parentBody !== this[_body]) {
+        this[_body].setParent(parentBody);
+        if(parent.groupBody && parent.groupBody.parent == null) {
+          parent.groupBody.setParent(parent.body);
+        }
       }
-      body.lookAt(target, invert);
-      updateRotation(this, body);
-      this.forceUpdate();
-    }
-  }
-
-  updateMatrix() {
-    if(this[_body]) {
-      this[_body].updateMatrix();
-      this.forceUpdate();
-    }
-  }
-
-  updateMatrixWorld(force = false) {
-    if(this[_body]) {
-      this[_body].updateMatrixWorld();
-      this.forceUpdate();
-    }
-  }
-
-  traverse(callback) {
-    if(this[_body]) {
-      this[_body].traverse((body) => {
-        if(body._node) callback(body._node);
-      });
     }
   }
 
@@ -121,29 +107,27 @@ export default class Node3d extends Node {
     }
   }
 
-  setBody(body, update = true) {
-    const oldBody = this[_body];
-    this[_body] = body;
-    if(oldBody) {
-      oldBody.setParent(null);
-      delete oldBody._node;
-    }
-    if(this.parent && this.parent.body) {
-      this[_body].setParent(this.parent.body);
-    }
-
-    if(update) {
-      const _changedAttrs = Object.entries(this.attributes[changedAttrs]);
-      for(let i = 0; i < _changedAttrs.length; i++) {
-        const [key, value] = _changedAttrs[i];
-        this.onPropertyChange(key, value, value);
+  /* override */
+  disconnect(parent, zOrder) {
+    super.disconnect(parent, zOrder);
+    if(this[_body]) {
+      this[_body].setParent(null);
+      const parentBody = parent.groupBody;
+      if(parentBody && parentBody.children && parentBody.children.length <= 0) {
+        parentBody.setParent(null);
       }
-      if(_changedAttrs.length <= 0) this.forceUpdate();
     }
+  }
 
-    body._node = this;
-    if(this.groupBody && this.children && this.children.length > 0) {
-      this.groupBody.setParent(body);
+  lookAt(target, invert = false) {
+    const body = this[_body];
+    if(body) {
+      if(target instanceof Node3d) {
+        target = target.body.position;
+      }
+      body.lookAt(target, invert);
+      updateRotation(this, body);
+      this.forceUpdate();
     }
   }
 
@@ -174,29 +158,51 @@ export default class Node3d extends Node {
     }
   }
 
-  /* override */
-  connect(parent, zOrder) {
-    super.connect(parent, zOrder);
-    if(this[_body]) {
-      const parentBody = parent.groupBody || parent.body;
-      if(parentBody && parentBody !== this[_body]) {
-        this[_body].setParent(parentBody);
-        if(parent.groupBody && parent.groupBody.parent == null) {
-          parent.groupBody.setParent(parent.body);
-        }
+  setBody(body, update = true) {
+    const oldBody = this[_body];
+    this[_body] = body;
+    if(oldBody) {
+      oldBody.setParent(null);
+      delete oldBody._node;
+    }
+    if(this.parent && this.parent.body) {
+      this[_body].setParent(this.parent.body);
+    }
+
+    if(update) {
+      const _changedAttrs = Object.entries(this.attributes[changedAttrs]);
+      for(let i = 0; i < _changedAttrs.length; i++) {
+        const [key, value] = _changedAttrs[i];
+        this.onPropertyChange(key, value, value);
       }
+      if(_changedAttrs.length <= 0) this.forceUpdate();
+    }
+
+    body._node = this;
+    if(this.groupBody && this.children && this.children.length > 0) {
+      this.groupBody.setParent(body);
     }
   }
 
-  /* override */
-  disconnect(parent, zOrder) {
-    super.disconnect(parent, zOrder);
+  traverse(callback) {
     if(this[_body]) {
-      this[_body].setParent(null);
-      const parentBody = parent.groupBody;
-      if(parentBody && parentBody.children && parentBody.children.length <= 0) {
-        parentBody.setParent(null);
-      }
+      this[_body].traverse((body) => {
+        if(body._node) callback(body._node);
+      });
+    }
+  }
+
+  updateMatrix() {
+    if(this[_body]) {
+      this[_body].updateMatrix();
+      this.forceUpdate();
+    }
+  }
+
+  updateMatrixWorld(force = false) {
+    if(this[_body]) {
+      this[_body].updateMatrixWorld();
+      this.forceUpdate();
     }
   }
 }
