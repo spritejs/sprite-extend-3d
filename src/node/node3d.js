@@ -38,6 +38,10 @@ export default class Node3d extends Node {
   }
 
   get renderMatrix() {
+    return this.worldMatrix;
+  }
+
+  get worldMatrix() {
     if(this[_body]) {
       return this[_body].worldMatrix;
     }

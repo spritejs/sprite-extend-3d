@@ -18,6 +18,22 @@ export default class Camera extends Group3d {
     if(attrs) this.attr(attrs);
   }
 
+  get projectionMatrix() {
+    return this.body.projectionMatrix;
+  }
+
+  get viewMatrix() {
+    return this.body.viewMatrix;
+  }
+
+  get projectionViewMatrix() {
+    return this.body.projectionViewMatrix;
+  }
+
+  get worldPosition() {
+    return this.body.worldPosition;
+  }
+
   /* override */
   lookAt(target) {
     super.lookAt(target, true);
