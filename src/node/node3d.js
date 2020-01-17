@@ -150,7 +150,10 @@ export default class Node3d extends Node {
         body.geometry.raycast = newValue;
       }
       if(key === 'display') {
-        body.visible = newValue !== 'none';
+        body.visible = newValue !== 'none' && this.attributes.visibility === 'visible';
+      }
+      if(key === 'visibility') {
+        body.visible = newValue === 'visible' && this.attributes.display !== 'none';
       }
       if(key === 'rotateOrder') {
         body.rotation.reorder(newValue);

@@ -22,39 +22,16 @@ export default class Camera extends Group3d {
     return this.body.projectionMatrix;
   }
 
-  get viewMatrix() {
-    return this.body.viewMatrix;
-  }
-
   get projectionViewMatrix() {
     return this.body.projectionViewMatrix;
   }
 
+  get viewMatrix() {
+    return this.body.viewMatrix;
+  }
+
   get worldPosition() {
     return this.body.worldPosition;
-  }
-
-  /* override */
-  lookAt(target) {
-    super.lookAt(target, true);
-    return this;
-  }
-
-  // Project 3D coordinate to 2D point
-  project(v) {
-    this.body.project(v);
-    return this;
-  }
-
-  // Unproject 2D point to 3D coordinate
-  unproject(v) {
-    this.body.unproject(v);
-    return this;
-  }
-
-  updateFrustum() {
-    this.body.updateFrustum();
-    return this;
   }
 
   frustumIntersects(node) {
@@ -69,6 +46,12 @@ export default class Camera extends Group3d {
       center = center.body.position;
     }
     return this.body.frustumIntersectsSphere(center, radius);
+  }
+
+  /* override */
+  lookAt(target) {
+    super.lookAt(target, true);
+    return this;
   }
 
   /* override */
@@ -93,6 +76,23 @@ export default class Camera extends Group3d {
         }
       }
     }
+  }
+
+  // Project 3D coordinate to 2D point
+  project(v) {
+    this.body.project(v);
+    return this;
+  }
+
+  // Unproject 2D point to 3D coordinate
+  unproject(v) {
+    this.body.unproject(v);
+    return this;
+  }
+
+  updateFrustum() {
+    this.body.updateFrustum();
+    return this;
   }
 }
 

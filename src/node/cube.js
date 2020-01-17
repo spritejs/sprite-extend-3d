@@ -6,19 +6,6 @@ import CubeAttr from '../attribute/cube';
 export default class Cube extends Mesh3d {
   static Attr = CubeAttr;
 
-  remesh() {
-    const gl = this.program.gl;
-    const {width, height, depth, widthSegments, heightSegments, depthSegments} = this.attributes;
-    const geometry = new Box(gl, {
-      width,
-      height,
-      depth,
-      widthSegments,
-      heightSegments,
-      depthSegments});
-    this.setGeometry(geometry);
-  }
-
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
@@ -32,6 +19,20 @@ export default class Cube extends Mesh3d {
         this.updateMesh();
       }
     }
+  }
+
+  /* override */
+  remesh() {
+    const gl = this.program.gl;
+    const {width, height, depth, widthSegments, heightSegments, depthSegments} = this.attributes;
+    const geometry = new Box(gl, {
+      width,
+      height,
+      depth,
+      widthSegments,
+      heightSegments,
+      depthSegments});
+    this.setGeometry(geometry);
   }
 }
 

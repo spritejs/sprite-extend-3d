@@ -91,6 +91,42 @@ export default class Mesh3d extends Group3d {
     }
   }
 
+  get geometry() {
+    return this[_geometry];
+  }
+
+  /* override */
+  get meshes() {
+    const meshes = super.meshes;
+    if(this.body.geometry && this.attributes.display !== 'none') meshes.unshift(this.body);
+    return meshes;
+  }
+
+  get model() {
+    return this[_model];
+  }
+
+  get program() {
+    return this[_program];
+  }
+
+  /* override */
+  addEventListener(type, listener, options = {}) {
+    super.addEventListener(type, listener, options);
+    if(this.body.onBeforeRender && type === 'beforerender') {
+      const listeners = this.getListeners('beforerender');
+      if(listeners.length === 1) {
+        this.body.onBeforeRender(this[_beforeRender]);
+      }
+    } else if(this.body.onAfterRender && type === 'afterrender') {
+      const listeners = this.getListeners('afterrender');
+      if(listeners.length === 1) {
+        this.body.onAfterRender(this[_afterRender]);
+      }
+    }
+    return this;
+  }
+
   /* override */
   cloneNode(deep = false) {
     const attrs = this.attributes[changedAttrs];
@@ -104,39 +140,60 @@ export default class Mesh3d extends Group3d {
     return cloned;
   }
 
-  get model() {
-    return this[_model];
-  }
-
-  get program() {
-    return this[_program];
-  }
-
-  get geometry() {
-    return this[_geometry];
-  }
-
-  get meshes() {
-    const meshes = super.meshes;
-    if(this.body.geometry) meshes.unshift(this.body);
-    return meshes;
-  }
-
-  setProgram(program) {
-    this[_program] = program;
-    const gl = program.gl;
-
-    program.extraAttribute = program.extraAttribute || {};
-    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
-      program.extraAttribute.color = colorAttribute;
+  /* override */
+  onPropertyChange(key, newValue, oldValue) {
+    super.onPropertyChange(key, newValue, oldValue);
+    if(key === 'colors' || key === 'colorDivisor') {
+      if(newValue !== oldValue) {
+        const program = this.program;
+        if(program && program.extraAttribute.color) {
+          const geometry = this.geometry;
+          colorAttribute(this, geometry);
+        }
+      }
     }
-
-    const geometry = this[_geometry];
-    if(geometry) {
-      const mode = this.attributes.mode;
-      const mesh = new Mesh(program.gl, {mode: gl[mode], geometry, program});
-      this.setBody(mesh);
+    if(key === 'mode') {
+      const program = this.program;
+      if(program) {
+        this.body.mode = program.gl[newValue];
+      }
     }
+  }
+
+  remesh() {
+    this.setGeometry();
+  }
+
+  /* override */
+  removeAllListeners(type, options = {}) {
+    super.removeAllListeners(type, options);
+    if(this.body.onBeforeRender && type === 'beforerender') {
+      const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
+      if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
+    } else if(this.body.onAfterRender && type === 'afterrender') {
+      const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
+      if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
+    }
+    return this;
+  }
+
+  /* override */
+  removeEventListener(type, listener, options = {}) {
+    super.removeEventListener(type, listener, options);
+    if(this.body.onBeforeRender && type === 'beforerender') {
+      const listeners = this.getListeners('beforerender');
+      if(listeners.length === 0) {
+        const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
+        if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
+      }
+    } else if(this.body.onAfterRender && type === 'afterrender') {
+      const listeners = this.getListeners('afterrender');
+      if(listeners.length === 0) {
+        const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
+        if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
+      }
+    }
+    return this;
   }
 
   setGeometry(model = this[_model]) {
@@ -193,86 +250,29 @@ export default class Mesh3d extends Group3d {
     }
   }
 
-  /* override */
-  addEventListener(type, listener, options = {}) {
-    super.addEventListener(type, listener, options);
-    if(this.body.onBeforeRender && type === 'beforerender') {
-      const listeners = this.getListeners('beforerender');
-      if(listeners.length === 1) {
-        this.body.onBeforeRender(this[_beforeRender]);
-      }
-    } else if(this.body.onAfterRender && type === 'afterrender') {
-      const listeners = this.getListeners('afterrender');
-      if(listeners.length === 1) {
-        this.body.onAfterRender(this[_afterRender]);
-      }
+  setProgram(program) {
+    this[_program] = program;
+    const gl = program.gl;
+
+    program.extraAttribute = program.extraAttribute || {};
+    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
+      program.extraAttribute.color = colorAttribute;
     }
-    return this;
-  }
 
-  /* override */
-  removeAllListeners(type, options = {}) {
-    super.removeAllListeners(type, options);
-    if(this.body.onBeforeRender && type === 'beforerender') {
-      const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
-      if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
-    } else if(this.body.onAfterRender && type === 'afterrender') {
-      const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
-      if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
+    const geometry = this[_geometry];
+    if(geometry) {
+      const mode = this.attributes.mode;
+      const mesh = new Mesh(program.gl, {mode: gl[mode], geometry, program});
+      this.setBody(mesh);
     }
-    return this;
   }
 
-  /* override */
-  removeEventListener(type, listener, options = {}) {
-    super.removeEventListener(type, listener, options);
-    if(this.body.onBeforeRender && type === 'beforerender') {
-      const listeners = this.getListeners('beforerender');
-      if(listeners.length === 0) {
-        const idx = this.body.beforeRenderCallbacks.indexOf(this[_beforeRender]);
-        if(idx >= 0) this.body.beforeRenderCallbacks.splice(idx, 1);
-      }
-    } else if(this.body.onAfterRender && type === 'afterrender') {
-      const listeners = this.getListeners('afterrender');
-      if(listeners.length === 0) {
-        const idx = this.body.afterRenderCallbacks.indexOf(this[_afterRender]);
-        if(idx >= 0) this.body.afterRenderCallbacks.splice(idx, 1);
-      }
-    }
-    return this;
-  }
-
-  remesh() {
-    this.setGeometry();
-  }
-
-  /* override */
   updateMesh() {
     if(this.program) {
       const oldMesh = this.mesh;
       this.remesh();
       const newMesh = this.mesh;
       this.dispatchEvent({type: 'updatemesh', detail: {oldMesh, newMesh}});
-    }
-  }
-
-  /* override */
-  onPropertyChange(key, newValue, oldValue) {
-    super.onPropertyChange(key, newValue, oldValue);
-    if(key === 'colors' || key === 'colorDivisor') {
-      if(newValue !== oldValue) {
-        const program = this.program;
-        if(program && program.extraAttribute.color) {
-          const geometry = this.geometry;
-          colorAttribute(this, geometry);
-        }
-      }
-    }
-    if(key === 'mode') {
-      const program = this.program;
-      if(program) {
-        this.body.mode = program.gl[newValue];
-      }
     }
   }
 }

@@ -25,6 +25,9 @@ const _post = Symbol('post');
 
 const _renderOptions = Symbol('renderOptions');
 
+const _root = Symbol('root');
+const _camera = Symbol('camera');
+
 export default class Layer3D extends Layer {
   constructor(options = {}) {
     if(options.contextType === '2d') {
@@ -70,21 +73,21 @@ export default class Layer3D extends Layer {
     options.camera = options.camera || {};
     const camera = new Camera(gl, options.camera);
     camera.connect(this, 0);
-    this.camera = camera;
-    this.root = new Group3d();
-    this.root.connect(this, 0);
+    this[_camera] = camera;
+    this[_root] = new Group3d();
+    this[_root].connect(this, 0);
   }
 
   get body() {
-    return this.root ? this.root.body : null;
+    return this[_root] ? this[_root].body : null;
+  }
+
+  get camera() {
+    return this[_camera];
   }
 
   get gl() {
     return this.renderer.gl;
-  }
-
-  get post() {
-    return this[_post];
   }
 
   get meshes() {
@@ -97,6 +100,26 @@ export default class Layer3D extends Layer {
     return ret;
   }
 
+  get orbitControls() {
+    return this[_controls];
+  }
+
+  get post() {
+    return this[_post];
+  }
+
+  get renderOptions() {
+    return this[_renderOptions];
+  }
+
+  get root() {
+    return this[_root];
+  }
+
+  get shadow() {
+    return this[_shadow];
+  }
+
   get autoClear() {
     return this.renderer.autoClear;
   }
@@ -105,52 +128,14 @@ export default class Layer3D extends Layer {
     this.renderer.autoClear = value;
   }
 
-  /* override */
-  setResolution({width, height}) {
-    super.setResolution({width, height});
-
-    const displayRatio = this.displayRatio;
-    const renderer = this.renderer;
-
-    this.renderer.dpr = displayRatio;
-
-    renderer.width = width / displayRatio;
-    renderer.height = height / displayRatio;
-
-    const gl = renderer.gl;
-    gl.canvas.width = width;
-    gl.canvas.height = height;
-
-    const camera = this.camera;
-    if(camera && this.options.camera.preserveAspect !== false) {
-      camera.attributes.aspect = width / height;
-    }
-    if(this[_post]) {
-      this[_post].resize();
-    }
+  bindTarget(target, options = {}) {
+    this[_targets].push({target, options});
   }
 
-  setUniforms(program, uniforms) {
-    super.setUniforms(uniforms);
-    Object.entries(uniforms).forEach(([key, value]) => {
-      program.uniforms[key] = {value};
-    });
+  bindTime(program, opts = {}) {
+    program.timeline = this.timeline.fork(opts);
+    this[_utime].push(program);
     this.forceUpdate();
-  }
-
-  setLights(program, {directionalLight = this[_directionalLight],
-    pointLightPosition = this[_pointLightPosition],
-    pointLightColor = this[_pointLightColor],
-    ambientColor = this[_ambientColor]} = {}) {
-    program.uniforms.directionalLight.value = directionalLight;
-    program.uniforms.pointLightPosition.value = pointLightPosition;
-    program.uniforms.pointLightColor.value = new Color(pointLightColor);
-    program.uniforms.ambientColor.value = new Color(ambientColor);
-    this.forceUpdate();
-  }
-
-  traverse(callback) {
-    return this.root.traverse(callback);
   }
 
   /* {vertex, fragment, uniforms = {}} */
@@ -173,72 +158,6 @@ export default class Layer3D extends Layer {
     return program;
   }
 
-  get orbitControls() {
-    return this[_controls];
-  }
-
-  setOrbit(options = {}) {
-    if(!this[_orbitChecker]) {
-      this[_orbitChecker] = [
-        () => { this[_orbitChecking] = true },
-        () => { this[_orbitChecking] = false },
-        () => { if(this[_orbitChecking]) { this.forceUpdate() } },
-        () => { this.forceUpdate() },
-      ];
-    }
-    const camera = this.camera;
-    if(this[_controls]) {
-      this[_controls].remove();
-      this.removeEventListener('mousedown', this[_orbitChecker][0]);
-      this.removeEventListener('mouseup', this[_orbitChecker][1]);
-      this.removeEventListener('mousemove', this[_orbitChecker][2]);
-      this.removeEventListener('touchstart', this[_orbitChecker][3]);
-      this.removeEventListener('touchend', this[_orbitChecker][3]);
-      this.removeEventListener('touchmove', this[_orbitChecker][3]);
-      this.removeEventListener('wheel', this[_orbitChecker][3], false);
-    }
-    if(options == null) {
-      delete this[_controls];
-      return null;
-    }
-    const target = options.target || [0, 0, 0];
-    options.target = new Vec3(...target);
-    options.element = options.element || this.parent.container;
-    this[_controls] = new Orbit(camera.body, options);
-    this.addEventListener('mousedown', this[_orbitChecker][0]);
-    this.addEventListener('mouseup', this[_orbitChecker][1]);
-    this.addEventListener('mousemove', this[_orbitChecker][2]);
-    this.addEventListener('touchstart', this[_orbitChecker][3]);
-    this.addEventListener('touchend', this[_orbitChecker][3]);
-    this.addEventListener('touchmove', this[_orbitChecker][3]);
-    this.addEventListener('wheel', this[_orbitChecker][3], false);
-    return this[_controls];
-  }
-
-  setRaycast(enable = true) {
-    if(enable) {
-      const gl = this.renderer.gl;
-      this.raycast = new Raycast(gl);
-    } else {
-      delete this.raycast;
-    }
-  }
-
-  bindTime(program, opts = {}) {
-    program.timeline = this.timeline.fork(opts);
-    this[_utime].push(program);
-    this.forceUpdate();
-  }
-
-  unbindTime(program) {
-    const idx = this[_utime].indexOf(program);
-    if(idx >= 0) {
-      this[_utime].splice(idx, 1);
-      return true;
-    }
-    return false;
-  }
-
   createText(text, {font, fillColor = '#000', strokeColor, strokeWidth = 1}) {
     const textImage = ENV.createText(text, {font, fillColor, strokeColor, strokeWidth}).image;
     return this.createTexture({
@@ -247,26 +166,6 @@ export default class Layer3D extends Layer {
       width: textImage.width,
       height: textImage.height,
     });
-  }
-
-  async loadImage(src) {
-    const image = await ENV.loadImage(src);
-    return image;
-  }
-
-  async loadImages(imgs) {
-    const res = await Promise.all(imgs.map(src => ENV.loadImage(src, {useImageBitmap: false})));
-    return res;
-  }
-
-  async loadShader({vertex, fragment}) {
-    const data = await Promise.all([(await fetch(vertex)).text(), (await fetch(fragment)).text()]);
-    return {vertex: data[0], fragment: data[1]};
-  }
-
-  async loadModel(src) {
-    const data = await (await fetch(src)).json();
-    return data;
   }
 
   createTexture(opts) {
@@ -305,18 +204,9 @@ export default class Layer3D extends Layer {
     return texture;
   }
 
-  createShadow({width = this.canvas.width, height = this.canvas.height, light = this.camera} = {}) {
+  createShadow({width = this.canvas.width, height = this.canvas.height, light = this[_camera]} = {}) {
     const gl = this.renderer.gl;
     return new Shadow(gl, {width, height, light: light.body});
-  }
-
-  setShadow(shadow) {
-    this[_shadow] = shadow;
-    this.forceUpdate();
-  }
-
-  get shadow() {
-    return this[_shadow];
   }
 
   /* override */
@@ -329,7 +219,7 @@ export default class Layer3D extends Layer {
         2.0 * (event.x / renderer.width) - 1.0,
         2.0 * (1.0 - event.y / renderer.height) - 1.0
       );
-      raycast.castMouse(this.camera.body, mouse);
+      raycast.castMouse(this[_camera].body, mouse);
       const hits = raycast.intersectBounds(this.meshes);
       if(hits && hits.length) {
         let target;
@@ -353,29 +243,24 @@ export default class Layer3D extends Layer {
     return Block.prototype.dispatchPointerEvent.call(this, event);
   }
 
-  bindTarget(target, options = {}) {
-    this[_targets].push({target, options});
+  async loadImage(src) {
+    const image = await ENV.loadImage(src);
+    return image;
   }
 
-  unbindTarget(target) {
-    const idx = this[_targets].indexOf(target);
-    if(idx >= 0) {
-      this[_targets].splice(idx, 1);
-      return true;
-    }
-    return false;
+  async loadImages(imgs) {
+    const res = await Promise.all(imgs.map(src => ENV.loadImage(src, {useImageBitmap: false})));
+    return res;
   }
 
-  renderTarget(target, options = {}) {
-    return target.renderBy(this, options);
+  async loadModel(src) {
+    const data = await (await fetch(src)).json();
+    return data;
   }
 
-  setRenderOptions(opts) {
-    Object.assign(this[_renderOptions], opts);
-  }
-
-  get renderOptions() {
-    return this[_renderOptions];
+  async loadShader({vertex, fragment}) {
+    const data = await Promise.all([vertex && (await fetch(vertex)).text(), fragment && (await fetch(fragment)).text()]);
+    return {vertex: data[0], fragment: data[1]};
   }
 
   /* override */
@@ -406,6 +291,138 @@ export default class Layer3D extends Layer {
       this.forceUpdate();
     }
     this.dispatchEvent({type: 'afterrender', detail: {camera: camera.body}});
+  }
+
+  renderTarget(target, options = {}) {
+    return target.renderBy(this, options);
+  }
+
+  setLights(program, {directionalLight = this[_directionalLight],
+    pointLightPosition = this[_pointLightPosition],
+    pointLightColor = this[_pointLightColor],
+    ambientColor = this[_ambientColor]} = {}) {
+    program.uniforms.directionalLight.value = directionalLight;
+    program.uniforms.pointLightPosition.value = pointLightPosition;
+    program.uniforms.pointLightColor.value = new Color(pointLightColor);
+    program.uniforms.ambientColor.value = new Color(ambientColor);
+    this.forceUpdate();
+  }
+
+  setOrbit(options = {}) {
+    if(!this[_orbitChecker]) {
+      this[_orbitChecker] = [
+        () => { this[_orbitChecking] = true },
+        () => { this[_orbitChecking] = false },
+        () => { if(this[_orbitChecking]) { this.forceUpdate() } },
+        () => { this.forceUpdate() },
+      ];
+    }
+    const camera = this[_camera];
+    if(this[_controls]) {
+      this[_controls].remove();
+      this.removeEventListener('mousedown', this[_orbitChecker][0]);
+      this.removeEventListener('mouseup', this[_orbitChecker][1]);
+      this.removeEventListener('mousemove', this[_orbitChecker][2]);
+      this.removeEventListener('touchstart', this[_orbitChecker][3]);
+      this.removeEventListener('touchend', this[_orbitChecker][3]);
+      this.removeEventListener('touchmove', this[_orbitChecker][3]);
+      this.removeEventListener('wheel', this[_orbitChecker][3], false);
+    }
+    if(options == null) {
+      delete this[_controls];
+      return null;
+    }
+    const target = options.target || [0, 0, 0];
+    options.target = new Vec3(...target);
+    options.element = options.element || this.parent.container;
+    this[_controls] = new Orbit(camera.body, options);
+    this.addEventListener('mousedown', this[_orbitChecker][0]);
+    this.addEventListener('mouseup', this[_orbitChecker][1]);
+    this.addEventListener('mousemove', this[_orbitChecker][2]);
+    this.addEventListener('touchstart', this[_orbitChecker][3]);
+    this.addEventListener('touchend', this[_orbitChecker][3]);
+    this.addEventListener('touchmove', this[_orbitChecker][3]);
+    this.addEventListener('wheel', this[_orbitChecker][3], false);
+    return this[_controls];
+  }
+
+  setRaycast(enable = true) {
+    if(enable) {
+      const gl = this.renderer.gl;
+      this.raycast = new Raycast(gl);
+    } else {
+      delete this.raycast;
+    }
+  }
+
+  setRenderOptions(opts) {
+    Object.assign(this[_renderOptions], opts);
+  }
+
+  /* override */
+  setResolution({width, height}) {
+    super.setResolution({width, height});
+
+    const displayRatio = this.displayRatio;
+    const renderer = this.renderer;
+
+    this.renderer.dpr = displayRatio;
+
+    renderer.width = width / displayRatio;
+    renderer.height = height / displayRatio;
+
+    const gl = renderer.gl;
+    gl.canvas.width = width;
+    gl.canvas.height = height;
+
+    const camera = this[_camera];
+    if(camera && this.options.camera.preserveAspect !== false) {
+      camera.attributes.aspect = width / height;
+    }
+    if(this[_post]) {
+      this[_post].resize();
+    }
+  }
+
+  setShadow(shadow) {
+    this[_shadow] = shadow;
+    this.forceUpdate();
+  }
+
+  setUniforms(program, uniforms) {
+    super.setUniforms(uniforms);
+    Object.entries(uniforms).forEach(([key, value]) => {
+      if(value && value.value) {
+        program.uniforms[key] = value;
+      } else if(program.uniforms[key]) {
+        program.uniforms[key].value = value;
+      } else {
+        program.uniforms[key] = {value};
+      }
+    });
+    this.forceUpdate();
+  }
+
+  traverse(callback) {
+    return this[_root].traverse(callback);
+  }
+
+  unbindTime(program) {
+    const idx = this[_utime].indexOf(program);
+    if(idx >= 0) {
+      this[_utime].splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
+  unbindTarget(target) {
+    const idx = this[_targets].indexOf(target);
+    if(idx >= 0) {
+      this[_targets].splice(idx, 1);
+      return true;
+    }
+    return false;
   }
 }
 

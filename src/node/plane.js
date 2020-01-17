@@ -6,18 +6,6 @@ import Mesh3d from './mesh3d';
 export default class Plane extends Mesh3d {
   static Attr = PlaneAttr;
 
-  remesh() {
-    const gl = this.program.gl;
-    const {width, height, widthSegments, heightSegments} = this.attributes;
-
-    const geometry = new _Plane(gl, {
-      width,
-      height,
-      widthSegments,
-      heightSegments});
-    this.setGeometry(geometry);
-  }
-
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
@@ -29,6 +17,19 @@ export default class Plane extends Mesh3d {
         this.updateMesh();
       }
     }
+  }
+
+  /* override */
+  remesh() {
+    const gl = this.program.gl;
+    const {width, height, widthSegments, heightSegments} = this.attributes;
+
+    const geometry = new _Plane(gl, {
+      width,
+      height,
+      widthSegments,
+      heightSegments});
+    this.setGeometry(geometry);
   }
 }
 

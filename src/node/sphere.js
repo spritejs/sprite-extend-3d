@@ -6,22 +6,6 @@ import Mesh3d from './mesh3d';
 export default class Sphere extends Mesh3d {
   static Attr = SphereAttr;
 
-  remesh() {
-    const gl = this.program.gl;
-    const {radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength} = this.attributes;
-
-    const geometry = new _Sphere(gl, {
-      radius,
-      widthSegments,
-      heightSegments,
-      phiStart,
-      phiLength,
-      thetaStart,
-      thetaLength});
-
-    this.setGeometry(geometry);
-  }
-
   /* override */
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
@@ -36,6 +20,23 @@ export default class Sphere extends Mesh3d {
         this.updateMesh();
       }
     }
+  }
+
+  /* override */
+  remesh() {
+    const gl = this.program.gl;
+    const {radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength} = this.attributes;
+
+    const geometry = new _Sphere(gl, {
+      radius,
+      widthSegments,
+      heightSegments,
+      phiStart,
+      phiLength,
+      thetaStart,
+      thetaLength});
+
+    this.setGeometry(geometry);
   }
 }
 

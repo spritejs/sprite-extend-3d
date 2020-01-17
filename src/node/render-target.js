@@ -3,6 +3,9 @@ import {RenderTarget as _RenderTarget} from 'ogl';
 import Group3d from './group3d';
 import Camera from './camera';
 
+const _target = Symbol('target');
+const _buffer = Symbol('buffer');
+
 export default class RenderTarget extends Group3d {
   constructor(gl, {
     width = gl.canvas.width,
@@ -44,10 +47,10 @@ export default class RenderTarget extends Group3d {
       premultiplyAlpha};
 
     this.options = options;
-    this.target = new _RenderTarget(gl, options);
+    this[_target] = new _RenderTarget(gl, options);
 
     if(buffer) {
-      this.buffer = new _RenderTarget(gl, this.options);
+      this[_buffer] = new _RenderTarget(gl, this.options);
     }
 
     if(cameraOptions) {
@@ -57,26 +60,26 @@ export default class RenderTarget extends Group3d {
     }
   }
 
-  swap() {
-    if(this.buffer == null) {
-      throw new Error('No buffer to swap. You must set buffer option to true when creating the renderTarget object.');
-    }
-    [this.target, this.buffer] = [this.buffer, this.target];
-  }
-
   get texture() {
-    return this.buffer ? this.buffer.texture : this.target.texture;
+    return this[_buffer] ? this[_buffer].texture : this[_target].texture;
   }
 
   renderBy(layer, {root = this, ...options} = {}) {
     const camera = this.camera ? this.camera.body : null;
-    const target = this.target;
+    const target = this[_target];
 
     this.dispatchEvent({type: 'beforerender', detail: {scene: root, camera, renderer: layer}});
 
     layer.renderer.render({scene: root.body, camera, target, ...options});
     this.dispatchEvent({type: 'afterrender', detail: {scene: root, camera, renderer: layer}});
-    return this.target.texture;
+    return this[_target].texture;
+  }
+
+  swap() {
+    if(this[_buffer] == null) {
+      throw new Error('No buffer to swap. You must set buffer option to true when creating the renderTarget object.');
+    }
+    [this[_target], this[_buffer]] = [this[_buffer], this[_target]];
   }
 }
 

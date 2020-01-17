@@ -31,6 +31,7 @@ export default class Group3d extends Node3d {
   }
 
   get meshes() {
+    if(this.attributes.display === 'none') return [];
     const children = this.children;
     const ret = [];
     for(let i = 0; i < children.length; i++) {
