@@ -16,6 +16,7 @@ export default class GameraAttr extends Node3dAttr {
       right: undefined,
       bottom: undefined,
       top: undefined,
+      zoom: 1,
       mode: 'perspective', // perspective - 透视相机， orthographic - 正交投影相机
     });
   }
@@ -82,6 +83,14 @@ export default class GameraAttr extends Node3dAttr {
 
   set bottom(value) {
     this[setAttribute]('bottom', value);
+  }
+
+  get zoom() {
+    return this[getAttribute]('zoom');
+  }
+
+  set zoom(value) {
+    this[setAttribute]('zoom', value);
   }
 
   get mode() {

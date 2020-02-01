@@ -64,9 +64,10 @@ export default class Camera extends Group3d {
         const value = key === 'fov' ? newValue * (Math.PI / 180) : newValue;
         body.perspective({[key]: value});
       }
-      if(mode === 'orthographic' && (key === 'left' || key === 'right' || key === 'bottom' || key === 'top')) {
-        const {left, right, bottom, top} = this.attributes;
-        body.orthographic({left, right, bottom, top});
+      if(mode === 'orthographic' && (key === 'left' || key === 'right' || key === 'bottom' || key === 'top' || key === 'zoom')) {
+        // const {left, right, bottom, top} = this.attributes;
+        // body.orthographic({left, right, bottom, top});
+        body.orthographic({[key]: newValue});
       }
       if(key === 'mode') {
         if(newValue === 'perspective') body.perspective();
