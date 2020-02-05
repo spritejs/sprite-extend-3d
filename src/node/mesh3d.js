@@ -58,6 +58,25 @@ function getNormal(a, b, c) {
 export default class Mesh3d extends Group3d {
   static Attr = Mesh3dAttr;
 
+  static fromMesh(mesh) {
+    const program = mesh.program;
+    const geometry = mesh.geometry;
+    const model = mesh.geometry.attributes;
+    const node = new Mesh3d(program);
+    node[_geometry] = geometry;
+    node[_model] = model;
+    node.setBody(mesh);
+    let listeners = node.getListeners('beforerender');
+    if(listeners.length) {
+      mesh.onBeforeRender(node[_beforeRender]);
+    }
+    listeners = node.getListeners('afterrender');
+    if(listeners.length) {
+      mesh.onAfterRender(node[_afterRender]);
+    }
+    return node;
+  }
+
   constructor(program, {model, ...attrs} = {}) {
     if(program && !(program instanceof Program)) {
       attrs = program;
@@ -108,6 +127,10 @@ export default class Mesh3d extends Group3d {
 
   get program() {
     return this[_program];
+  }
+
+  _greateMesh({geometry, mode, program}) {
+    return new Mesh(program.gl, {geometry, mode, program});
   }
 
   /* override */
@@ -238,7 +261,7 @@ export default class Mesh3d extends Group3d {
     this[_geometry] = geometry;
     this[_model] = geometry.attributes;
     const mode = this.attributes.mode;
-    const mesh = new Mesh(gl, {mode: gl[mode], geometry, program});
+    const mesh = this._greateMesh({mode: gl[mode], geometry, program});
     this.setBody(mesh);
     let listeners = this.getListeners('beforerender');
     if(listeners.length) {
@@ -262,7 +285,7 @@ export default class Mesh3d extends Group3d {
     const geometry = this[_geometry];
     if(geometry) {
       const mode = this.attributes.mode;
-      const mesh = new Mesh(program.gl, {mode: gl[mode], geometry, program});
+      const mesh = this._greateMesh({mode: gl[mode], geometry, program});
       this.setBody(mesh);
     }
   }

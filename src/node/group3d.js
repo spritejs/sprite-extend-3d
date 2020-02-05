@@ -121,7 +121,7 @@ export default class Group3d extends Node3d {
     }
     this[_children][refIdx] = el;
     el.connect(this, ref.zOrder);
-    ref.disconnect();
+    ref.disconnect(this);
     return el;
   }
 
@@ -136,7 +136,7 @@ export default class Group3d extends Node3d {
     const idx = this[_children].indexOf(el);
     if(idx >= 0) {
       this[_children].splice(idx, 1);
-      el.disconnect();
+      el.disconnect(this);
       return el;
     }
     return null;
