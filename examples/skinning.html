@@ -149,13 +149,14 @@
     `;
 
     const {Scene} = spritejs;
-    const {Skin} = spritejs.ext3d;
+    const {Skin, Plane} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
       displayRatio: 2,
     });
     const layer = scene.layer3d('fglayer', {
+      alpha: false,
       camera: {
         fov: 35,
       },
@@ -171,16 +172,30 @@
         fragment,
         texture,
       });
-      const model = await layer.loadModel('https://s3.ssl.qhres.com/static/e9139173907776d5.json');
+      const model = layer.loadModel('https://s3.ssl.qhres.com/static/e9139173907776d5.json');
       const skin = new Skin(program, {model});
       skin.attr({
         y: -1,
         scale: 0.01,
       });
 
-      // console.log(skin.mesh.program, skin.mesh.geometry);
+      const shadowTexture = layer.createTexture('https://p1.ssl.qhimg.com/d/inn/8dd37178a756/snout-shadow.jpg');
+      const shadowProgram = layer.createProgram({
+        vertex: shadowVertex,
+        fragment: shadowFragment,
+        texture: shadowTexture,
+        transparent: true,
+        cullFace: false,
+      });
+      const plan = new Plane(shadowProgram, {width: 7, height: 7});
+      plan.attr({
+        rotateX: -90,
+        y: -1,
+      });
+      layer.append(plan);
 
       const animation = skin.addAnimationFrames(animationData);
+
       layer.append(skin);
       layer.setOrbit();
       layer.tick(() => {

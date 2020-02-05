@@ -5,17 +5,40 @@ import Mesh3d from './mesh3d';
 const _rig = Symbol('rig');
 const _animationFrames = [];
 
+function initAnimation(body, animationFrames) {
+  const animation = body.addAnimation(animationFrames.data);
+  const node = body._node;
+  const elapsed = animationFrames.elapsed || 0;
+  if(elapsed) {
+    animation.elapsed = elapsed;
+    body.update();
+    node.forceUpdate();
+  }
+  Object.defineProperties(animationFrames, {
+    animation: {
+      get() {
+        return animation;
+      },
+      enumerable: true,
+    },
+    elapsed: {
+      get() {
+        return animation.elapsed;
+      },
+      set(value) {
+        animation.elapsed = value;
+        body.update();
+        node.forceUpdate();
+      },
+      enumerable: true,
+    },
+  });
+  return animationFrames;
+}
+
 export default class Skin extends Mesh3d {
   constructor(program, {model, ...attrs} = {}) {
-    const rig = model.rig;
-    super(program, {...attrs});
-    this[_rig] = rig;
-    delete model.rig;
-    this.setGeometry(model);
-    model.rig = rig;
-    if(model !== this.geometry) {
-      this.geometry.rig = rig;
-    }
+    super(program, {model, ...attrs});
     this[_animationFrames] = [];
   }
 
@@ -24,7 +47,10 @@ export default class Skin extends Mesh3d {
   }
 
   get bones() {
-    return this[_rig].bones;
+    if(this[_rig]) {
+      return this[_rig].bones;
+    }
+    return null;
   }
 
   /* override */
@@ -34,23 +60,32 @@ export default class Skin extends Mesh3d {
   }
 
   addAnimationFrames(animationData) {
+    const animationFrames = {data: animationData};
+
     const body = this.body;
-    const animation = body.addAnimation(animationData);
-    const that = this;
-    const animationFrames = {
-      animation,
-      get elapsed() {
-        return animation.elapsed;
-      },
-      set elapsed(value) {
-        animation.elapsed = value;
-        body.update();
-        that.forceUpdate();
-      },
-    };
+    if(body.addAnimation) {
+      initAnimation(body, animationFrames);
+    }
 
     this[_animationFrames].push(animationFrames);
     return animationFrames;
+  }
+
+  /* override */
+  setGeometry(model = this.model) {
+    const rig = model.rig;
+    this[_rig] = rig;
+    delete model.rig;
+    super.setGeometry(model);
+    model.rig = rig;
+    if(model !== this.geometry) {
+      this.geometry.rig = rig;
+    }
+    this.animationFrames.forEach((frames) => {
+      if(!frames.animation) {
+        initAnimation(this.body, frames);
+      }
+    });
   }
 }
 
