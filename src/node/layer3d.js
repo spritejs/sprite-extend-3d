@@ -1,8 +1,9 @@
 import {Layer, registerNode, ENV, Block, Color} from 'spritejs';
-import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Post} from 'ogl';
+import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Post, GLTFLoader, Mesh} from 'ogl';
 import Shadow from '../helper/shadow';
 import Camera from './camera';
 import Group3d from './group3d';
+import Mesh3d from './mesh3d';
 
 const defaultOption = {
   depth: true,
@@ -241,6 +242,29 @@ export default class Layer3D extends Layer {
       }
     }
     return Block.prototype.dispatchPointerEvent.call(this, event);
+  }
+
+  async loadGLTF(src) {
+    const gl = this.renderer.gl;
+    const gltf = await GLTFLoader.load(gl, src);
+    gltf.scene.forEach((node) => {
+      node.traverse((_node) => {
+        let el;
+        if(_node instanceof Mesh) {
+          el = Mesh3d.fromMesh(_node);
+        } else {
+          el = new Group3d();
+          el.setBody(_node, false);
+        }
+        const parent = el.body.parent;
+        if(parent) {
+          const parentNode = parent._node;
+          parentNode.appendChild(el);
+        }
+      });
+      this.appendChild(node._node);
+    });
+    return gltf;
   }
 
   async loadImage(src) {
