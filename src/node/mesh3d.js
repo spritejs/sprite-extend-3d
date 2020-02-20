@@ -129,7 +129,7 @@ export default class Mesh3d extends Group3d {
     return this[_program];
   }
 
-  _greateMesh({geometry, mode, program}) {
+  _createMesh({geometry, mode, program}) {
     return new Mesh(program.gl, {geometry, mode, program});
   }
 
@@ -261,7 +261,7 @@ export default class Mesh3d extends Group3d {
     this[_geometry] = geometry;
     this[_model] = geometry.attributes;
     const mode = this.attributes.mode;
-    const mesh = this._greateMesh({mode: gl[mode], geometry, program});
+    const mesh = this._createMesh({mode: gl[mode], geometry, program});
     this.setBody(mesh);
     let listeners = this.getListeners('beforerender');
     if(listeners.length) {
@@ -285,7 +285,7 @@ export default class Mesh3d extends Group3d {
     const geometry = this[_geometry];
     if(geometry) {
       const mode = this.attributes.mode;
-      const mesh = this._greateMesh({mode: gl[mode], geometry, program});
+      const mesh = this._createMesh({mode: gl[mode], geometry, program});
       this.setBody(mesh);
     }
   }

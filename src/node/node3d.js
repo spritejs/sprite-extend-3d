@@ -80,7 +80,7 @@ export default class Node3d extends Node {
     if(this[_body]) {
       return this[_body].zDepth;
     }
-    return null;
+    return 0;
   }
 
 

@@ -4,6 +4,7 @@
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
   "module": "lib/index.js",
+  "typings": "typings/sprite-extend-3d.js",
   "scripts": {
     "start": "webpack-dev-server --env.server=examples --watch-poll",
     "compile": "rm -rf lib/* && babel src -d lib",
@@ -35,6 +36,6 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "ogl": "github:oframe/ogl",
-    "spritejs": "^3.1.23"
+    "spritejs": "^3.2.5"
   }
 }

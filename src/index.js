@@ -1,4 +1,4 @@
-import {GPGPU, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler, GLTFLoader} from 'ogl';
+import {GPGPU, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler} from 'ogl';
 import {Scene} from 'spritejs';
 import Layer3D from './node/layer3d';
 import Mesh3d from './node/mesh3d';
@@ -52,5 +52,4 @@ export {
   Quat,
   Euler,
   GPGPU,
-  GLTFLoader,
 };

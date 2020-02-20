@@ -71,10 +71,13 @@ export default class Layer3D extends Layer {
       this[_post] = new Post(gl, options.post);
     }
 
-    options.camera = options.camera || {};
-    const camera = new Camera(gl, options.camera);
-    camera.connect(this, 0);
-    this[_camera] = camera;
+    if(options.camera) {
+      const camera = new Camera(gl, options.camera);
+      camera.connect(this, 0);
+      this[_camera] = camera;
+    } else {
+      this[_camera] = {body: null};
+    }
     this[_root] = new Group3d();
     this[_root].connect(this, 0);
   }
@@ -84,7 +87,10 @@ export default class Layer3D extends Layer {
   }
 
   get camera() {
-    return this[_camera];
+    if(this[_camera] && this[_camera].body) {
+      return this[_camera];
+    }
+    return null;
   }
 
   get gl() {
@@ -159,7 +165,7 @@ export default class Layer3D extends Layer {
     return program;
   }
 
-  createText(text, {font, fillColor = '#000', strokeColor, strokeWidth = 1}) {
+  createText(text, {font = '16px Helvetica,Arial,sans-serif', fillColor, strokeColor, strokeWidth = 1} = {}) {
     const textImage = ENV.createText(text, {font, fillColor, strokeColor, strokeWidth}).image;
     return this.createTexture({
       image: textImage,
@@ -413,17 +419,23 @@ export default class Layer3D extends Layer {
     this.forceUpdate();
   }
 
-  setUniforms(program, uniforms) {
+  setUniforms(program, uniforms = this.uniforms || {}) {
+    if(!(program instanceof Program)) { // override
+      uniforms = program || {};
+      program = null;
+    }
     super.setUniforms(uniforms);
-    Object.entries(uniforms).forEach(([key, value]) => {
-      if(value && value.value) {
-        program.uniforms[key] = value;
-      } else if(program.uniforms[key]) {
-        program.uniforms[key].value = value;
-      } else {
-        program.uniforms[key] = {value};
-      }
-    });
+    if(program) {
+      Object.entries(uniforms).forEach(([key, value]) => {
+        if(value && value.value) {
+          program.uniforms[key] = value;
+        } else if(program.uniforms[key]) {
+          program.uniforms[key].value = value;
+        } else {
+          program.uniforms[key] = {value};
+        }
+      });
+    }
     this.forceUpdate();
   }
 

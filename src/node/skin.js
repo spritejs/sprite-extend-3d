@@ -54,7 +54,7 @@ export default class Skin extends Mesh3d {
   }
 
   /* override */
-  _greateMesh({geometry, program}) {
+  _createMesh({geometry, program}) {
     const rig = this[_rig];
     return new _Skin(program.gl, {rig, geometry, program});
   }
