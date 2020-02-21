@@ -55,7 +55,7 @@ module.exports = function (env = {}) {
     },
 
     externals: {
-      spritejs: 'spritejs',
+      spritejs: env.module ? 'require(\'spritejs\')' : 'spritejs',
     },
     // Don't follow/bundle these modules, but request them at runtime from the environment
 

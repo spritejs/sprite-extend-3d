@@ -8806,7 +8806,7 @@ class GLTFAnimation {
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = spritejs;
+module.exports = require('spritejs');
 
 /***/ }),
 /* 47 */
@@ -10961,7 +10961,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 const _rig = Symbol('rig');
 
-const _animationFrames = [];
+const _animations = [];
 
 function initAnimation(body, animationFrames) {
   const animation = body.addAnimation(animationFrames.data);
@@ -11009,11 +11009,7 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
     super(program, _objectSpread({
       model
     }, attrs));
-    this[_animationFrames] = [];
-  }
-
-  get animationFrames() {
-    return this[_animationFrames];
+    this[_animations] = [];
   }
 
   get bones() {
@@ -11038,7 +11034,7 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
     });
   }
 
-  addAnimationFrames(animationData) {
+  addAnimation(animationData) {
     const animationFrames = {
       data: animationData
     };
@@ -11048,7 +11044,7 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
       initAnimation(body, animationFrames);
     }
 
-    this[_animationFrames].push(animationFrames);
+    this[_animations].push(animationFrames);
 
     return animationFrames;
   }
@@ -11066,7 +11062,7 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
       this.geometry.rig = rig;
     }
 
-    this.animationFrames.forEach(frames => {
+    this[_animations].forEach(frames => {
       if (!frames.animation) {
         initAnimation(this.body, frames);
       }

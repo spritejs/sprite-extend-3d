@@ -3,7 +3,7 @@ import {Skin as _Skin} from 'ogl';
 import Mesh3d from './mesh3d';
 
 const _rig = Symbol('rig');
-const _animationFrames = [];
+const _animations = [];
 
 function initAnimation(body, animationFrames) {
   const animation = body.addAnimation(animationFrames.data);
@@ -39,11 +39,7 @@ function initAnimation(body, animationFrames) {
 export default class Skin extends Mesh3d {
   constructor(program, {model, ...attrs} = {}) {
     super(program, {model, ...attrs});
-    this[_animationFrames] = [];
-  }
-
-  get animationFrames() {
-    return this[_animationFrames];
+    this[_animations] = [];
   }
 
   get bones() {
@@ -59,7 +55,7 @@ export default class Skin extends Mesh3d {
     return new _Skin(program.gl, {rig, geometry, program});
   }
 
-  addAnimationFrames(animationData) {
+  addAnimation(animationData) {
     const animationFrames = {data: animationData};
 
     const body = this.body;
@@ -67,7 +63,7 @@ export default class Skin extends Mesh3d {
       initAnimation(body, animationFrames);
     }
 
-    this[_animationFrames].push(animationFrames);
+    this[_animations].push(animationFrames);
     return animationFrames;
   }
 
@@ -81,7 +77,7 @@ export default class Skin extends Mesh3d {
     if(model !== this.geometry) {
       this.geometry.rig = rig;
     }
-    this.animationFrames.forEach((frames) => {
+    this[_animations].forEach((frames) => {
       if(!frames.animation) {
         initAnimation(this.body, frames);
       }

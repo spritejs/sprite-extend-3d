@@ -3,6 +3,67 @@ import { Node, Attrs, Resolution, Event, Layer } from 'spritejs';
 export = ext3d; // make it a module
 
 declare namespace ext3d {
+  class Renderer3d {
+    dpr: number;
+    alpha: boolean;
+    color: boolean;
+    depth: boolean;
+    stencil: boolean;
+    antialias: boolean;
+    autoClear: boolean;
+    isWebgl2: boolean;
+    gl: WebGL2RenderingContext|WebGLRenderingContext;
+    state: Record<string, any>;
+    extensions: Record<string, any>;
+    vertexAttribDivisor: any;
+    drawArraysInstanced: any;
+    drawElementsInstanced: any;
+    createVertexArray: any;
+    bindVertexArray: any;
+    deleteVertexArray: any;
+    drawBuffers: any;
+    parameters: Record<string, any>;
+    width: number;
+    height: number;
+    setSize(width: number, height: number): void; 
+    setViewport(width: number, height: number): void;
+    enable(id: any): void;
+    disable(id: any): void;
+    setBlendFunc(src: any, dst: any, srcAlpha: any, dstAlpha: any): void;
+    setBlendEquation(modeRGB: any, modeAlpha: any): void;
+    setCullFace(value: any): void;
+    setDepthMask(value: any): void;
+    setDepthFunc(value: any): void;
+    activeTexture(value: any): void;
+    /**
+     * bindFramebuffer({target = this.gl.FRAMEBUFFER, buffer = null} = {})
+     * @param options 
+     */
+    bindFramebuffer(options: Record<string, any>): void;
+    getExtension(extension: any, webgl2Func: any, extFunc: any): any;
+    sortOpaque(a: number, b: number): number;
+    sortTransparent(a: number, b: number): number;
+    sortUI(a: number, b: number): number;
+    /**
+     * getRenderList({scene, camera, frustumCull, sort})
+     * @param options 
+     */
+    getRenderList(options: Record<string, any>): Array<Transform>;
+    /**
+     *  render({
+          scene,
+          camera,
+          target = null,
+          update = true,
+          sort = true,
+          frustumCull = true,
+          clear,
+        })
+     * @param options 
+     */
+    render(options: Record<string, any>): void;
+  }
+
   interface Transform {
     parent: Transform;
     children: Array<Transform>;
@@ -18,7 +79,7 @@ declare namespace ext3d {
     setParent(parent: Transform, notifyParent: boolean): void;
     addChild(child: Transform, notifyChild: boolean): void;
     removeChild(child: Transform, notifyChild: boolean): void;
-    updateMatrixWorld(force: boolean): void;
+    updateMatrixWorld(force?: boolean): void;
     updateMatrix(): void;
     traverse(callback: Function): void;
     decompose(): void;
@@ -53,9 +114,9 @@ declare namespace ext3d {
     lookAt(target: Node3d): this;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     setBody(body: Transform, update: boolean): void;
-    traverse(callback: Function): void;
+    traverse(callback: (el: Node3d) => boolean|void): void;
     updateMatrix(): void;
-    updateMatrixWorld(force: boolean): void;
+    updateMatrixWorld(force?: boolean): void;
     project(v: Array<number>): this;
     unproject(v: Array<number>): this;
     updateFrustum(): this;
@@ -66,7 +127,7 @@ declare namespace ext3d {
     remesh(): void;
   }
 
-  export class Cylinder {
+  export class Cylinder extends Mesh3d {
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     remesh(): void;
   }
@@ -185,7 +246,7 @@ declare namespace ext3d {
     get meshes(): Array<Mesh3d>;
     append(...els: Array<Node3d>): Array<Node3d>;
     appendChild(el: Node3d): Node3d;
-    cloneNode(deep: boolean): Group3d;
+    cloneNode(deep?: boolean): Group3d;
     getElementById(id: string): Node3d|null;
     getElementsByClassName(className: string): Array<Node3d>;
     getElementsByName(name: string): Array<Node3d>;
@@ -230,13 +291,13 @@ declare namespace ext3d {
   export class Layer3d extends Layer {
     constructor(options?: Record<string, any>);
     get body(): Transform;
-    get camera(): Camera|null;
+    get camera(): Camera;
     get gl(): WebGL2RenderingContext|WebGLRenderingContext;
     get meshes(): Array<Mesh>;
     get orbitControls(): any;
     get post(): any;
     get renderOptions(): any;
-    get root(): Transform;
+    get root(): Group3d;
     get shadow(): Shadow|undefined;
     get autoClear(): boolean;
     set autoClear(value: boolean);
@@ -254,7 +315,7 @@ declare namespace ext3d {
      * @param options 
      */
     createText(text: string, options?: Record<string, any>): Texture;
-    createTexture(options: Record<string, any>): Texture;
+    createTexture(options: any): Texture;
     /**
      * createShadow({width = this.canvas.width, height = this.canvas.height, light = this[_camera]} = {})
      * @param param0 
@@ -297,12 +358,12 @@ declare namespace ext3d {
     setShadow(shadow: Shadow): void;
     setUniforms(uniforms: Record<string, any>): void;
     setUniforms(program: Program, uniforms?: Record<string, any>): void;
-    traverse(callback: Function): void;
+    traverse(callback: (el: Node3d) => boolean|void): void;
     unbindTime(program: Program): boolean;
     unbindTarget(target: RenderTarget): boolean;
   }
 
-  export class Mesh3d {
+  export class Mesh3d extends Group3d {
     static fromMesh(mesh: Mesh): Mesh3d;
     /**
      * constructor(program, {model, ...attrs} = {})
@@ -315,7 +376,7 @@ declare namespace ext3d {
     get model(): any;
     get program(): Program;
     addEventListener(type: string, listener: Function, options?: Record<string, any>): this;
-    cloneNode(deep: boolean): Mesh3d;
+    cloneNode(deep?: boolean): Mesh3d;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     remesh(): void;
     removeAllListeners(type: string, options?: Record<string, any>): this;
@@ -326,7 +387,7 @@ declare namespace ext3d {
   }
 
   export class Node3d extends Node {
-    get body(): Transform|null;
+    get body(): Transform;
     get isVisible(): boolean;
     get localMatrix(): Array<number>;
     get matrix(): Array<number>|null;
@@ -343,9 +404,9 @@ declare namespace ext3d {
     lookAt(target: Node3d, invert: boolean): void;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     setBody(body: Transform, update: boolean): void;
-    traverse(callback: Function): void;
+    traverse(callback: (el: Node3d) => boolean|void): void;
     updateMatrix(): void;
-    updateMatrixWorld(force: boolean): void;
+    updateMatrixWorld(force?: boolean): void;
   }
 
   export class Plane extends Mesh3d {
@@ -354,6 +415,7 @@ declare namespace ext3d {
   }
 
   export class RenderTarget extends Group3d {
+    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, attrs: Attrs);
     options: Record<string, any>;
     camera?: Camera;
     get texture(): Texture;
@@ -391,6 +453,18 @@ declare namespace ext3d {
   export class Sphere extends Mesh3d {
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     remesh(): void;
+  }
+
+  interface AnimationFrames extends Array<any> {
+    elapsed: number;
+    readonly animation: any;
+  }
+
+  export class Skin extends Mesh3d {
+    constructor(program: Program, attrs?: Attrs);
+    get bones(): any;
+    addAnimation(animationData: any): AnimationFrames;
+    setGeometry(model: any): void;
   }
 
   class BaseTextureLoader {
@@ -710,7 +784,7 @@ declare namespace ext3d {
     toArray(a: Array<number>, o?: number): Array<number>;    
   }
 
-  export class Euler {
+  export class Euler extends Array {
     /**
      * constructor(x = 0, y = 0, z = 0, order = 'YXZ'
      * @param x 

@@ -52,9 +52,9 @@
     exteriorSettings.tNormal = layer.createTexture('assets/pbr/car-ext-normal.jpg');
     exteriorSettings.tEmissive = layer.createTexture('assets/pbr/car-ext-emissive.jpg');
     exteriorSettings.tOpacity = layer.createTexture('assets/pbr/car-ext-opacity.jpg');
-    exteriorSettings.tLUT = layer.createTexture('assets/pbr/lut.png', {generateMipmaps: false});
-    exteriorSettings.tEnvDiffuse = layer.createTexture('assets/pbr/waterfall-diffuse-RGBM.png', {generateMipmaps: false});
-    exteriorSettings.tEnvSpecular = layer.createTexture('assets/pbr/waterfall-specular-RGBM.png', {generateMipmaps: false});
+    exteriorSettings.tLUT = layer.createTexture({image: 'assets/pbr/lut.png', generateMipmaps: false});
+    exteriorSettings.tEnvDiffuse = layer.createTexture({image: 'assets/pbr/waterfall-diffuse-RGBM.png', generateMipmaps: false});
+    exteriorSettings.tEnvSpecular = layer.createTexture({image: 'assets/pbr/waterfall-specular-RGBM.png', generateMipmaps: false});
 
     interiorSettings.tBaseColor = layer.createTexture('assets/pbr/car-int-color.jpg');
     interiorSettings.tRMO = layer.createTexture('assets/pbr/car-int-rmo.jpg');
