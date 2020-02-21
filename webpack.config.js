@@ -8,7 +8,7 @@ module.exports = function (env = {}) {
     path: path.resolve(__dirname, env.outputPath || 'dist'),
     filename: env.module ? `${packageConfig.name}.esm.js` : `${packageConfig.name}.js`,
     publicPath: '/js/',
-    library: ['spritejs', 'ext3d'],
+    library: env.module ? 'ext3d' : ['spritejs', 'ext3d'],
     libraryTarget: env.module ? 'var' : 'umd',
     globalObject: 'this',
   };

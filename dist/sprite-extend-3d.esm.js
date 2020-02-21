@@ -1,10 +1,10 @@
-var spritejs = typeof spritejs === "object" ? spritejs : {}; spritejs["ext3d"] =
+var ext3d =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	function hotDisposeChunk(chunkId) {
 /******/ 		delete installedChunks[chunkId];
 /******/ 	}
-/******/ 	var parentHotUpdateCallback = this["webpackHotUpdate"];
-/******/ 	this["webpackHotUpdate"] = // eslint-disable-next-line no-unused-vars
+/******/ 	var parentHotUpdateCallback = this["webpackHotUpdateext3d"];
+/******/ 	this["webpackHotUpdateext3d"] = // eslint-disable-next-line no-unused-vars
 /******/ 	function webpackHotUpdateCallback(chunkId, moreModules) {
 /******/ 		hotAddUpdateChunk(chunkId, moreModules);
 /******/ 		if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
@@ -64,7 +64,7 @@ var spritejs = typeof spritejs === "object" ? spritejs : {}; spritejs["ext3d"] =
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "6d4181c98912cc3b0f72";
+/******/ 	var hotCurrentHash = "74a2098b78fb5fee54d3";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -12729,50 +12729,50 @@ __webpack_require__.r(__webpack_exports__);
 /******/ ]);
 
 
-const _spritejs,ext3d$Layer3D = spritejs,ext3d['Layer3D'];
-const _spritejs,ext3d$Sphere = spritejs,ext3d['Sphere'];
-const _spritejs,ext3d$Plane = spritejs,ext3d['Plane'];
-const _spritejs,ext3d$Camera = spritejs,ext3d['Camera'];
-const _spritejs,ext3d$Cube = spritejs,ext3d['Cube'];
-const _spritejs,ext3d$Cylinder = spritejs,ext3d['Cylinder'];
-const _spritejs,ext3d$Mesh3d = spritejs,ext3d['Mesh3d'];
-const _spritejs,ext3d$Skin = spritejs,ext3d['Skin'];
-const _spritejs,ext3d$Group3d = spritejs,ext3d['Group3d'];
-const _spritejs,ext3d$RenderTarget = spritejs,ext3d['RenderTarget'];
-const _spritejs,ext3d$Shadow = spritejs,ext3d['Shadow'];
-const _spritejs,ext3d$TextureLoader = spritejs,ext3d['TextureLoader'];
-const _spritejs,ext3d$Geometry = spritejs,ext3d['Geometry'];
-const _spritejs,ext3d$shaders = spritejs,ext3d['shaders'];
-const _spritejs,ext3d$Vec2 = spritejs,ext3d['Vec2'];
-const _spritejs,ext3d$Vec3 = spritejs,ext3d['Vec3'];
-const _spritejs,ext3d$Vec4 = spritejs,ext3d['Vec4'];
-const _spritejs,ext3d$Mat3 = spritejs,ext3d['Mat3'];
-const _spritejs,ext3d$Mat4 = spritejs,ext3d['Mat4'];
-const _spritejs,ext3d$Quat = spritejs,ext3d['Quat'];
-const _spritejs,ext3d$Euler = spritejs,ext3d['Euler'];
-const _spritejs,ext3d$GPGPU = spritejs,ext3d['GPGPU'];
+const _ext3d$Layer3D = ext3d['Layer3D'];
+const _ext3d$Sphere = ext3d['Sphere'];
+const _ext3d$Plane = ext3d['Plane'];
+const _ext3d$Camera = ext3d['Camera'];
+const _ext3d$Cube = ext3d['Cube'];
+const _ext3d$Cylinder = ext3d['Cylinder'];
+const _ext3d$Mesh3d = ext3d['Mesh3d'];
+const _ext3d$Skin = ext3d['Skin'];
+const _ext3d$Group3d = ext3d['Group3d'];
+const _ext3d$RenderTarget = ext3d['RenderTarget'];
+const _ext3d$Shadow = ext3d['Shadow'];
+const _ext3d$TextureLoader = ext3d['TextureLoader'];
+const _ext3d$Geometry = ext3d['Geometry'];
+const _ext3d$shaders = ext3d['shaders'];
+const _ext3d$Vec2 = ext3d['Vec2'];
+const _ext3d$Vec3 = ext3d['Vec3'];
+const _ext3d$Vec4 = ext3d['Vec4'];
+const _ext3d$Mat3 = ext3d['Mat3'];
+const _ext3d$Mat4 = ext3d['Mat4'];
+const _ext3d$Quat = ext3d['Quat'];
+const _ext3d$Euler = ext3d['Euler'];
+const _ext3d$GPGPU = ext3d['GPGPU'];
 
 export {
-    _spritejs,ext3d$Layer3D as Layer3D,
-    _spritejs,ext3d$Sphere as Sphere,
-    _spritejs,ext3d$Plane as Plane,
-    _spritejs,ext3d$Camera as Camera,
-    _spritejs,ext3d$Cube as Cube,
-    _spritejs,ext3d$Cylinder as Cylinder,
-    _spritejs,ext3d$Mesh3d as Mesh3d,
-    _spritejs,ext3d$Skin as Skin,
-    _spritejs,ext3d$Group3d as Group3d,
-    _spritejs,ext3d$RenderTarget as RenderTarget,
-    _spritejs,ext3d$Shadow as Shadow,
-    _spritejs,ext3d$TextureLoader as TextureLoader,
-    _spritejs,ext3d$Geometry as Geometry,
-    _spritejs,ext3d$shaders as shaders,
-    _spritejs,ext3d$Vec2 as Vec2,
-    _spritejs,ext3d$Vec3 as Vec3,
-    _spritejs,ext3d$Vec4 as Vec4,
-    _spritejs,ext3d$Mat3 as Mat3,
-    _spritejs,ext3d$Mat4 as Mat4,
-    _spritejs,ext3d$Quat as Quat,
-    _spritejs,ext3d$Euler as Euler,
-    _spritejs,ext3d$GPGPU as GPGPU
+    _ext3d$Layer3D as Layer3D,
+    _ext3d$Sphere as Sphere,
+    _ext3d$Plane as Plane,
+    _ext3d$Camera as Camera,
+    _ext3d$Cube as Cube,
+    _ext3d$Cylinder as Cylinder,
+    _ext3d$Mesh3d as Mesh3d,
+    _ext3d$Skin as Skin,
+    _ext3d$Group3d as Group3d,
+    _ext3d$RenderTarget as RenderTarget,
+    _ext3d$Shadow as Shadow,
+    _ext3d$TextureLoader as TextureLoader,
+    _ext3d$Geometry as Geometry,
+    _ext3d$shaders as shaders,
+    _ext3d$Vec2 as Vec2,
+    _ext3d$Vec3 as Vec3,
+    _ext3d$Vec4 as Vec4,
+    _ext3d$Mat3 as Mat3,
+    _ext3d$Mat4 as Mat4,
+    _ext3d$Quat as Quat,
+    _ext3d$Euler as Euler,
+    _ext3d$GPGPU as GPGPU
 }
