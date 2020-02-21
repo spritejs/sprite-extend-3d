@@ -13,11 +13,13 @@ module.exports = function (env = {}) {
     globalObject: 'this',
   };
 
-  const plugins = [
-    new webpack.HotModuleReplacementPlugin({
+  const plugins = [];
+
+  if(env.mode === 'development') {
+    plugins.push(new webpack.HotModuleReplacementPlugin({
       multiStep: true,
-    }),
-  ];
+    }));
+  }
 
   if(env.module) {
     plugins.push(new EsmWebpackPlugin());
