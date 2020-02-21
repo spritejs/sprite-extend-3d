@@ -1,28 +1,32 @@
+const EsmWebpackPlugin = require('@purtuga/esm-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-const fs = require('fs');
 const packageConfig = require('./package.json');
 
-let babelConf;
-
 module.exports = function (env = {}) {
-  const babelRC = env.esnext ? './.es6.babelrc' : './.babelrc';
-  if(fs.existsSync(babelRC)) {
-    babelConf = JSON.parse(fs.readFileSync(babelRC));
-    babelConf.babelrc = false;
+  const output = {
+    path: path.resolve(__dirname, env.outputPath || 'dist'),
+    filename: env.module ? `${packageConfig.name}.esm.js` : `${packageConfig.name}.js`,
+    publicPath: '/js/',
+    library: ['spritejs', 'ext3d'],
+    libraryTarget: env.module ? 'var' : 'umd',
+    globalObject: 'this',
+  };
+
+  const plugins = [
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: true,
+    }),
+  ];
+
+  if(env.module) {
+    plugins.push(new EsmWebpackPlugin());
   }
 
   return {
     mode: env.mode || 'none',
     entry: './src/index',
-    output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: `${packageConfig.name}.js`,
-      publicPath: '/js/',
-      library: ['spritejs', 'ext3d'],
-      libraryTarget: 'umd',
-      globalObject: 'this',
-    },
+    output,
     // resolve: {
     //
     // },
@@ -34,7 +38,6 @@ module.exports = function (env = {}) {
           exclude: /node_modules\/(?!ogl).*/,
           use: {
             loader: 'babel-loader',
-            options: babelConf,
           },
         },
         {
@@ -65,11 +68,7 @@ module.exports = function (env = {}) {
       // ...
     },
 
-    plugins: [
-      new webpack.HotModuleReplacementPlugin({
-        multiStep: true,
-      }),
-    ],
+    plugins,
     // list of additional plugins
 
     /* Advanced configuration (click to show) */

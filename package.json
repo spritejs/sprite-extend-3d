@@ -1,14 +1,14 @@
 {
   "name": "sprite-extend-3d",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
-  "module": "lib/index.js",
+  "module": "dist/sprite-extend-3d.esm.js",
   "typings": "typings/sprite-extend-3d.js",
   "scripts": {
     "start": "webpack-dev-server --env.server=examples --watch-poll",
     "compile": "rm -rf lib/* && babel src -d lib",
-    "build": "webpack --env.mode=production",
+    "build": "webpack --env.mode=production & webpack --env.mode=none --env.module",
     "build:dev": "webpack --env.mode=none",
     "prepublishOnly": "npm run compile && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,6 +22,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
+    "@purtuga/esm-webpack-plugin": "^1.2.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",
     "eslint": "^5.16.0",
