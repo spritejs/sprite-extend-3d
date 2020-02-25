@@ -1,6 +1,7 @@
 const EsmWebpackPlugin = require('@purtuga/esm-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const packageConfig = require('./package.json');
 
 module.exports = function (env = {}) {
@@ -12,6 +13,14 @@ module.exports = function (env = {}) {
     libraryTarget: env.module ? 'var' : 'umd',
     globalObject: 'this',
   };
+
+  let babelConf;
+
+  const babelRC = './.babelrc';
+  if(fs.existsSync(babelRC)) {
+    babelConf = JSON.parse(fs.readFileSync(babelRC));
+    babelConf.babelrc = false;
+  }
 
   const plugins = [];
 
@@ -40,6 +49,7 @@ module.exports = function (env = {}) {
           exclude: /node_modules\/(?!ogl).*/,
           use: {
             loader: 'babel-loader',
+            options: babelConf,
           },
         },
         {

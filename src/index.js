@@ -1,4 +1,4 @@
-import {GPGPU, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler} from 'ogl';
+import {GPGPU, Curve, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler} from 'ogl';
 import {Scene} from 'spritejs';
 import Layer3D from './node/layer3d';
 import Mesh3d from './node/mesh3d';
@@ -14,7 +14,6 @@ import RenderTarget from './node/render-target';
 import Shadow from './helper/shadow';
 import TextureLoader from './helper/texture-loader';
 import Geometry from './helper/geometry';
-import Curve from './helper/curve';
 import * as shaders from './shader';
 
 Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
