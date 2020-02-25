@@ -282,6 +282,10 @@ export default class Mesh3d extends Group3d {
       program.extraAttribute.color = colorAttribute;
     }
 
+    if(gl.getUniformLocation(program.program, 'shadow') && !program.uniforms.shadow) {
+      program.uniforms.shadow = {value: 0.5};
+    }
+
     const geometry = this[_geometry];
     if(geometry) {
       const mode = this.attributes.mode;

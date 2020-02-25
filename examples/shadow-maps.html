@@ -73,6 +73,9 @@
       ...shaders.TEXTURE_WITH_SHADOW,
       cullFace: null,
       texture: waterTexture,
+      uniforms: {
+        shadow: {value: 0.8},
+      },
     });
     const ground = new Plane(program2, {
       rotateX: 90,

@@ -22,6 +22,9 @@ import geometryShadowVert from './geometry_with_shadow.vert';
 import geometryTextureShadowFrag from './geometry_with_texture_and_shadow.frag';
 import geometryTextureShadowVert from './geometry_with_texture_and_shadow.vert';
 
+import polylineFrag from './polyline.frag';
+import polylineVert from './polyline.vert';
+
 export const NORMAL = {
   vertex: normalVert,
   fragment: normalFrag,
@@ -45,9 +48,6 @@ export const TEXTURE_CUBE = {
 export const TEXTURE_WITH_SHADOW = {
   vertex: textureShadowVert,
   fragment: textureShadowFrag,
-  uniforms: {
-    shadow: {value: 0.5},
-  },
 };
 
 export const GEOMETRY_WITH_TEXTURE = {
@@ -58,15 +58,14 @@ export const GEOMETRY_WITH_TEXTURE = {
 export const GEOMETRY_WITH_SHADOW = {
   vertex: geometryShadowVert,
   fragment: geometryShadowFrag,
-  uniforms: {
-    shadow: {value: 0.5},
-  },
 };
 
 export const GEOMETRY_WITH_TEXTURE_AND_SHADOW = {
   vertex: geometryTextureShadowVert,
   fragment: geometryTextureShadowFrag,
-  uniforms: {
-    shadow: {value: 0.5},
-  },
+};
+
+export const POLYLINE = {
+  vertex: polylineVert,
+  fragment: polylineFrag,
 };

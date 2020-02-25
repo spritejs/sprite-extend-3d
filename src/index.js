@@ -7,12 +7,15 @@ import Sphere from './node/sphere';
 import Camera from './node/camera';
 import Cube from './node/cube';
 import Plane from './node/plane';
+import Polyline3d from './node/polyline3d';
 import Cylinder from './node/cylinder';
 import Group3d from './node/group3d';
 import RenderTarget from './node/render-target';
 import Shadow from './helper/shadow';
 import TextureLoader from './helper/texture-loader';
 import Geometry from './helper/geometry';
+import CubicBezierCurve from './helper/cubic-bezier';
+import SmoothCurve from './helper/smooth-curve';
 import * as shaders from './shader';
 
 Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
@@ -33,6 +36,7 @@ export {
   Layer3D,
   Sphere,
   Plane,
+  Polyline3d,
   Camera,
   Cube,
   Cylinder,
@@ -43,6 +47,8 @@ export {
   Shadow,
   TextureLoader,
   Geometry,
+  CubicBezierCurve,
+  SmoothCurve,
   shaders,
   Vec2,
   Vec3,
