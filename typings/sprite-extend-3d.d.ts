@@ -499,6 +499,15 @@ declare namespace ext3d {
     getPoints(divisions: number, a: number, b: number): Array<number>;
   }
 
+  export class Polyline3d extends Mesh3d {
+    constructor(program: Program, attrs?: Attrs);
+    get points(): Array<number>;
+    onPropertyChange(key: string, newValue: any, oldValue: any): void;
+    updateGeometry(): void;
+    setResolution(resolution: Resolution): void;
+    remesh(): void;
+  }
+
   namespace shaders {
     interface Shader {
       vertex: string;
