@@ -478,6 +478,27 @@ declare namespace ext3d {
     static load(layer: Layer3d, options: Record<string, any>): Texture;
   }
 
+  export class Curve {
+    static CATMULLROM: string;
+    static CUBICBEZIER: string;
+
+    /**
+     * constructor({
+        points = [new Vec3(0, 0, 0),
+          new Vec3(0, 1, 0),
+          new Vec3(1, 1, 0),
+          new Vec3(1, 0, 0),
+        ],
+        divisions = 12,
+        type = CATMULLROM,
+      } = {})
+     * @param options 
+     */
+    constructor(options: Record<string, any>);
+    getPoints(divisions: number): Array<number>;
+    getPoints(divisions: number, a: number, b: number): Array<number>;
+  }
+
   namespace shaders {
     interface Shader {
       vertex: string;

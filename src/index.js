@@ -14,8 +14,7 @@ import RenderTarget from './node/render-target';
 import Shadow from './helper/shadow';
 import TextureLoader from './helper/texture-loader';
 import Geometry from './helper/geometry';
-import CubicBezierCurve from './helper/cubic-bezier';
-import SmoothCurve from './helper/smooth-curve';
+import Curve from './helper/curve';
 import * as shaders from './shader';
 
 Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
@@ -47,8 +46,7 @@ export {
   Shadow,
   TextureLoader,
   Geometry,
-  CubicBezierCurve,
-  SmoothCurve,
+  Curve,
   shaders,
   Vec2,
   Vec3,

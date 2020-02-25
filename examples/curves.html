@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Polyline3d, CubicBezierCurve, Sphere, shaders} = spritejs.ext3d;
+    const {Polyline3d, Curve, Sphere, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -41,7 +41,7 @@
       },
     });
 
-    layer.camera.attributes.pos = [0, 0, 3];
+    layer.camera.attributes.pos = [0, 0, 5];
 
     const normalProgram = layer.createProgram({
       ...shaders.NORMAL,
@@ -50,12 +50,13 @@
     const s = new Sphere(normalProgram);
     layer.append(s);
 
-    const curve = new CubicBezierCurve({
-      p0: [0, 0.5, 0],
-      p1: [0, 1, 1],
-      p2: [0, -1, 1],
-      p3: [0, -0.5, 0],
-    });
+    const curve = new Curve({
+      points: [
+        [0, 0.5, 0],
+        [0, 1, 1],
+        [0, -1, 1],
+        [0, -0.5, 0],
+      ]});
 
     const program = layer.createProgram({
       ...shaders.POLYLINE,
@@ -69,8 +70,14 @@
       colors: 'red blue',
     });
 
+    curve.type = Curve.CUBICBEZIER;
+    const p2 = new Polyline3d(program, {
+      points: curve.getPoints(20),
+      colors: 'green',
+    });
+
     for(let i = 0; i <= 50; i++) {
-      const mesh = p.cloneNode();
+      const mesh = i % 2 ? p.cloneNode() : p2.cloneNode();
       s.append(mesh);
       mesh.attributes.rotateY = i * 180 / 50;
     }
