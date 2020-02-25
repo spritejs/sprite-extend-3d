@@ -25,16 +25,16 @@ export default class PolylineAttr extends Mesh3dAttr {
         return [...a, b];
       }, []);
     }
-    if(value) { // 要去掉重复的点
-      if(value.length % 3) throw new Error('Invalid points set');
-      const points = [value[0], value[1], value[2]];
-      for(let i = 3; i < value.length; i += 3) {
-        if(value[i] !== value[i - 3] || value[i + 1] !== value[i - 2] || value[i + 2] !== value[i - 1]) {
-          points.push(value[i], value[i + 1], value[i + 2]);
-        }
-      }
-      value = points;
-    }
+    // if(value) { // 要去掉重复的点
+    //   if(value.length % 3) throw new Error('Invalid points set');
+    //   const points = [value[0], value[1], value[2]];
+    //   for(let i = 3; i < value.length; i += 3) {
+    //     if(value[i] !== value[i - 3] || value[i + 1] !== value[i - 2] || value[i + 2] !== value[i - 1]) {
+    //       points.push(value[i], value[i + 1], value[i + 2]);
+    //     }
+    //   }
+    //   value = points;
+    // }
     this[setAttribute]('points', value);
   }
 }

@@ -9217,10 +9217,8 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
 
   render() {
-    const {
-      camera,
-      root
-    } = this;
+    const root = this[_root];
+    const camera = this[_camera];
     this.dispatchEvent({
       type: 'beforerender',
       detail: {
@@ -9373,7 +9371,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     const gl = renderer.gl;
     gl.canvas.width = width;
     gl.canvas.height = height;
-    const camera = this[_camera];
+    const camera = this.camera;
 
     if (camera && this.options.camera.preserveAspect !== false) {
       camera.attributes.aspect = width / height;
@@ -11662,21 +11660,17 @@ class PolylineAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         return [...a, b];
       }, []);
-    }
+    } // if(value) { // 要去掉重复的点
+    //   if(value.length % 3) throw new Error('Invalid points set');
+    //   const points = [value[0], value[1], value[2]];
+    //   for(let i = 3; i < value.length; i += 3) {
+    //     if(value[i] !== value[i - 3] || value[i + 1] !== value[i - 2] || value[i + 2] !== value[i - 1]) {
+    //       points.push(value[i], value[i + 1], value[i + 2]);
+    //     }
+    //   }
+    //   value = points;
+    // }
 
-    if (value) {
-      // 要去掉重复的点
-      if (value.length % 3) throw new Error('Invalid points set');
-      const points = [value[0], value[1], value[2]];
-
-      for (let i = 3; i < value.length; i += 3) {
-        if (value[i] !== value[i - 3] || value[i + 1] !== value[i - 2] || value[i + 2] !== value[i - 1]) {
-          points.push(value[i], value[i + 1], value[i + 2]);
-        }
-      }
-
-      value = points;
-    }
 
     this[setAttribute]('points', value);
   }

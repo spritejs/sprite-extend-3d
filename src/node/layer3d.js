@@ -295,7 +295,8 @@ export default class Layer3D extends Layer {
 
   /* override */
   render() {
-    const {camera, root} = this;
+    const root = this[_root];
+    const camera = this[_camera];
     this.dispatchEvent({type: 'beforerender', detail: {camera: camera.body}});
     if(this[_targets].length) {
       this[_targets].forEach(({target, options}) => {
@@ -405,7 +406,7 @@ export default class Layer3D extends Layer {
     gl.canvas.width = width;
     gl.canvas.height = height;
 
-    const camera = this[_camera];
+    const camera = this.camera;
     if(camera && this.options.camera.preserveAspect !== false) {
       camera.attributes.aspect = width / height;
     }
