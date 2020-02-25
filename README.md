@@ -100,8 +100,9 @@ For more details, see [here](https://spritejs.org/#/zh-cn/guide/3d).
 - [x] Shared Geometry
 - [x] RenderTarget
 - [x] GPGPU
-- [ ] Polyline 3D
+- [x] Polyline 3D
+- [x] Cubic Bezier Curve 3D
+- [ ] GLTF Loader
 - [ ] Flowmap
-- [ ] Cubic Bezier Curve 3D
 - [ ] Documentation
 - [ ] More examples
