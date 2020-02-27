@@ -46,7 +46,11 @@
       const data = await (await fetch('https://s0.ssl.qhres.com/static/6a08177cb2f066a5.json')).json();
       const countries = topojson.feature(data, data.objects.countries);
 
-      const projection = d3.geoEqualEarth();
+      const projection = d3.geoEquirectangular()
+        .center([0, 0])
+        .rotate([0, 0, 0]);
+
+      // const projection = d3.geoEqualEarth();
       // projection.scale(projection.scale() * 2).translate([960, 500]);
 
       const canvas = new OffscreenCanvas(960, 500);

@@ -46,9 +46,8 @@
       const data = await (await fetch('https://s0.ssl.qhres.com/static/6a08177cb2f066a5.json')).json();
       const countries = topojson.feature(data, data.objects.countries);
 
-
       // 默认宽高 960 X 500，默认 translate 是 480 X 250
-      const projection = d3.geoEqualEarth();
+      const projection = d3.geoEquirectangular();
       projection.scale(projection.scale() * 2).translate([960, 500]);
 
       const canvas = new OffscreenCanvas(1920, 1000);
@@ -75,7 +74,6 @@
       const s = new Sphere(program);
       s.attr({
         radius: 1,
-        // rotateY: -90, // 要转过90度
         colors: '#7cf',
       });
 
