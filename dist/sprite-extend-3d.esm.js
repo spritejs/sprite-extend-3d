@@ -92,8 +92,6 @@ var ext3d =
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Vec2", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["Vec2"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Vec3", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]; });
@@ -130,32 +128,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(61);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cube", function() { return _node_cube__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(63);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return _node_plane__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(63);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return _helper_curve__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(65);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Polyline3d", function() { return _node_polyline3d__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(64);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return _node_plane__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(67);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cylinder", function() { return _node_cylinder__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(66);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Polyline3d", function() { return _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(51);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group3d", function() { return _node_group3d__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(68);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cylinder", function() { return _node_cylinder__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(69);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return _node_render_target__WEBPACK_IMPORTED_MODULE_12__["default"]; });
+/* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(51);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group3d", function() { return _node_group3d__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
-/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(49);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return _helper_shadow__WEBPACK_IMPORTED_MODULE_13__["default"]; });
+/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(70);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return _node_render_target__WEBPACK_IMPORTED_MODULE_13__["default"]; });
 
-/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(70);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return _helper_texture_loader__WEBPACK_IMPORTED_MODULE_14__["default"]; });
+/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(49);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return _helper_shadow__WEBPACK_IMPORTED_MODULE_14__["default"]; });
 
-/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(56);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return _helper_geometry__WEBPACK_IMPORTED_MODULE_15__["default"]; });
+/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(71);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return _helper_texture_loader__WEBPACK_IMPORTED_MODULE_15__["default"]; });
 
-/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(71);
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "shaders", function() { return _shader__WEBPACK_IMPORTED_MODULE_16__; });
+/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(56);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return _helper_geometry__WEBPACK_IMPORTED_MODULE_16__["default"]; });
+
+/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(72);
+/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "shaders", function() { return _shader__WEBPACK_IMPORTED_MODULE_17__; });
+
 
 
 
@@ -11569,11 +11571,100 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Curve; });
+/* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+ // temp
+
+const _a0 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
+      _a1 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
+      _a2 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
+      _a3 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+
+function getBezierPoint(t, p0, c0, c1, p1) {
+  const k = 1 - t;
+
+  _a0.copy(p0).scale(k ** 3);
+
+  _a1.copy(c0).scale(3 * k ** 2 * t);
+
+  _a2.copy(c1).scale(3 * k * t ** 2);
+
+  _a3.copy(p1).scale(t ** 3);
+
+  const ret = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+  ret.add(_a0, _a1).add(_a2).add(_a3);
+  return ret;
+}
+
+class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
+  constructor({
+    points,
+    divisions,
+    type
+  } = {}) {
+    if (Array.isArray(points) && points[0] && !(points[0] instanceof ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"])) {
+      points = points.map(p => new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]().copy(p));
+    }
+
+    super({
+      points,
+      divisions,
+      type
+    });
+  } // 临时修复
+
+
+  _getCubicBezierPoints(divisions = this.divisions) {
+    const points = [];
+    const count = this.points.length;
+
+    if (count < 4) {
+      console.warn('Not enough points provided.');
+      return [];
+    }
+
+    const p0 = this.points[0];
+    let c0 = this.points[1],
+        c1 = this.points[2],
+        p1 = this.points[3];
+
+    for (let i = 0; i <= divisions; i++) {
+      const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
+      points.push(p);
+    }
+
+    let offset = 4;
+
+    while (count - offset > 1) {
+      p0.copy(p1);
+      c0 = p1.scale(2).sub(c1);
+      c1 = this.points[offset];
+      p1 = this.points[offset + 1];
+
+      for (let i = 1; i <= divisions; i++) {
+        const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
+        points.push(p);
+      }
+
+      offset += 2;
+    }
+
+    return points;
+  }
+
+}
+
+/***/ }),
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Plane; });
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(64);
+/* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -11619,7 +11710,7 @@ _defineProperty(Plane, "Attr", _attribute_plane__WEBPACK_IMPORTED_MODULE_2__["de
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Plane, 'plane');
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11676,7 +11767,7 @@ class PlaneAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11685,7 +11776,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(55);
-/* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(66);
+/* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(67);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -11838,7 +11929,7 @@ _defineProperty(Polyline3d, "Attr", _attribute_polyline3d__WEBPACK_IMPORTED_MODU
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Polyline3d, 'polyline3d');
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11888,7 +11979,7 @@ class PolylineAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11897,7 +11988,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(68);
+/* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(69);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -11951,7 +12042,7 @@ _defineProperty(Cylinder, "Attr", _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Cylinder, 'cylinder');
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12044,7 +12135,7 @@ class CylinderAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12181,7 +12272,7 @@ class RenderTarget extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(RenderTarget, 'rendertarget');
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12211,7 +12302,7 @@ class TextureLoader {
 }
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12226,26 +12317,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_WITH_TEXTURE_AND_SHADOW", function() { return GEOMETRY_WITH_TEXTURE_AND_SHADOW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "POLYLINE", function() { return POLYLINE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DASHLINE", function() { return DASHLINE; });
-/* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(72);
-/* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(73);
-/* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(74);
-/* harmony import */ var _geometry_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(75);
-/* harmony import */ var _texture_frag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(76);
-/* harmony import */ var _texture_vert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(77);
-/* harmony import */ var _texture_cube_frag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(78);
-/* harmony import */ var _texture_cube_vert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(79);
-/* harmony import */ var _texture_with_shadow_frag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(80);
-/* harmony import */ var _texture_with_shadow_vert__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(81);
-/* harmony import */ var _geometry_with_texture_frag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(82);
-/* harmony import */ var _geometry_with_texture_vert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(83);
-/* harmony import */ var _geometry_with_shadow_frag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(84);
-/* harmony import */ var _geometry_with_shadow_vert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(85);
-/* harmony import */ var _geometry_with_texture_and_shadow_frag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(86);
-/* harmony import */ var _geometry_with_texture_and_shadow_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(87);
-/* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(88);
-/* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(89);
-/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(90);
-/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(91);
+/* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(73);
+/* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(74);
+/* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(75);
+/* harmony import */ var _geometry_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(76);
+/* harmony import */ var _texture_frag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(77);
+/* harmony import */ var _texture_vert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(78);
+/* harmony import */ var _texture_cube_frag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(79);
+/* harmony import */ var _texture_cube_vert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(80);
+/* harmony import */ var _texture_with_shadow_frag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(81);
+/* harmony import */ var _texture_with_shadow_vert__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(82);
+/* harmony import */ var _geometry_with_texture_frag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(83);
+/* harmony import */ var _geometry_with_texture_vert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(84);
+/* harmony import */ var _geometry_with_shadow_frag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(85);
+/* harmony import */ var _geometry_with_shadow_vert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(86);
+/* harmony import */ var _geometry_with_texture_and_shadow_frag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(87);
+/* harmony import */ var _geometry_with_texture_and_shadow_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(88);
+/* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(89);
+/* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(90);
+/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(91);
+/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(92);
 
 
 
@@ -12308,7 +12399,7 @@ const DASHLINE = {
 };
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12316,7 +12407,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nvoid main() {\n    gl_FragColor.rgb = normalize(vNormal);\n    gl_FragColor.a = 1.0;\n}");
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12324,7 +12415,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec3 vNormal;\n\nvoid main() {\n    vNormal = normalize(normalMatrix * normal);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12332,7 +12423,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光 xyz - 向量位置, w - 强度\n\nvoid main() {\n  float light = dot(vNormal, normalize(directionalLight.xyz));\n  gl_FragColor.rgb = vColor.rgb + light * directionalLight.w;\n  gl_FragColor.a = vColor.a;\n}");
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12340,7 +12431,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec3 pointLightPosition; //点光源位置\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  vColor = vec4(diffuse + ambient, color.a);\n  // vColor = color;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12348,7 +12439,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvoid main() {\n  vec4 color = texture2D(tMap, vUv);\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12356,7 +12447,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec3 pointLightPosition; //点光源位置\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n  \n  fCos = cos;\n\n  vUv = uv;\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12364,7 +12455,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\n\nuniform vec4 directionalLight; //平行光\n\nuniform samplerCube tMap;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvoid main() {\n  vec4 color = textureCube(tMap, vDir);\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12372,7 +12463,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\n\nvarying float fCos;\n\nuniform vec3 pointLightPosition; //点光源位置\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vDir = normalize(position);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n  \n  fCos = cos;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12380,7 +12471,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float uShadow;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec4 vLightNDC; // 阴影\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = texture2D(tMap, vUv);\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadowDept + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12388,7 +12479,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec2 vUv;\n\nvarying float fCos;\nvarying vec4 vLightNDC;\n\nuniform vec3 pointLightPosition; //点光源位置\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n  \n  fCos = cos;\n\n  vUv = uv;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12396,7 +12487,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  float alpha = texColor.a;\n  color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12404,7 +12495,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec3 pointLightPosition; //点光源位置\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n  \n  fCos = cos;\n\n  // vColor = vec4(diffuse + ambient, color.a);\n  vColor = color;\n\n  vUv = uv;\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12412,7 +12503,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight;\n\nuniform sampler2D tShadow;\nuniform float uShadow;\n\nvarying vec4 vLightNDC;\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  float l = dot(vNormal, normalize(directionalLight.xyz));\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  gl_FragColor.rgb = vColor.rgb * uShadowDept + l * directionalLight.w;\n  gl_FragColor.a = vColor.a;\n}");
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12420,7 +12511,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\n\nuniform vec3 pointLightPosition; //点光源位置\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  vColor = vec4(diffuse + ambient, color.a);\n  // vColor = color;\n\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12428,7 +12519,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float uShadow;\n\nvarying vec2 vUv;\nvarying vec4 vLightNDC;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nfloat unpackRGBA (vec4 v) {\n  return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadow = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  float alpha = texColor.a;\n  color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadow + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12436,7 +12527,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec2 vUv;\n\nvarying vec4 vLightNDC;\n\nvarying float fCos;\n\nuniform vec3 pointLightPosition; //点光源位置\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n\n  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化\n  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值\n\n  fCos = cos;\n\n  vColor = color;\n\n  vUv = uv;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12444,7 +12535,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nvarying vec4 vColor;\n\nvoid main() {\n    gl_FragColor = vColor;\n}");
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12452,15 +12543,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute float side;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec4 vColor;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    gl_Position = getPosition();\n    vColor = color;\n}");
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nuniform float uTotalLength;\nuniform float uDashLength;\nuniform float uDashOffset;\n\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying float fSeg;\n\nvoid main() {\n    float f = fract((uDashOffset + fSeg) / uDashLength);\n    f = step(0.5, f);\n    gl_FragColor = vColor * f;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nuniform float uTotalLength;\nuniform float uDashLength;\nuniform float uDashOffset;\n\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying float fSeg;\n\nvoid main() {\n    float f = fract((uDashOffset + fSeg) / (2.0 * uDashLength));\n    f = 1.0 - step(0.5, f);\n    gl_FragColor = vColor * f;\n}");
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
