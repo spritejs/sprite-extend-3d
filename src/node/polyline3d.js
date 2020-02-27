@@ -5,14 +5,17 @@ import PolylineAttr from '../attribute/polyline3d';
 export default class Polyline3d extends Mesh3d {
   static Attr = PolylineAttr;
 
-  constructor(program, attrs = {}) {
+  setProgram(program) {
     if(!program.uniforms.uThickness) {
       program.uniforms.uThickness = {value: 1};
     }
     if(!program.uniforms.uMiter) {
       program.uniforms.uMiter = {value: 1};
     }
-    super(program, attrs);
+    if(program.gl.getUniformLocation(program.program, 'uTotalLength') && !program.uniforms.uTotalLength) {
+      program.uniforms.uTotalLength = {value: 0};
+    }
+    super.setProgram(program);
   }
 
   get points() {
@@ -38,10 +41,20 @@ export default class Polyline3d extends Mesh3d {
     const position = this.geometry.attributes.position.data;
     const prev = this.geometry.attributes.prev.data;
     const next = this.geometry.attributes.next.data;
+    const seg = this.geometry.attributes.seg ? this.geometry.attributes.seg.data : null;
+    let segLen = 0;
+
     for(let i = 0; i < points.length; i += 3) {
       const p = [points[i], points[i + 1], points[i + 2]];
       position.set(p, i * 2);
       position.set(p, i * 2 + 3);
+      if(seg) {
+        if(i === 0) seg.set([0, 0], 0);
+        else {
+          segLen += Math.hypot((points[i] - points[i - 3]), (points[i + 1] - points[i - 2]), (points[i + 2] - points[i - 1]));
+          seg.set([segLen, segLen], i / 3 * 2);
+        }
+      }
 
       if(i === 0) {
         // If first point, calculate prev using the distance to 2nd point
@@ -72,17 +85,15 @@ export default class Polyline3d extends Mesh3d {
       }
     }
 
+    if(this.program && this.program.uniforms.uTotalLength) {
+      this.program.uniforms.uTotalLength = {value: segLen};
+    }
     this.geometry.attributes.position.needsUpdate = true;
     this.geometry.attributes.prev.needsUpdate = true;
     this.geometry.attributes.next.needsUpdate = true;
-  }
-
-  setResolution({width, height}) {
-    super.setResolution({width, height});
-    const dpr = this.layer ? this.layer.displayRatio : 1;
-    const program = this.program;
-    program.uniforms.uResolution = {value: [1200, 1200]};
-    program.uniforms.uDPR = {value: dpr};
+    if(seg) {
+      this.geometry.attributes.seg.needsUpdate = true;
+    }
   }
 
   /* override */
@@ -105,6 +116,11 @@ export default class Polyline3d extends Mesh3d {
       uv,
       index,
     };
+
+    if(this.program && this.program.attributeLocations.has('seg')) {
+      const seg = new Float32Array(count * 2);
+      modle.seg = seg;
+    }
 
     // Set static buffers
     for(let i = 0; i < count; i++) {

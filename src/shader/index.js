@@ -25,6 +25,9 @@ import geometryTextureShadowVert from './geometry_with_texture_and_shadow.vert';
 import polylineFrag from './polyline.frag';
 import polylineVert from './polyline.vert';
 
+import dashlineFrag from './dashline.frag';
+import dashlineVert from './dashline.vert';
+
 export const NORMAL = {
   vertex: normalVert,
   fragment: normalFrag,
@@ -68,4 +71,9 @@ export const GEOMETRY_WITH_TEXTURE_AND_SHADOW = {
 export const POLYLINE = {
   vertex: polylineVert,
   fragment: polylineFrag,
+};
+
+export const DASHLINE = {
+  vertex: dashlineVert,
+  fragment: dashlineFrag,
 };

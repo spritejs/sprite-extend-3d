@@ -2,8 +2,10 @@ precision highp float;
 attribute vec3 position;
 attribute vec3 next;
 attribute vec3 prev;
+attribute vec2 uv;
 attribute float side;
 attribute vec4 color;
+attribute float seg;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
@@ -12,7 +14,9 @@ uniform float uDPR;
 uniform float uThickness;
 uniform float uMiter;
 
+varying vec2 vUv;
 varying vec4 vColor;
+varying float fSeg;
 
 vec4 getPosition() {
     mat4 mvp = projectionMatrix * modelViewMatrix;
@@ -39,6 +43,8 @@ vec4 getPosition() {
 }
 
 void main() {
+    vUv = uv;
     gl_Position = getPosition();
     vColor = color;
+    fSeg = seg;
 }

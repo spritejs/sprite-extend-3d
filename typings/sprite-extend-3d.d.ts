@@ -383,6 +383,7 @@ declare namespace ext3d {
     removeEventListener(type: string, listener: Function, options?: Record<string, any>): this;
     setGeometry(model?: any): void;
     setProgram(program: Program): void;
+    setResolution(resolution: Resolution): void;
     updateMesh(): void;
   }
 
@@ -504,7 +505,6 @@ declare namespace ext3d {
     get points(): Array<number>;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     updateGeometry(): void;
-    setResolution(resolution: Resolution): void;
     remesh(): void;
   }
 

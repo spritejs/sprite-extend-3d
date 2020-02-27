@@ -8,7 +8,7 @@ uniform vec4 directionalLight; //平行光
 
 uniform sampler2D tMap;
 uniform sampler2D tShadow;
-uniform float shadow;
+uniform float uShadow;
 
 varying vec2 vUv;
 varying vec4 vLightNDC;
@@ -32,8 +32,8 @@ void main() {
   float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));
 
   // Compare actual depth from light to the occluded depth rendered in the depth map
-  // If the occluded depth is smaller, we must be in shadow
-  float shadow = mix(shadow, 1.0, step(depth, occluder));
+  // If the occluded depth is smaller, we must be in uShadow
+  float uShadow = mix(uShadow, 1.0, step(depth, occluder));
 
   vec3 light = normalize(directionalLight.xyz);
   float shading = dot(vNormal, light) * directionalLight.w;
@@ -47,6 +47,6 @@ void main() {
 
   color = vec4(diffuse + ambient, color.a);
 
-  gl_FragColor.rgb = color.rgb * shadow + shading;
+  gl_FragColor.rgb = color.rgb * uShadow + shading;
   gl_FragColor.a = color.a;
 }

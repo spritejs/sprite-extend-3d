@@ -10891,6 +10891,30 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     }
   }
 
+  setResolution({
+    width,
+    height
+  }) {
+    super.setResolution({
+      width,
+      height
+    });
+    const program = this.program;
+
+    if (program && program.uniforms.uResolution) {
+      program.uniforms.uResolution = {
+        value: [width, height]
+      };
+    }
+
+    if (program && program.uniforms.uDPR) {
+      const dpr = this.layer ? this.layer.displayRatio : 1;
+      program.uniforms.uDPR = {
+        value: dpr
+      };
+    }
+  }
+
   setProgram(program) {
     this[_program] = program;
     const gl = program.gl;
@@ -10900,9 +10924,26 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
       program.extraAttribute.color = colorAttribute;
     }
 
-    if (gl.getUniformLocation(program.program, 'shadow') && !program.uniforms.shadow) {
-      program.uniforms.shadow = {
+    if (gl.getUniformLocation(program.program, 'uShadow') && !program.uniforms.uShadow) {
+      program.uniforms.uShadow = {
         value: 0.5
+      };
+    }
+
+    if (gl.getUniformLocation(program.program, 'uResolution') && !program.uniforms.uResolution) {
+      const {
+        width,
+        height
+      } = this.getResolution();
+      program.uniforms.uResolution = {
+        value: [width, height]
+      };
+    }
+
+    if (gl.getUniformLocation(program.program, 'uDPR') && !program.uniforms.uDPR) {
+      const dpr = this.layer ? this.layer.displayRatio : 1;
+      program.uniforms.uDPR = {
+        value: dpr
       };
     }
 
@@ -11651,7 +11692,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 class Polyline3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
-  constructor(program, attrs = {}) {
+  setProgram(program) {
     if (!program.uniforms.uThickness) {
       program.uniforms.uThickness = {
         value: 1
@@ -11664,7 +11705,13 @@ class Polyline3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
       };
     }
 
-    super(program, attrs);
+    if (program.gl.getUniformLocation(program.program, 'uTotalLength') && !program.uniforms.uTotalLength) {
+      program.uniforms.uTotalLength = {
+        value: 0
+      };
+    }
+
+    super.setProgram(program);
   }
 
   get points() {
@@ -11692,11 +11739,20 @@ class Polyline3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
     const position = this.geometry.attributes.position.data;
     const prev = this.geometry.attributes.prev.data;
     const next = this.geometry.attributes.next.data;
+    const seg = this.geometry.attributes.seg ? this.geometry.attributes.seg.data : null;
+    let segLen = 0;
 
     for (let i = 0; i < points.length; i += 3) {
       const p = [points[i], points[i + 1], points[i + 2]];
       position.set(p, i * 2);
       position.set(p, i * 2 + 3);
+
+      if (seg) {
+        if (i === 0) seg.set([0, 0], 0);else {
+          segLen += Math.hypot(points[i] - points[i - 3], points[i + 1] - points[i - 2], points[i + 2] - points[i - 1]);
+          seg.set([segLen, segLen], i / 3 * 2);
+        }
+      }
 
       if (i === 0) {
         // If first point, calculate prev using the distance to 2nd point
@@ -11719,27 +11775,19 @@ class Polyline3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
       }
     }
 
+    if (this.program && this.program.uniforms.uTotalLength) {
+      this.program.uniforms.uTotalLength = {
+        value: segLen
+      };
+    }
+
     this.geometry.attributes.position.needsUpdate = true;
     this.geometry.attributes.prev.needsUpdate = true;
     this.geometry.attributes.next.needsUpdate = true;
-  }
 
-  setResolution({
-    width,
-    height
-  }) {
-    super.setResolution({
-      width,
-      height
-    });
-    const dpr = this.layer ? this.layer.displayRatio : 1;
-    const program = this.program;
-    program.uniforms.uResolution = {
-      value: [1200, 1200]
-    };
-    program.uniforms.uDPR = {
-      value: dpr
-    };
+    if (seg) {
+      this.geometry.attributes.seg.needsUpdate = true;
+    }
   }
   /* override */
 
@@ -11760,7 +11808,13 @@ class Polyline3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
       side,
       uv,
       index
-    }; // Set static buffers
+    };
+
+    if (this.program && this.program.attributeLocations.has('seg')) {
+      const seg = new Float32Array(count * 2);
+      modle.seg = seg;
+    } // Set static buffers
+
 
     for (let i = 0; i < count; i++) {
       side.set([-1, 1], i * 2);
@@ -12171,6 +12225,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_WITH_SHADOW", function() { return GEOMETRY_WITH_SHADOW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_WITH_TEXTURE_AND_SHADOW", function() { return GEOMETRY_WITH_TEXTURE_AND_SHADOW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "POLYLINE", function() { return POLYLINE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DASHLINE", function() { return DASHLINE; });
 /* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(72);
 /* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(73);
 /* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(74);
@@ -12189,6 +12244,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _geometry_with_texture_and_shadow_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(87);
 /* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(88);
 /* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(89);
+/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(90);
+/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(91);
+
+
 
 
 
@@ -12242,6 +12301,10 @@ const GEOMETRY_WITH_TEXTURE_AND_SHADOW = {
 const POLYLINE = {
   vertex: _polyline_vert__WEBPACK_IMPORTED_MODULE_17__["default"],
   fragment: _polyline_frag__WEBPACK_IMPORTED_MODULE_16__["default"]
+};
+const DASHLINE = {
+  vertex: _dashline_vert__WEBPACK_IMPORTED_MODULE_19__["default"],
+  fragment: _dashline_frag__WEBPACK_IMPORTED_MODULE_18__["default"]
 };
 
 /***/ }),
@@ -12314,7 +12377,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float shadow;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec4 vLightNDC; // 阴影\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = texture2D(tMap, vUv);\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in shadow\n  float shadowDept = mix(shadow, 1.0, step(depth, occluder));\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb * shadowDept + shading;\n  gl_FragColor.a = color.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float uShadow;\nvarying vec2 vUv;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec4 vLightNDC; // 阴影\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = texture2D(tMap, vUv);\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadowDept + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
 /* 81 */
@@ -12346,7 +12409,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight;\n\nuniform sampler2D tShadow;\nuniform float shadow;\n\nvarying vec4 vLightNDC;\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  float l = dot(vNormal, normalize(directionalLight.xyz));\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in shadow\n  float shadowDept = mix(shadow, 1.0, step(depth, occluder));\n\n  gl_FragColor.rgb = vColor.rgb * shadowDept + l * directionalLight.w;\n  gl_FragColor.a = vColor.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight;\n\nuniform sampler2D tShadow;\nuniform float uShadow;\n\nvarying vec4 vLightNDC;\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  float l = dot(vNormal, normalize(directionalLight.xyz));\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  gl_FragColor.rgb = vColor.rgb * uShadowDept + l * directionalLight.w;\n  gl_FragColor.a = vColor.a;\n}");
 
 /***/ }),
 /* 85 */
@@ -12362,7 +12425,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float shadow;\n\nvarying vec2 vUv;\nvarying vec4 vLightNDC;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nfloat unpackRGBA (vec4 v) {\n  return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in shadow\n  float shadow = mix(shadow, 1.0, step(depth, occluder));\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  float alpha = texColor.a;\n  color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb * shadow + shading;\n  gl_FragColor.a = color.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float uShadow;\n\nvarying vec2 vUv;\nvarying vec4 vLightNDC;\n\nvarying float fCos;\n\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nfloat unpackRGBA (vec4 v) {\n  return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadow = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(vNormal, light) * directionalLight.w;\n\n  float alpha = texColor.a;\n  color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n\n  color = vec4(diffuse + ambient, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadow + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
 /* 87 */
@@ -12378,7 +12441,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nvarying vec4 vColor;\nuniform vec3 uColor;\n\nvarying vec2 vUv;\nvoid main() {\n    gl_FragColor = vColor;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nvarying vec4 vColor;\n\nvoid main() {\n    gl_FragColor = vColor;\n}");
 
 /***/ }),
 /* 89 */
@@ -12386,7 +12449,23 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute vec2 uv;\nattribute float side;\nattribute vec4 color;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\nvarying vec2 vUv;\nvarying vec4 vColor;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    vUv = uv;\n    gl_Position = getPosition();\n    vColor = color;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute float side;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec4 vColor;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    gl_Position = getPosition();\n    vColor = color;\n}");
+
+/***/ }),
+/* 90 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nuniform float uTotalLength;\nuniform float uDashLength;\nuniform float uDashOffset;\n\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying float fSeg;\n\nvoid main() {\n    float f = fract((uDashOffset + fSeg) / uDashLength);\n    f = step(0.5, f);\n    gl_FragColor = vColor * f;\n}");
+
+/***/ }),
+/* 91 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute vec2 uv;\nattribute float side;\nattribute vec4 color;\nattribute float seg;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying float fSeg;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    vUv = uv;\n    gl_Position = getPosition();\n    vColor = color;\n    fSeg = seg;\n}");
 
 /***/ })
 /******/ ]);
