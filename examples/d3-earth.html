@@ -89,6 +89,15 @@
         return new Vec3(x, y, z);
       }
 
+      // function get_coordinate(latitude, longitude, radius = 1) {
+      //   const latrad = latitude * Math.PI / 180;
+      //   const lngrad = -longitude * Math.PI / 180;
+      //   const x = radius * Math.cos(latrad) * Math.cos(lngrad);
+      //   const z = radius * Math.cos(latrad) * Math.sin(lngrad);
+      //   const y = radius * Math.sin(latrad);
+      //   return new Vec3(x, y, z);
+      // }
+
       function mix(v1, v2, p) {
         const t1 = new Vec3();
         const t2 = new Vec3();
@@ -136,10 +145,10 @@
       layer.append(s);
       s.append(p);
 
+      layer.setOrbit();
+
       s.attributes.rotateY = 210;
       s.attributes.rotateX = -30;
-
-      layer.setOrbit();
 
       layer.tick(() => {
         s.attributes.rotateY -= 0.1;
