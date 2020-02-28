@@ -7,9 +7,9 @@ const changedAttrs = Symbol.for('spritejs_changedAttrs');
 const setAttribute = Symbol.for('spritejs_setAttribute');
 
 function updateRotation({attributes}, {rotation}) {
-  attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
-  attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
-  attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+  return attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI)
+   || attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI)
+   || attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
 }
 
 export default class Node3d extends Node {
@@ -83,6 +83,19 @@ export default class Node3d extends Node {
     return 0;
   }
 
+  get up() {
+    if(this[_body]) {
+      return this[_body].up;
+    }
+    return null;
+  }
+
+  set up(value) {
+    if(this[_body]) {
+      this[_body].up = value;
+    }
+    return null;
+  }
 
   /* override */
   connect(parent, zOrder) {
@@ -102,8 +115,8 @@ export default class Node3d extends Node {
     const body = this[_body];
     if(body) {
       body.decompose();
-      updateRotation(this, body);
-      this.forceUpdate();
+      const needsUpdate = updateRotation(this, body);
+      if(needsUpdate) this.forceUpdate();
     }
   }
 
@@ -126,8 +139,8 @@ export default class Node3d extends Node {
         target = target.body.position;
       }
       body.lookAt(target, invert);
-      updateRotation(this, body);
-      this.forceUpdate();
+      const needsUpdate = updateRotation(this, body);
+      if(needsUpdate) this.forceUpdate();
     }
   }
 
@@ -158,6 +171,18 @@ export default class Node3d extends Node {
       if(key === 'rotateOrder') {
         body.rotation.reorder(newValue);
       }
+    }
+  }
+
+  rotate(deg, axis = [0, 1, 0]) {
+    const body = this[_body];
+    if(body) {
+      const rad = Math.PI * deg / 180;
+      body.matrix.rotate(rad, axis);
+      body.matrix.getRotation(body.quaternion);
+      body.rotation.fromQuaternion(body.quaternion);
+      const needsUpdate = updateRotation(this, body);
+      if(needsUpdate) this.forceUpdate();
     }
   }
 
