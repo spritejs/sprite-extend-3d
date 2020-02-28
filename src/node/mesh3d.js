@@ -13,6 +13,8 @@ const _model = Symbol('model');
 const _beforeRender = Symbol('beforeRender');
 const _afterRender = Symbol('afterRender');
 
+const _updateMeshPromise = Symbol('updateMeshPromise');
+
 function colorAttribute(node, geometry) {
   const updateColor = geometry.attributes.color;
 
@@ -318,10 +320,15 @@ export default class Mesh3d extends Group3d {
 
   updateMesh() {
     if(this.program) {
-      const oldMesh = this.mesh;
-      this.remesh();
-      const newMesh = this.mesh;
-      this.dispatchEvent({type: 'updatemesh', detail: {oldMesh, newMesh}});
+      if(!this[_updateMeshPromise]) {
+        this[_updateMeshPromise] = Promise.resolve().then(() => {
+          delete this[_updateMeshPromise];
+          const oldMesh = this.mesh;
+          this.remesh();
+          const newMesh = this.mesh;
+          this.dispatchEvent({type: 'updatemesh', detail: {oldMesh, newMesh}});
+        });
+      }
     }
   }
 }
