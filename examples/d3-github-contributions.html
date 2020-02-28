@@ -15,7 +15,7 @@
       margin: 0;
       overflow: hidden;
     }
-    #container {
+    #stage {
       width: 900px;
       height: 900px;
     }
@@ -525,7 +525,7 @@
       <text text-anchor="start" class="wday" dx="-10" dy="81" style="display: none;">Sat</text>
   </g></svg>
   
-  <div id="container"></div>
+  <div id="stage"></div>
   <script>
     const vertex = `
       precision highp float;
@@ -580,7 +580,7 @@
     
     const {Scene} = spritejs;
     const {Cube, shaders} = spritejs.ext3d;
-    const container = document.getElementById('container');
+    const container = document.getElementById('stage');
     const scene = new Scene({
       container,
       displayRatio: 2,
@@ -600,7 +600,8 @@
     const selection = d3.select(layer);
     
     const program = layer.createProgram({
-      ...shaders.NORMAL_GEOMETRY,
+      vertex: shaders.NORMAL_GEOMETRY.vertex,
+      fragment: shaders.NORMAL_GEOMETRY.fragment,
       cullFace: null,
     });
 
@@ -614,6 +615,7 @@
     const ground = new Cube(axisProgram, {
       width: 7.6,
       height: 0.1,
+      y: -0.049,
       depth: 1,
       colors: 'rgba(0, 0, 0, 0.1)',
     });
@@ -638,7 +640,7 @@
         const z0 = -0.5 + 0.05 + 0.0015;
         const x = x0 + 0.143 * Math.floor(i / 7);
         const z = z0 + 0.143 * (i % 7);
-        return [x, 0.01, z];
+        return [x, 0, z];
       })
       .attr('colors', (d, i) => {
         return d.color;

@@ -16,14 +16,14 @@
       margin: 0;
       overflow: hidden;
     }
-    #container {
+    #stage {
       width: 600px;
       height: 600px;
     }
   </style>
 </head>
 <body>
-  <div id="container"></div>
+  <div id="stage"></div>
   <script>
     const vertex = /* glsl */ `
         precision highp float;
@@ -60,7 +60,7 @@
 
     const {Scene} = spritejs;
     const {Plane, Sphere, Cube} = spritejs.ext3d;
-    const container = document.getElementById('container');
+    const container = document.getElementById('stage');
     const scene = new Scene({
       container,
       // width: 600,
