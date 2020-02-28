@@ -58,4 +58,4 @@ export default class Curve extends _Curve {
   }
 }
 
-Curve.QUADRADICBEZIER = QUADBEZIER;
+Curve.QUADRATICBEZIER = QUADBEZIER;
