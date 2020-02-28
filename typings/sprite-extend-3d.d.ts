@@ -399,11 +399,19 @@ declare namespace ext3d {
     get renderMatrix(): Array<number>;
     get worldMatrix(): Array<number>;
     get zDepth(): number;
+    get up(): Array<number>;
+    set up(value: Array<number>);
     connect(parent: Node, zOrder: number): void;
     disconnect(parent: Node): void;
     lookAt(target: Array<number>, invert: boolean): void;
     lookAt(target: Node3d, invert: boolean): void;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
+    /**
+     * rotate(deg, axis = [0, 1, 0])
+     * @param deg 
+     * @param axis 
+     */
+    rotate(deg: number, axis: Array<number>): void;
     setBody(body: Transform, update: boolean): void;
     traverse(callback: (el: Node3d) => boolean|void): void;
     updateMatrix(): void;
