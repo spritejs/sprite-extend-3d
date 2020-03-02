@@ -97,8 +97,8 @@ export function launchMissile(parent, points, {colors}) {
   const layer = parent.layer;
   if(layer) {
     const spotColors = ['rgb(245,250,113)', 'rgb(56,154,70)'];
-    const spotPos = new Vec3().copy(points[0]).normalize().scale(1.025);
-    const spotEndPos = new Vec3().copy(points[points.length - 1]).normalize().scale(1.025);
+    const spotPos = new Vec3().copy(points[0]).normalize().scale(1.015);
+    const spotEndPos = new Vec3().copy(points[points.length - 1]).normalize().scale(1.015);
 
     if(!spotProgram) {
       spotProgram = layer.createProgram({
@@ -147,9 +147,12 @@ export function launchMissile(parent, points, {colors}) {
     });
     layer.bindTime(curveProgram);
 
+    const pe = points[points.length - 1];
+    const _points = points.map((p, i) => [p[0] - pe[0], p[1] - pe[1], p[2] - pe[2]]);
     const p = new Polyline3d(curveProgram, {
-      points,
+      points: _points,
       colors,
+      pos: pe, // 曲线要设在结束点的位置，否则的话计算zDepth会导致透明度叠加出问题
     });
     parent.append(p);
 

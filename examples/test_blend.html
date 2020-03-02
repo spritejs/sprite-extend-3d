@@ -24,7 +24,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Plane, Polyline3d, shaders} = spritejs.ext3d;
+    const {Plane, Polyline3d, Vec3, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -43,23 +43,29 @@
     const program = layer.createProgram({
       transparent: true,
       ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
     });
     const p = new Plane(program, {
       colors: 'rgba(255,0,0,0.1)',
+      z: 0.1,
     });
     layer.append(p);
 
     const p2 = p.cloneNode();
     p2.attr({
-      z: 0.2,
+      z: 0.3,
     });
     layer.append(p2);
 
-    const p3 = p2.cloneNode();
-    p3.attr({
-      z: 0.3,
-    });
-    layer.append(p3);
+    // const gl = layer.gl;
+    // gl.enable(gl.POLYGON_OFFSET_FILL);
+    // gl.polygonOffset(-1, -1);
+
+    // const p3 = p2.cloneNode();
+    // p3.attr({
+    //   z: 0.3,
+    // });
+    // layer.append(p3);
 
     const curveProgram = layer.createProgram({
       transparent: true,
@@ -67,16 +73,21 @@
       uniforms: {
         uThickness: {value: 10},
       },
-      cullFace: null,
+      // cullFace: null,
       // depthTest: false,
     });
 
     const line = new Polyline3d(curveProgram, {
       points: [
-        [0, 0, 0.5],
-        [0, 0.5, 0.5],
+        new Vec3(0, 0.5, 0),
+        new Vec3(0, -1.0, -0),
       ],
+      // points: [
+      //   [0, 0, 0.5],
+      //   [0, 0.5, 0.5],
+      // ],
       colors: 'rgba(0, 0, 255, 0.1)',
+      z: 0.5,
     });
     layer.append(line);
 
