@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const vertex = /* glsl */ `
+        precision highp float;
+        precision highp int;
+
+        attribute vec2 uv;
+        attribute vec3 position;
+        attribute vec3 normal;
+
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        uniform mat3 normalMatrix;
+
+        varying vec2 vUv;
+        varying vec3 vNormal;
+
+        void main() {
+            vUv = uv;
+            vNormal = normalize(normalMatrix * normal);
+            
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const fragment = /* glsl */ `
+        precision highp float;
+        precision highp int;
+
+        uniform float uTime;
+        uniform sampler2D tMap;
+
+        varying vec2 vUv;
+        varying vec3 vNormal;
+
+        void main() {
+            vec3 normal = normalize(vNormal);
+            vec3 tex = texture2D(tMap, vUv).rgb;
+            
+            vec3 light = normalize(vec3(0.5, 1.0, -0.3));
+            float shading = dot(normal, light) * 0.15;
+            gl_FragColor.rgb = tex + shading;
+            gl_FragColor.a = 1.0;
+        }
+    `;
+
+    const {Scene} = spritejs;
+    const {Mesh3d} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [5, 3, 6];
+    layer.camera.lookAt([0, 0, 0]);
+
+    (async function () {
+      const img = await layer.loadImage('assets/croissant.jpg');
+      const texture = layer.createTexture({image: img});
+      const program = layer.createProgram({
+        vertex,
+        fragment,
+        uniforms: {
+          tMap: {value: texture},
+        },
+      });
+      const model = await layer.loadModel('assets/croissant.json');
+
+      // For an accurate wireframe, triangle vertices need to be duplicated to make line pairs.
+      // Here we do so by generating indices. If your geometry is already indexed, this needs to be adjusted.
+      const index = new Uint16Array((model.position.length / 3 / 3) * 6);
+      for(let i = 0; i < model.position.length / 3; i += 3) {
+        // For every triangle, make three line pairs (start, end)
+        index.set([i, i + 1, i + 1, i + 2, i + 2, i], i * 2);
+      }
+      model.index = index;
+
+      // console.log(geometry);
+
+      const wireframeMesh = new Mesh3d(program, {
+        mode: 'LINES',
+      });
+      wireframeMesh.setGeometry(model);
+      layer.append(wireframeMesh);
+      wireframeMesh.animate([
+        {rotateY: 0},
+        {rotateY: 360},
+      ], {
+        duration: 5000,
+        iterations: Infinity,
+      });
+    }());
+  </script>
+</body>
+</html>

@@ -10,6 +10,7 @@
     "compile": "rm -rf lib/* && babel src -d lib",
     "build": "webpack --env.mode=production & webpack --env.mode=none --env.module",
     "build:dev": "webpack --env.mode=none",
+    "docs": "rm -rf ./docs && cp -R ./examples ./docs && cp -R ./dist/* ./docs/js/",
     "prepublishOnly": "npm run compile && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

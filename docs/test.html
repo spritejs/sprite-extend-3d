@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Cube, Group3d} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      width: 600,
+      height: 600,
+      mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer');
+    layer.camera.attributes.z = 5;
+
+    const vertex = `attribute vec3 position;
+      uniform mat4 modelViewMatrix;
+      uniform mat4 projectionMatrix;
+
+      void main() {
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }    
+    `;
+
+    const fragment = `
+      precision mediump float;
+      uniform vec4 vColor;
+      void main() {
+        gl_FragColor = vColor;
+      }
+    `;
+
+    const fragment2 = `
+      void main() {
+        gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+      }
+    `;
+
+    const program = layer.createProgram({vertex,
+      fragment,
+      uniforms: {
+        vColor: {value: [1, 0, 0, 1]},
+      },
+    });
+    const program2 = layer.createProgram({vertex, fragment: fragment2});
+    const cube = new Cube(program);
+
+    const group = new Group3d();
+
+    group.append(cube);
+    layer.append(group);
+  </script>
+</body>
+</html>

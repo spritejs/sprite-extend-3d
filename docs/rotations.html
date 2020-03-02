@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {shaders, Cube} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [5, 3, 6];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+    });
+
+    const cube = new Cube(program, {
+      pos: [0, 0, 0],
+      size: [0.3, 0.3, 1.0],
+      colors: 'red red yellow yellow blue blue',
+    });
+    // cube.lookAt([0, 10, 1e-6]);
+    layer.append(cube);
+  </script>
+</body>
+</html>

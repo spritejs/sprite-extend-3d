@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Cylinder, Sphere, Cube, Camera, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      directionalLight: [1, 0, 0, 0.5],
+      pointLightColor: 'red',
+      pointLightPosition: [5, 3, 6],
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [5, 3, 6];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+    });
+
+    const texture = layer.createTexture('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');
+    const program2 = layer.createProgram({
+      ...shaders.GEOMETRY_WITH_TEXTURE,
+      cullFace: null,
+      uniforms: {
+        tMap: {value: texture},
+      },
+    });
+    const cube = new Cube(program2);
+    cube.attributes.pos = [0, -1.3, 0];
+    layer.append(cube);
+    cube.animate([
+      {rotateY: 0},
+      {rotateY: -360},
+    ], {
+      duration: 5000,
+      iterations: Infinity,
+    });
+    window.cube = cube;
+
+    const cylinder = new Cylinder(program);
+    cylinder.attributes.pos = [0, 1.3, 0];
+    layer.append(cylinder);
+    cylinder.animate([
+      {rotateY: 0},
+      {rotateY: -360},
+    ], {
+      duration: 10000,
+      iterations: Infinity,
+    });
+
+    const sphere = new Sphere(program);
+    sphere.attr({
+      phiLength: Math.PI,
+      colors: '#7c0',
+    });
+    layer.append(sphere);
+    sphere.animate([
+      {rotateY: 0},
+      {rotateY: -360},
+    ], {
+      duration: 7500,
+      iterations: Infinity,
+    });
+
+    layer.setRaycast();
+
+    layer.addEventListener('click', (evt) => {
+      if(evt.target.nodeName === 'cube') {
+        const colors = [];
+        for(let i = 0; i < 3; i++) {
+          const randomColor = `hsl(${Math.floor(360 * Math.random())}, 50%, 50%)`;
+          colors.push(randomColor, randomColor);
+        }
+        evt.target.attributes.colors = colors;
+      } else if(evt.target !== layer) {
+        evt.target.attributes.colors = `hsl(${Math.floor(360 * Math.random())}, 50%, 50%)`;
+      }
+    });
+  </script>
+</body>
+</html>

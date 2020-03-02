@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="Info">Skydome. Image credit <a href="https://www.flickr.com/photos/charlesashaw/6264765128" target="_blank">charlesashaw</a>.</div>
+  <div id="container"></div>
+  <script>
+    const vertex100 = /* glsl */ `
+        precision highp float;
+        precision highp int;
+
+        attribute vec3 position;
+        attribute vec2 uv;
+        attribute vec3 normal;
+
+        uniform mat3 normalMatrix;
+        uniform mat4 modelMatrix;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        varying vec3 vMPos;
+
+        void main() {
+            vUv = uv;
+            vNormal = normalize(normalMatrix * normal);
+            vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const fragment100 = /* glsl */ `
+        #extension GL_OES_standard_derivatives : enable
+
+        precision highp float;
+        precision highp int;
+
+        uniform mat4 viewMatrix;
+        uniform float uTime;
+        uniform sampler2D tDiffuse;
+
+        uniform sampler2D tNormal;
+        uniform float uNormalScale;
+        uniform float uNormalUVScale;
+
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        varying vec3 vMPos;
+
+        vec3 getNormal() {
+            vec3 pos_dx = dFdx(vMPos.xyz);
+            vec3 pos_dy = dFdy(vMPos.xyz);
+            vec2 tex_dx = dFdx(vUv);
+            vec2 tex_dy = dFdy(vUv);
+
+            vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);
+            vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);
+            mat3 tbn = mat3(t, b, normalize(vNormal));
+
+            vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;
+            n.xy *= uNormalScale;
+            vec3 normal = normalize(tbn * n);
+
+            // Get world normal from view normal
+            return normalize((vec4(normal, 0.0) * viewMatrix).xyz);
+        }
+
+        void main() {
+            vec3 tex = texture2D(tDiffuse, vUv).rgb;
+
+            vec3 normal = getNormal();
+            
+            vec3 light = normalize(vec3(sin(uTime), 1.0, cos(uTime)));
+            float shading = dot(normal, light) * 0.5;
+            
+            gl_FragColor.rgb = tex + shading;
+            gl_FragColor.a = 1.0;
+        }
+    `;
+    
+    const vertex300 = /* glsl */ `#version 300 es
+        precision highp float;
+        precision highp int;
+
+        in vec3 position;
+        in vec2 uv;
+        in vec3 normal;
+
+        uniform mat3 normalMatrix;
+        uniform mat4 modelMatrix;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+
+        out vec2 vUv;
+        out vec3 vNormal;
+        out vec3 vMPos;
+
+        void main() {
+            vUv = uv;
+            vNormal = normalize(normalMatrix * normal);
+            vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const fragment300 = /* glsl */ `#version 300 es
+        precision highp float;
+        precision highp int;
+
+        uniform mat4 viewMatrix;
+        uniform float uTime;
+        uniform sampler2D tDiffuse;
+
+        uniform sampler2D tNormal;
+        uniform float uNormalScale;
+        uniform float uNormalUVScale;
+
+        in vec2 vUv;
+        in vec3 vNormal;
+        in vec3 vMPos;
+
+        out vec4 FragColor;
+
+        vec3 getNormal() {
+            vec3 pos_dx = dFdx(vMPos.xyz);
+            vec3 pos_dy = dFdy(vMPos.xyz);
+            vec2 tex_dx = dFdx(vUv);
+            vec2 tex_dy = dFdy(vUv);
+
+            vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);
+            vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);
+            mat3 tbn = mat3(t, b, normalize(vNormal));
+
+            vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;
+            n.xy *= uNormalScale;
+            vec3 normal = normalize(tbn * n);
+
+            // Get world normal from view normal
+            return normalize((vec4(normal, 0.0) * viewMatrix).xyz);
+        }
+
+        void main() {
+            vec3 tex = texture(tDiffuse, vUv).rgb;
+
+            vec3 normal = getNormal();
+            
+            vec3 light = normalize(vec3(sin(uTime), 1.0, cos(uTime)));
+            float shading = dot(normal, light) * 0.5;
+            
+            FragColor.rgb = tex + shading;
+            FragColor.a = 1.0;
+        }
+    `;
+
+    const {Scene} = spritejs;
+    const {Mesh3d} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 45,
+      },
+    });
+
+    layer.camera.attributes.pos = [1.5, 0, 2];
+
+    const textureDiffuse = layer.createTexture('https://p3.ssl.qhimg.com/t013aaf8eff7df1cc38.jpg');
+    const textureNormal = layer.createTexture('https://p3.ssl.qhimg.com/t01c1cb1f2558cb00e8.jpg');
+
+    const isWebgl2 = layer.renderer.isWebgl2;
+
+    const program = layer.createProgram({
+      // Get fallback shader for WebGL1 - needed for OES_standard_derivatives ext
+      vertex: isWebgl2 ? vertex300 : vertex100,
+      fragment: isWebgl2 ? fragment300 : fragment100,
+      uniforms: {
+        tDiffuse: {value: textureDiffuse},
+        tNormal: {value: textureNormal},
+        uNormalScale: {value: 2},
+        uNormalUVScale: {value: 1},
+        uTime: {value: 0},
+      },
+    });
+
+    const model = layer.loadModel('https://s3.ssl.qhres.com/static/97354b0b0e9e7c93.json');
+    const mesh = new Mesh3d(program, {model});
+    layer.append(mesh);
+    layer.bindTime(program, {playbackRate: 0.5});
+    layer.setOrbit();
+  </script>
+</body>
+</html>

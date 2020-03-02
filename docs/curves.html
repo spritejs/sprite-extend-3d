@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Polyline3d, Curve, Sphere, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      alpha: false,
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [0, 0, 5];
+
+    const normalProgram = layer.createProgram({
+      ...shaders.NORMAL,
+    });
+
+    const s = new Sphere(normalProgram);
+    layer.append(s);
+
+    const curve = new Curve({
+      points: [
+        [0, 0.5, 0],
+        [0, 1, 1],
+        [0, -1, 1],
+        [0, -0.5, 0],
+      ]});
+
+    const program = layer.createProgram({
+      // ...shaders.POLYLINE,
+      ...shaders.DASHLINE,
+      transparent: true,
+      uniforms: {
+        uThickness: {value: 3},
+        uDashLength: {value: 0.1},
+        uDashOffset: {value: 0},
+      },
+    });
+
+    const p = new Polyline3d(program, {
+      points: curve.getPoints(20),
+      colors: 'red blue',
+    });
+
+    curve.type = Curve.CUBICBEZIER;
+    const p2 = new Polyline3d(program, {
+      points: curve.getPoints(20),
+      colors: 'green',
+    });
+
+    for(let i = 0; i <= 50; i++) {
+      const mesh = i % 2 ? p.cloneNode() : p2.cloneNode();
+      s.append(mesh);
+      mesh.attributes.rotateY = i * 180 / 50;
+    }
+
+    // s.animate([
+    //   {rotateY: 0},
+    //   {rotateY: 360},
+    // ], {
+    //   duration: 10000,
+    //   iterations: Infinity,
+    // });
+
+    layer.setOrbit();
+
+    layer.tick((t) => {
+      s.attributes.rotateY += 0.5;
+      program.uniforms.uDashOffset.value += 0.01;
+    });
+  </script>
+</body>
+</html>
