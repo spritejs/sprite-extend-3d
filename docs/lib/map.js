@@ -1,4 +1,21 @@
 /* globals topojson */
+if(typeof OffscreenCanvas !== 'function') {
+  // firefox polyfill
+  window.OffscreenCanvas = function (width, height) {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    canvas.transferToImageBitmap = function () {
+      const ctx = canvas.cloneNode().getContext('2d');
+      ctx.translate(0, canvas.height);
+      ctx.scale(1, -1);
+      ctx.drawImage(canvas, 0, 0);
+      return ctx.canvas;
+    };
+    return canvas;
+  };
+}
+
 export async function loadMap() {
   const data = await (await fetch('https://s0.ssl.qhres.com/static/6a08177cb2f066a5.json')).json();
   const countries = topojson.feature(data, data.objects.countries);
