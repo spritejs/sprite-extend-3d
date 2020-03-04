@@ -26,17 +26,85 @@ export async function loadMap() {
 
   const canvas = new OffscreenCanvas(1920, 1000);
   const context = canvas.getContext('2d');
+
+  return drawMap(null, {context, countries, projection});
+}
+
+let _context,
+  _countries,
+  _projection,
+  _bitmap;
+
+let highlightMapContxt = null;
+export function highlightMap(highlight, {bitmap = _bitmap, countries = _countries, projection = _projection} = {}) {
+  if(!highlightMapContxt) {
+    const canvas = new OffscreenCanvas(1920, 1000);
+    highlightMapContxt = canvas.getContext('2d');
+  }
+  let idx = -1;
+  countries.features.some((d, i) => {
+    const ret = d3.geoContains(d, projection.invert(highlight));
+    if(ret) idx = i;
+    return ret;
+  });
+  if(idx > 0) {
+    const path = d3.geoPath(projection).context(highlightMapContxt);
+    // console.log(context.canvas);
+    highlightMapContxt.clearRect(0, 0, 1920, 1000);
+    highlightMapContxt.drawImage(bitmap, 0, 0);
+    highlightMapContxt.save();
+    highlightMapContxt.translate(0, 1000);
+    highlightMapContxt.scale(1, -1);
+    highlightMapContxt.fillStyle = '#fff';
+    highlightMapContxt.beginPath();
+    path({type: 'FeatureCollection', features: countries.features.slice(idx, idx + 1)});
+    highlightMapContxt.fill();
+    highlightMapContxt.restore();
+    return highlightMapContxt.canvas.transferToImageBitmap();
+  }
+  return bitmap;
+}
+
+export function drawMap(highlight, {context = _context, countries = _countries, projection = _projection} = {}) {
+  _context = context;
+  _countries = countries;
+  _projection = projection;
+
   const path = d3.geoPath(projection).context(context);
 
+  context.save();
   context.translate(0, 1000);
   context.scale(1, -1);
   context.strokeStyle = '#fff';
   context.lineWidth = 0.25;
   context.fillStyle = '#000';
   context.beginPath();
-  path(countries);
+
+  let idx = -1;
+  if(highlight) {
+    countries.features.some((d, i) => {
+      idx = i;
+      return d3.geoContains(d, projection.invert(highlight));
+    });
+  }
+  if(idx > 0) {
+    path({type: 'FeatureCollection', features: countries.features.slice(0, idx)});
+    context.fill();
+    context.fillStyle = '#fff';
+    context.beginPath();
+    path({type: 'FeatureCollection', features: countries.features.slice(idx, idx + 1)});
+    context.fill();
+    context.fillStyle = '#000';
+    context.beginPath();
+    path({type: 'FeatureCollection', features: countries.features.slice(idx + 1)});
+  } else {
+    path(countries);
+  }
+
   context.fill();
   context.stroke();
+  context.restore();
 
-  return canvas.transferToImageBitmap();
+  _bitmap = context.canvas.transferToImageBitmap();
+  return _bitmap;
 }

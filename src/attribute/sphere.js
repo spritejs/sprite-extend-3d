@@ -15,6 +15,7 @@ export default class SphereAttr extends Mesh3dAttr {
       phiLength: Math.PI * 2,
       thetaStart: 0,
       thetaLength: Math.PI,
+      raycast: 'sphere',
     });
   }
 

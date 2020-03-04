@@ -260,6 +260,7 @@ export default class Mesh3d extends Group3d {
         }
       });
     }
+    geometry.raycast = this.attributes.raycast;
     this[_geometry] = geometry;
     this[_model] = geometry.attributes;
     const mode = this.attributes.mode;

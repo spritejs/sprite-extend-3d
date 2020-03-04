@@ -227,7 +227,7 @@ export default class Layer3D extends Layer {
         2.0 * (1.0 - event.y / renderer.height) - 1.0
       );
       raycast.castMouse(this[_camera].body, mouse);
-      const hits = raycast.intersectBounds(this.meshes);
+      const hits = raycast.intersectBounds(this.meshes.filter(mesh => mesh.geometry.raycast !== 'none'));
       if(hits && hits.length) {
         let target;
         for(let i = 0; i < hits.length; i++) {
@@ -242,6 +242,7 @@ export default class Layer3D extends Layer {
 
         if(target) {
           event.mouse = mouse;
+          event.hit = target.body.hit;
           target.dispatchEvent(event);
           return true;
         }

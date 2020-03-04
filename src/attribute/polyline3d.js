@@ -9,6 +9,7 @@ export default class PolylineAttr extends Mesh3dAttr {
     super(subject);
     this[setDefault]({
       points: [],
+      raycast: 'none',
     });
   }
 

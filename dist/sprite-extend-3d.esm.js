@@ -3818,7 +3818,7 @@ function ortho(out, left, right, bottom, top, near, far) {
  *
  * @param {mat4} out mat4 frustum matrix will be written into
  * @param {vec3} eye Position of the viewer
- * @param {vec3} center Point the viewer is looking at
+ * @param {vec3} target Point the viewer is looking at
  * @param {vec3} up vec3 pointing up
  * @returns {mat4} out
  */
@@ -3835,7 +3835,10 @@ function targetTo(out, eye, target, up) {
       z2 = eyez - target[2];
   let len = z0 * z0 + z1 * z1 + z2 * z2;
 
-  if (len > 0) {
+  if (len === 0) {
+    // eye and target are in the same position
+    z2 = 1;
+  } else {
     len = 1 / Math.sqrt(len);
     z0 *= len;
     z1 *= len;
@@ -3847,13 +3850,24 @@ function targetTo(out, eye, target, up) {
       x2 = upx * z1 - upy * z0;
   len = x0 * x0 + x1 * x1 + x2 * x2;
 
-  if (len > 0) {
-    len = 1 / Math.sqrt(len);
-    x0 *= len;
-    x1 *= len;
-    x2 *= len;
+  if (len === 0) {
+    // up and z are parallel
+    if (upz) {
+      upx += 1e-6;
+    } else if (upy) {
+      upz += 1e-6;
+    } else {
+      upy += 1e-6;
+    }
+
+    x0 = upy * z2 - upz * z1, x1 = upz * z0 - upx * z2, x2 = upx * z1 - upy * z0;
+    len = x0 * x0 + x1 * x1 + x2 * x2;
   }
 
+  len = 1 / Math.sqrt(len);
+  x0 *= len;
+  x1 *= len;
+  x2 *= len;
   out[0] = x0;
   out[1] = x1;
   out[2] = x2;
@@ -6725,8 +6739,6 @@ class Raycast {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return Curve; });
 /* harmony import */ var _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 const CATMULLROM = 'catmullrom';
 const CUBICBEZIER = 'cubicbezier'; // temp
@@ -6815,7 +6827,7 @@ class Curve {
       c1 = this.points[offset];
       p1 = this.points[offset + 1];
 
-      for (let i = 0; i <= divisions; i++) {
+      for (let i = 1; i <= divisions; i++) {
         const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
         points.push(p);
       }
@@ -6867,10 +6879,8 @@ class Curve {
   }
 
 }
-
-_defineProperty(Curve, "CATMULLROM", CATMULLROM);
-
-_defineProperty(Curve, "CUBICBEZIER", CUBICBEZIER);
+Curve.CATMULLROM = CATMULLROM;
+Curve.CUBICBEZIER = CUBICBEZIER;
 
 /***/ }),
 /* 34 */
@@ -9292,7 +9302,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       const renderer = this.renderer;
       mouse.set(2.0 * (event.x / renderer.width) - 1.0, 2.0 * (1.0 - event.y / renderer.height) - 1.0);
       raycast.castMouse(this[_camera].body, mouse);
-      const hits = raycast.intersectBounds(this.meshes);
+      const hits = raycast.intersectBounds(this.meshes.filter(mesh => mesh.geometry.raycast !== 'none'));
 
       if (hits && hits.length) {
         let target;
@@ -9309,6 +9319,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
         if (target) {
           event.mouse = mouse;
+          event.hit = target.body.hit;
           target.dispatchEvent(event);
           return true;
         }
@@ -10016,9 +10027,7 @@ function updateRotation({
 }, {
   rotation
 }) {
-  attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI);
-  attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI);
-  attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+  return attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI) || attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI) || attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
 }
 
 class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
@@ -10097,6 +10106,22 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
 
     return 0;
   }
+
+  get up() {
+    if (this[_body]) {
+      return this[_body].up;
+    }
+
+    return null;
+  }
+
+  set up(value) {
+    if (this[_body]) {
+      this[_body].up = value;
+    }
+
+    return null;
+  }
   /* override */
 
 
@@ -10121,8 +10146,8 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
 
     if (body) {
       body.decompose();
-      updateRotation(this, body);
-      this.forceUpdate();
+      const needsUpdate = updateRotation(this, body);
+      if (needsUpdate) this.forceUpdate();
     }
   }
   /* override */
@@ -10151,8 +10176,8 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
       }
 
       body.lookAt(target, invert);
-      updateRotation(this, body);
-      this.forceUpdate();
+      const needsUpdate = updateRotation(this, body);
+      if (needsUpdate) this.forceUpdate();
     }
   }
   /* override */
@@ -10191,6 +10216,19 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
       if (key === 'rotateOrder') {
         body.rotation.reorder(newValue);
       }
+    }
+  }
+
+  rotate(deg, axis = [0, 1, 0]) {
+    const body = this[_body];
+
+    if (body) {
+      const rad = Math.PI * deg / 180;
+      body.matrix.rotate(rad, axis);
+      body.matrix.getRotation(body.quaternion);
+      body.rotation.fromQuaternion(body.quaternion);
+      const needsUpdate = updateRotation(this, body);
+      if (needsUpdate) this.forceUpdate();
     }
   }
 
@@ -10574,6 +10612,8 @@ const _beforeRender = Symbol('beforeRender');
 
 const _afterRender = Symbol('afterRender');
 
+const _updateMeshPromise = Symbol('updateMeshPromise');
+
 function colorAttribute(node, geometry) {
   const updateColor = geometry.attributes.color;
   const positions = geometry.attributes.position.data;
@@ -10869,6 +10909,7 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
       });
     }
 
+    geometry.raycast = this.attributes.raycast;
     this[_geometry] = geometry;
     this[_model] = geometry.attributes;
     const mode = this.attributes.mode;
@@ -10966,16 +11007,21 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
 
   updateMesh() {
     if (this.program) {
-      const oldMesh = this.mesh;
-      this.remesh();
-      const newMesh = this.mesh;
-      this.dispatchEvent({
-        type: 'updatemesh',
-        detail: {
-          oldMesh,
-          newMesh
-        }
-      });
+      if (!this[_updateMeshPromise]) {
+        this[_updateMeshPromise] = Promise.resolve().then(() => {
+          delete this[_updateMeshPromise];
+          const oldMesh = this.mesh;
+          this.remesh();
+          const newMesh = this.mesh;
+          this.dispatchEvent({
+            type: 'updatemesh',
+            detail: {
+              oldMesh,
+              newMesh
+            }
+          });
+        });
+      }
     }
   }
 
@@ -11089,7 +11135,9 @@ class Mesh3dAttr extends _node3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
       mode: 'TRIANGLES',
       // POINTS, LINES, LINE_LOOP,  LINE_STRIP, TRIANGLES
       colors: [0.5, 0.5, 0.5, 1],
-      colorDivisor: 3
+      colorDivisor: 3,
+      raycast: 'box' // box sphere none
+
     });
   }
 
@@ -11141,6 +11189,14 @@ class Mesh3dAttr extends _node3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
     }
 
     this[setAttribute]('mode', value);
+  }
+
+  get raycast() {
+    return this[getAttribute]('raycast');
+  }
+
+  set raycast(value) {
+    this[setAttribute]('raycast', value);
   }
 
 }
@@ -11366,7 +11422,8 @@ class SphereAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
       phiStart: 0,
       phiLength: Math.PI * 2,
       thetaStart: 0,
-      thetaLength: Math.PI
+      thetaLength: Math.PI,
+      raycast: 'sphere'
     });
   }
 
@@ -11506,6 +11563,8 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
       width: 1,
       height: 1,
       depth: 1,
+
+      /* size */
       widthSegments: 1,
       heightSegments: 1,
       depthSegments: 1,
@@ -11529,6 +11588,17 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
   set height(value) {
     this[setAttribute]('height', value);
+  }
+
+  get size() {
+    return [this.width, this.height, this.depth];
+  }
+
+  set size(value) {
+    if (!Array.isArray(value)) value = [value, value, value];
+    this.width = value[0];
+    this.height = value[1];
+    this.depth = value[2];
   }
 
   get depth() {
@@ -11577,25 +11647,23 @@ __webpack_require__.r(__webpack_exports__);
 
 const _a0 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
       _a1 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
-      _a2 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
-      _a3 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+      _a2 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
 
-function getBezierPoint(t, p0, c0, c1, p1) {
+function getQuadraticBezierPoint(t, p0, c0, p1) {
   const k = 1 - t;
 
-  _a0.copy(p0).scale(k ** 3);
+  _a0.copy(p0).scale(k ** 2);
 
-  _a1.copy(c0).scale(3 * k ** 2 * t);
+  _a1.copy(c0).scale(2 * k * t);
 
-  _a2.copy(c1).scale(3 * k * t ** 2);
-
-  _a3.copy(p1).scale(t ** 3);
+  _a2.copy(p1).scale(t ** 2);
 
   const ret = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-  ret.add(_a0, _a1).add(_a2).add(_a3);
+  ret.add(_a0, _a1).add(_a2);
   return ret;
 }
 
+const QUADBEZIER = 'quadraticbezier';
 class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
   constructor({
     points,
@@ -11611,48 +11679,50 @@ class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
       divisions,
       type
     });
-  } // 临时修复
+  }
 
+  getPoints(divisions = this.divisions, a = 0.168, b = 0.168) {
+    if (this.type === QUADBEZIER) {
+      const points = [];
+      const count = this.points.length;
 
-  _getCubicBezierPoints(divisions = this.divisions) {
-    const points = [];
-    const count = this.points.length;
+      if (count < 3) {
+        console.warn('Not enough points provided.');
+        return [];
+      }
 
-    if (count < 4) {
-      console.warn('Not enough points provided.');
-      return [];
-    }
+      const p0 = this.points[0];
+      let c0 = this.points[1],
+          p1 = this.points[2];
 
-    const p0 = this.points[0];
-    let c0 = this.points[1],
-        c1 = this.points[2],
-        p1 = this.points[3];
-
-    for (let i = 0; i <= divisions; i++) {
-      const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
-      points.push(p);
-    }
-
-    let offset = 4;
-
-    while (count - offset > 1) {
-      p0.copy(p1);
-      c0 = p1.scale(2).sub(c1);
-      c1 = this.points[offset];
-      p1 = this.points[offset + 1];
-
-      for (let i = 1; i <= divisions; i++) {
-        const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
+      for (let i = 0; i <= divisions; i++) {
+        const p = getQuadraticBezierPoint(i / divisions, p0, c0, p1);
         points.push(p);
       }
 
-      offset += 2;
+      let offset = 3;
+
+      while (count - offset > 0) {
+        p0.copy(p1);
+        c0 = p1.scale(2).sub(c0);
+        p1 = this.points[offset];
+
+        for (let i = 1; i <= divisions; i++) {
+          const p = getQuadraticBezierPoint(i / divisions, p0, c0, p1);
+          points.push(p);
+        }
+
+        offset++;
+      }
+
+      return points;
     }
 
-    return points;
+    return super.getPoints(divisions, a, b);
   }
 
 }
+Curve.QUADRATICBEZIER = QUADBEZIER;
 
 /***/ }),
 /* 64 */
@@ -11944,7 +12014,8 @@ class PolylineAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(subject) {
     super(subject);
     this[setDefault]({
-      points: []
+      points: [],
+      raycast: 'none'
     });
   }
 

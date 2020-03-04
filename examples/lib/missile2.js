@@ -138,10 +138,12 @@ export function launchMissile(parent, points, {colors}) {
       _spot = new Plane(spotProgram, {
         width: 0.05,
         height: 0.05,
+        raycast: 'none',
       });
       _spotEnd = new Plane(spotProgram, {
         width: 0.05,
         height: 0.05,
+        raycast: 'none',
       });
     }
 

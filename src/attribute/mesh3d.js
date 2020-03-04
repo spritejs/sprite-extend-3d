@@ -12,6 +12,7 @@ export default class Mesh3dAttr extends Node3dAttr {
       mode: 'TRIANGLES', // POINTS, LINES, LINE_LOOP,  LINE_STRIP, TRIANGLES
       colors: [0.5, 0.5, 0.5, 1],
       colorDivisor: 3,
+      raycast: 'box', // box sphere none
     });
   }
 
@@ -60,5 +61,13 @@ export default class Mesh3dAttr extends Node3dAttr {
       throw new TypeError('Invalid mode value.');
     }
     this[setAttribute]('mode', value);
+  }
+
+  get raycast() {
+    return this[getAttribute]('raycast');
+  }
+
+  set raycast(value) {
+    this[setAttribute]('raycast', value);
   }
 }
