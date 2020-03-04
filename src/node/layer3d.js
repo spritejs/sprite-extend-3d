@@ -28,6 +28,7 @@ const _renderOptions = Symbol('renderOptions');
 
 const _root = Symbol('root');
 const _camera = Symbol('camera');
+const _masks = Symbol('masks');
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
@@ -80,6 +81,7 @@ export default class Layer3D extends Layer {
     }
     this[_root] = new Group3d();
     this[_root].connect(this, 0);
+    this[_masks] = [];
   }
 
   get body() {
@@ -95,6 +97,10 @@ export default class Layer3D extends Layer {
 
   get gl() {
     return this.renderer.gl;
+  }
+
+  get masks() {
+    return this[_masks];
   }
 
   get meshes() {
@@ -135,6 +141,10 @@ export default class Layer3D extends Layer {
     this.renderer.autoClear = value;
   }
 
+  addMask(mask) {
+    this[_masks].push(mask);
+  }
+
   bindTarget(target, options = {}) {
     this[_targets].push({target, options});
   }
@@ -143,6 +153,13 @@ export default class Layer3D extends Layer {
     program.timeline = this.timeline.fork(opts);
     this[_utime].push(program);
     this.forceUpdate();
+  }
+
+  createMask(camera = null) {
+    if(!camera && this.camera) camera = this.camera.cloneNode();
+    const root = new Group3d();
+    const mask = {root, camera};
+    return mask;
   }
 
   /* {vertex, fragment, uniforms = {}} */
@@ -214,6 +231,13 @@ export default class Layer3D extends Layer {
   createShadow({width = this.canvas.width, height = this.canvas.height, light = this[_camera]} = {}) {
     const gl = this.renderer.gl;
     return new Shadow(gl, {width, height, light: light.body});
+  }
+
+  deleteMask(mask) {
+    const idx = this[_masks].indexOf(mask);
+    if(idx >= 0) {
+      this[_masks].splice(idx, 1);
+    }
   }
 
   /* override */
@@ -314,6 +338,13 @@ export default class Layer3D extends Layer {
       this[_post].render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     } else {
       this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
+    }
+    if(this[_masks].length) {
+      this.renderer.autoClear = false;
+      this[_masks].forEach(({root, camera}) => {
+        this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
+      });
+      this.renderer.autoClear = true;
     }
     this._prepareRenderFinished();
     if(this[_utime].length) {

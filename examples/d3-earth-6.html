@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://lib.baomitu.com/topojson/3.0.2/topojson.min.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="module">
+    import {loadMap, highlightMap} from './lib/map.js';
+    import {createSky} from './lib/sky.js';
+    import {launchMissile} from './lib/missile2.js';
+
+    const {Scene} = spritejs;
+    const {Sphere, Vec3, Geometry, Mesh3d, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+
+    const layer = scene.layer3d('fglayer', {
+      alpha: false,
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [0, 0, 5000 / Math.min(layer.width, layer.height)];
+    layer.camera.lookAt([0, 0, 0]);
+    layer.gl.clearColor(0, 0, 0, 1);
+    
+    (async function () {
+      // 默认宽高 960 X 500，默认 translate 是 480 X 250
+      const projection = d3.geoEquirectangular();
+      projection.scale(318).translate([960, 500]);
+
+      const image = await loadMap();
+
+      const texture = layer.createTexture({image});
+
+      createSky(layer);
+
+      const program = layer.createProgram({
+        ...shaders.GEOMETRY_WITH_TEXTURE,
+        cullFace: null,
+        texture,
+      });
+
+      // setTimeout(() => {
+      //   const img = drawMap(projection([116.3, 39.9]));
+      //   texture.image = img;
+      // }, 1000);
+
+      const earth = new Sphere(program);
+      earth.attr({
+        radius: 1,
+        // colors: '#7cf',
+      });
+      layer.append(earth);
+      earth.attributes.rotateY = 210;
+      earth.attributes.rotateX = -30;
+
+      // layer.tick(() => {
+      //   earth.attributes.rotateY -= 0.1;
+      // });
+
+      function get_coordinate(latitude, longitude) {
+        const [u, v] = projection([longitude, latitude]);
+        return project(u, v);
+      }
+      // const [_x, _y] = projection([-74.0, 40.42]);
+      // console.log(_x / 1920, _y / 1000);
+      // console.log(get_coordinate(40.42, -74.0));
+
+      function project(u, v, radius = 1) {
+        u /= 1920;
+        v /= 1000;
+        const pLength = Math.PI * 2;
+        const tLength = Math.PI;
+        const x = -radius * Math.cos(u * pLength) * Math.sin(v * tLength);
+        const y = radius * Math.cos(v * tLength);
+        const z = radius * Math.sin(u * pLength) * Math.sin(v * tLength);
+        return new Vec3(x, y, z);
+      }
+
+      function unproject(x, y, z, radius = 1) {
+        const pLength = Math.PI * 2;
+        const tLength = Math.PI;
+        const v = Math.acos(y / radius) / tLength; // const y = radius * Math.cos(v * tLength);
+        let u = Math.atan2(-z, x) + Math.PI; // z / x = -1 * Math.tan(u * pLength);
+        u /= pLength;
+        return [u * 1920, v * 1000];
+      }
+
+      function projectPoints(from, to, radius = 1) {
+        const dist = Math.hypot(from[0] - to[0], from[1] - to[1]);
+        const n = Math.min(Math.floor(0.5 * dist), 60);
+        const points = [];
+        points.push(get_coordinate(...from, radius));
+        for(let i = 1; i < n; i++) {
+          const p = i / n;
+          const x = from[0] * (1 - p) + to[0] * p;
+          const y = from[1] * (1 - p) + to[1] * p;
+          points.push(get_coordinate(x, y, radius));
+        }
+        points.push(get_coordinate(...to, radius));
+        return points;
+      }
+
+      const colors = [
+        'rgb(232,22,140)',
+        'rgb(23,132,228)',
+      ];
+
+      function getRandomPos() {
+        return projectPoints([90 - 180 * Math.random(), 180 - 360 * Math.random()],
+          [90 - 180 * Math.random(), 180 - 360 * Math.random()], 1.02);
+      }
+
+      setInterval(() => {
+        const points = getRandomPos();
+        launchMissile(earth, points, {colors: Math.random() > 0.5 ? colors[1] : colors[0]});
+      }, 100);
+
+      layer.setOrbit();
+      layer.setRaycast();
+
+      earth.addEventListener('mousemove', (e) => {
+        const [x, y, z] = e.hit.localPoint;
+
+        const [u, v] = unproject(x, y, z);
+
+        const img = highlightMap([u, v]);
+        if(img) {
+          texture.image = img;
+          texture.needsUpdate = true;
+        }
+
+        // console.log(u, v);
+        // console.log(x, y, z);
+        // console.log(project(u, v));
+      });
+
+      window.earth = earth;
+
+      function makeCoronaVerts() {
+        const vertex = [];
+        const n_segments = 128;
+        for(let i = 0; i <= n_segments; i++) {
+          const theta = Math.PI * 2 * i / n_segments;
+          const u = i / (n_segments + 1);
+          const x = Math.cos(theta);
+          const y = Math.sin(theta);
+          vertex.push(x, y, u, 0, x, y, u, 1);
+        }
+        return {data: vertex, size: 4};
+      }
+
+      const position = makeCoronaVerts();
+      const geometry = new Geometry(layer.gl, {position});
+
+      const vertex = `
+        precision highp float;
+        precision highp int;
+
+        attribute vec4 position;
+
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        uniform mat3 normalMatrix;
+
+        uniform float zoff;
+
+        varying vec2 v_texcoord;
+
+        // corona.vertex //
+        void main() {
+            float s = 0.9 + (0.9 * position.w);
+            vec3 P = vec3(s * position.xy, zoff);
+            P = normalMatrix * P;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(P, 1.0);
+            v_texcoord = position.zw;
+        }      
+      `;
+
+      const fragment = `
+        precision highp float;
+        precision highp int;
+
+        uniform sampler2D tMap;
+        uniform float uTime;
+        uniform vec3 color0;
+        uniform vec3 color1;
+
+        varying vec2 v_texcoord;
+
+        void main() {
+            vec2 uv = vec2(5.0 * v_texcoord.x + 0.01 * uTime, 0.8 - 1.5 * v_texcoord.y);
+            float smoke = texture2D(tMap, uv).r;
+            uv = vec2(3.0 * v_texcoord.x - 0.007 * uTime, 0.9 - 0.5 * v_texcoord.y);
+            smoke *= 1.5 * texture2D(tMap, uv).r;
+
+            float t = pow(v_texcoord.y, 0.25);
+            gl_FragColor.rgb = mix(color0, color1, t) + 0.3 * smoke;
+            // gl_FragColor.rgb = vec3(0.0) + smoke;
+            gl_FragColor.a = 1.0;
+        }      
+      `;
+
+      const smokeTexture = layer.createTexture({
+        image: 'https://p5.ssl.qhimg.com/t0198a3387059d4a7f7.jpg',
+        generateMipmaps: true,
+        wrapS: layer.gl.REPEAT,
+        wrapT: layer.gl.CLAMP_TO_EDGE,
+      });
+      console.log(smokeTexture);
+      const coronaProgram = layer.createProgram({
+        vertex,
+        fragment,
+        // depthTest: false,
+        texture: smokeTexture,
+        // texture,
+        uniforms: {
+          zoff: {value: 0},
+          uTime: {value: 0},
+          color0: {value: [0.07, 0.25, 0.16]},
+          color1: {value: [0.00, 0.00, 0.00]},
+        },
+        transparent: true,
+        cullFace: null,
+      });
+
+      layer.bindTime(coronaProgram);
+      window.layer = layer;
+      const smoke = new Mesh3d(coronaProgram, {model: geometry, mode: 'TRIANGLE_STRIP'});
+      const mask = layer.createMask();
+      layer.addMask(mask);
+      console.log(mask.camera.attributes);
+      mask.root.append(smoke);
+      // layer.append(smoke);
+      console.log(smoke);
+
+      // layer.deleteMask(mask);
+    }());
+  </script>
+</body>
+</html>

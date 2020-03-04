@@ -90,16 +90,16 @@ void main() {
   float light = 0.0;
   if(p < 0.5) {
     ep = (1.0 - step(p, sp)) * smoothstep(0.0, 0.3, sp);
-    light = ep * abs(sp - 0.5 * p) / 0.5 * p;
+    light = ep * sin(abs(sp - 0.5 * p)) / 0.5 * p;
   }
   else if(p < 1.0) {
     ep = (1.0 - step(p, sp)) * smoothstep(p - 0.5, p - 0.2, sp);
-    light = ep * abs(p - 0.5 - sp) / 0.5;
+    light = ep * sin(abs(p - 0.5 - sp)) / 0.5;
   }
   else {
     ep = step(p - 1.0, sp) * smoothstep(p - 0.5, p - 0.2, sp);
   }
-  gl_FragColor = vColor * ep + 0.35 * light; // TODO: 亮度用 hsb 调
+  gl_FragColor = vColor * ep + 0.65 * light; // TODO: 亮度用 hsb 调
 }
 `;
 

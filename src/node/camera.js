@@ -6,6 +6,7 @@ import Node3d from './node3d';
 import CameraAttr from '../attribute/camera';
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
+const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
 export default class Camera extends Group3d {
   static Attr = CameraAttr;
@@ -15,6 +16,7 @@ export default class Camera extends Group3d {
     this.groupBody = this.body;
     this.setBody(new _Camera(gl, {fov, near, far, aspect, left, right, bottom, top}), false);
     this.attributes[setAttribute]('mode', this.body.type);
+    this.gl = gl;
     if(attrs) this.attr(attrs);
   }
 
@@ -32,6 +34,18 @@ export default class Camera extends Group3d {
 
   get worldPosition() {
     return this.body.worldPosition;
+  }
+
+  cloneNode(deep = false) {
+    const attrs = this.attributes[changedAttrs];
+    const node = new this.constructor(this.gl, attrs);
+    if(deep) {
+      this.children.forEach((child) => {
+        const childNode = child.cloneNode(deep);
+        node.appendChild(childNode);
+      });
+    }
+    return node;
   }
 
   frustumIntersects(node) {

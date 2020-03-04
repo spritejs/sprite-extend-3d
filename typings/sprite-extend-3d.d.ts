@@ -105,9 +105,11 @@ declare namespace ext3d {
 
   export class Camera extends Group3d {
     constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, options?: Attrs);
+    gl: WebGL2RenderingContext|WebGLRenderingContext;
     get projectionMatrix(): Array<number>;
     get viewMatrix(): Array<number>;
     get worldPosition(): Array<number>;
+    cloneNode(deep: boolean): Camera;
     frustumIntersects(node: Node3d): boolean;
     frustumIntersectsSphere(center: Array<number>, radius: number): boolean;
     lookAt(target: Array<number>): this;
