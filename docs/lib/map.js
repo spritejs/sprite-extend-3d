@@ -85,5 +85,6 @@ export function drawMap({context = _context, countries = _countries, projection 
   context.restore();
 
   _bitmap = context.canvas.transferToImageBitmap();
+  _bitmap.originalMap = true;
   return _bitmap;
 }

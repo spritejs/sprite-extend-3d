@@ -193,7 +193,11 @@
 
         const img = highlightMap([u, v]);
         if(img) {
+          const previousImage = texture.image;
           texture.image = img;
+          if(previousImage.close && !previousImage.originalMap) {
+            previousImage.close(); // close imageBitmap to prevent memory leak.
+          }
           texture.needsUpdate = true;
         }
       });

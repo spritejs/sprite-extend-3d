@@ -180,6 +180,7 @@ export function launchMissile(parent, points, {colors}) {
     setTimeout(() => {
       layer.unbindTime(curveProgram);
       p.remove();
+      curveProgram.remove();
       spot.remove();
       spotEnd.remove();
     }, duration * 1000 + 200);
