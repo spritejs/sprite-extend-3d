@@ -106,6 +106,7 @@ declare namespace ext3d {
   export class Camera extends Group3d {
     constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, options?: Attrs);
     gl: WebGL2RenderingContext|WebGLRenderingContext;
+    orbit: any;
     get projectionMatrix(): Array<number>;
     get viewMatrix(): Array<number>;
     get worldPosition(): Array<number>;
@@ -296,13 +297,14 @@ declare namespace ext3d {
     get camera(): Camera;
     get gl(): WebGL2RenderingContext|WebGLRenderingContext;
     get meshes(): Array<Mesh>;
-    get orbitControls(): any;
     get post(): any;
     get renderOptions(): any;
     get root(): Group3d;
     get shadow(): Shadow|undefined;
+    get sublayers(): Array<Group3d>;
     get autoClear(): boolean;
     set autoClear(value: boolean);
+    addSublayer(sublayer: Group3d): void;
     bindTarget(target: RenderTarget, options?: Record<string, any>): void;
     bindTime(program: Program, options?: Record<string, any>): void;
     /**
@@ -311,6 +313,7 @@ declare namespace ext3d {
      * @param extra 
      */
     createProgram(options?: Record<string, any>, extra?: Record<string, any>): Program;
+    createSublayer(camera?: Camera): Group3d;
     /**
      * createText(text, {font = '16px Helvetica,Arial,sans-serif', fillColor, strokeColor, strokeWidth = 1} = {})
      * @param text 
@@ -333,6 +336,8 @@ declare namespace ext3d {
      * @param options 
      */
     loadShader(options: Record<string, any>): Promise<Record<string, any>>;
+    removeOrbit(camera?: Camera): void;
+    removeSublayer(sublayer: Group3d): void;
     render(): void;
     /**
      * renderTarget
@@ -408,6 +413,7 @@ declare namespace ext3d {
     lookAt(target: Array<number>, invert: boolean): void;
     lookAt(target: Node3d, invert: boolean): void;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
+    resyncState(forceUpdate: boolean): void;
     /**
      * rotate(deg, axis = [0, 1, 0])
      * @param deg 
@@ -423,6 +429,12 @@ declare namespace ext3d {
   export class Plane extends Mesh3d {
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     remesh(): void;
+  }
+
+  export class Raycast {
+    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext);
+    castMouse(camera: Camera, mouse: Array<number>): void;
+    intersectBounds(meshes: Array<Mesh>): Array<Mesh>;
   }
 
   export class RenderTarget extends Group3d {

@@ -10,6 +10,7 @@ export default class CylinderAttr extends Mesh3dAttr {
     this[setDefault]({
       radiusTop: 0.5,
       radiusBottom: 0.5,
+      /* radius */
       height: 1,
       radialSegments: 16,
       heightSegments: 1,
@@ -33,6 +34,16 @@ export default class CylinderAttr extends Mesh3dAttr {
 
   set radiusBottom(value) {
     this[setAttribute]('radiusBottom', value);
+  }
+
+  get radius() {
+    return [this.radiusTop, this.radiusBottom];
+  }
+
+  set radius(value) {
+    if(!Array.isArray(value)) value = [value, value];
+    this.radiusTop = value[0];
+    this.radiusBottom = value[1];
   }
 
   get height() {

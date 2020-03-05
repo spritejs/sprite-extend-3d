@@ -27,7 +27,7 @@ export async function loadMap() {
   const canvas = new OffscreenCanvas(1920, 1000);
   const context = canvas.getContext('2d');
 
-  return drawMap(null, {context, countries, projection});
+  return drawMap({context, countries, projection});
 }
 
 let _context,
@@ -65,7 +65,7 @@ export function highlightMap(highlight, {bitmap = _bitmap, countries = _countrie
   return bitmap;
 }
 
-export function drawMap(highlight, {context = _context, countries = _countries, projection = _projection} = {}) {
+export function drawMap({context = _context, countries = _countries, projection = _projection} = {}) {
   _context = context;
   _countries = countries;
   _projection = projection;
@@ -75,32 +75,11 @@ export function drawMap(highlight, {context = _context, countries = _countries, 
   context.save();
   context.translate(0, 1000);
   context.scale(1, -1);
-  context.strokeStyle = '#fff';
+  context.strokeStyle = '#ccc';
   context.lineWidth = 0.25;
   context.fillStyle = '#000';
   context.beginPath();
-
-  let idx = -1;
-  if(highlight) {
-    countries.features.some((d, i) => {
-      idx = i;
-      return d3.geoContains(d, projection.invert(highlight));
-    });
-  }
-  if(idx > 0) {
-    path({type: 'FeatureCollection', features: countries.features.slice(0, idx)});
-    context.fill();
-    context.fillStyle = '#fff';
-    context.beginPath();
-    path({type: 'FeatureCollection', features: countries.features.slice(idx, idx + 1)});
-    context.fill();
-    context.fillStyle = '#000';
-    context.beginPath();
-    path({type: 'FeatureCollection', features: countries.features.slice(idx + 1)});
-  } else {
-    path(countries);
-  }
-
+  path(countries);
   context.fill();
   context.stroke();
   context.restore();

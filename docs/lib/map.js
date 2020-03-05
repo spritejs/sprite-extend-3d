@@ -75,7 +75,7 @@ export function drawMap({context = _context, countries = _countries, projection 
   context.save();
   context.translate(0, 1000);
   context.scale(1, -1);
-  context.strokeStyle = '#fff';
+  context.strokeStyle = '#ccc';
   context.lineWidth = 0.25;
   context.fillStyle = '#000';
   context.beginPath();

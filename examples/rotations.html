@@ -41,7 +41,7 @@
       },
     });
 
-    layer.camera.attributes.pos = [5, 3, 6];
+    layer.camera.attributes.pos = [0, 0, 6];
     layer.camera.lookAt([0, 0, 0]);
 
     const program = layer.createProgram({
@@ -51,11 +51,12 @@
 
     const cube = new Cube(program, {
       pos: [0, 0, 0],
-      size: [0.3, 0.3, 1.0],
+      size: [0.3, 1.0, 0.3],
       colors: 'red red yellow yellow blue blue',
     });
     // cube.lookAt([0, 10, 1e-6]);
     layer.append(cube);
+    layer.setOrbit();
   </script>
 </body>
 </html>

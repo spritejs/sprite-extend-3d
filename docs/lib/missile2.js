@@ -1,4 +1,4 @@
-const {Plane, Vec3, Polyline3d, shaders} = spritejs.ext3d;
+const {Cylinder, Vec3, Polyline3d, shaders} = spritejs.ext3d;
 
 const vertex = `
 precision highp float;
@@ -90,31 +90,16 @@ void main() {
   float light = 0.0;
   if(p < 0.5) {
     ep = (1.0 - step(p, sp)) * smoothstep(0.0, 0.3, sp);
-    light = ep * sin(abs(sp - 0.5 * p)) / 0.5 * p;
+    light = ep * abs(sp - 0.5 * p) / 0.5 * p;
   }
   else if(p < 1.0) {
     ep = (1.0 - step(p, sp)) * smoothstep(p - 0.5, p - 0.2, sp);
-    light = ep * sin(abs(p - 0.5 - sp)) / 0.5;
+    light = ep * abs(p - 0.5 - sp) / 0.5;
   }
   else {
     ep = step(p - 1.0, sp) * smoothstep(p - 0.5, p - 0.2, sp);
   }
-  gl_FragColor = vColor * ep + 0.65 * light; // TODO: 亮度用 hsb 调
-}
-`;
-
-const spotFragment = `
-precision highp float;
-precision highp int;
-
-varying vec3 vNormal;
-varying vec4 vColor;
-varying vec2 vUv;
-
-void main() {
-  float r = 1.0 - 2.0 * distance(vUv, vec2(0.5));
-  gl_FragColor.rgb = vColor.rgb;
-  gl_FragColor.a = vColor.a * smoothstep(0.0, 0.6, r);
+  gl_FragColor = vColor * ep + 0.35 * light; // TODO: 亮度用 hsb 调
 }
 `;
 
@@ -125,26 +110,29 @@ let _spotEnd = null;
 export function launchMissile(parent, points, {colors}) {
   const layer = parent.layer;
   if(layer) {
-    const spotColors = ['rgb(245,250,113)', 'rgb(56,154,70)'];
+    const spotColors = ['rgba(245,250,113,0.5) rgba(255,255,255,0.5)', 'rgba(56,154,70,0.5) rgba(255,255,255,0.5)'];
     const spotPos = new Vec3().copy(points[0]).normalize().scale(1.015);
     const spotEndPos = new Vec3().copy(points[points.length - 1]).normalize().scale(1.015);
 
     if(!spotProgram) {
       spotProgram = layer.createProgram({
         transparent: true,
-        vertex: shaders.GEOMETRY_WITH_TEXTURE.vertex,
-        fragment: spotFragment,
+        ...shaders.NORMAL_GEOMETRY,
       });
-      _spot = new Plane(spotProgram, {
-        width: 0.05,
+      _spot = new Cylinder(spotProgram, {
+        radiusTop: 0.01,
+        radiusBottom: 0.03,
         height: 0.05,
         raycast: 'none',
       });
-      _spotEnd = new Plane(spotProgram, {
-        width: 0.05,
+      _spot.transpos();
+      _spotEnd = new Cylinder(spotProgram, {
+        radiusTop: 0.01,
+        radiusBottom: 0.03,
         height: 0.05,
         raycast: 'none',
       });
+      _spotEnd.transpos();
     }
 
     const spot = _spot.cloneNode();
@@ -194,6 +182,6 @@ export function launchMissile(parent, points, {colors}) {
       p.remove();
       spot.remove();
       spotEnd.remove();
-    }, duration * 1000);
+    }, duration * 1000 + 200);
   }
 }

@@ -1,4 +1,4 @@
-const {Plane, Vec3, Polyline3d, shaders} = spritejs.ext3d;
+const {Cylinder, Vec3, Polyline3d, shaders} = spritejs.ext3d;
 
 const vertex = `
 precision highp float;
@@ -103,21 +103,6 @@ void main() {
 }
 `;
 
-const spotFragment = `
-precision highp float;
-precision highp int;
-
-varying vec3 vNormal;
-varying vec4 vColor;
-varying vec2 vUv;
-
-void main() {
-  float r = 1.0 - 2.0 * distance(vUv, vec2(0.5));
-  gl_FragColor.rgb = vColor.rgb;
-  gl_FragColor.a = vColor.a * smoothstep(0.0, 0.6, r);
-}
-`;
-
 let spotProgram = null;
 let _spot = null;
 let _spotEnd = null;
@@ -125,26 +110,29 @@ let _spotEnd = null;
 export function launchMissile(parent, points, {colors}) {
   const layer = parent.layer;
   if(layer) {
-    const spotColors = ['rgb(245,250,113)', 'rgb(56,154,70)'];
+    const spotColors = ['rgba(245,250,113,0.5) rgba(255,255,255,0.5)', 'rgba(56,154,70,0.5) rgba(255,255,255,0.5)'];
     const spotPos = new Vec3().copy(points[0]).normalize().scale(1.015);
     const spotEndPos = new Vec3().copy(points[points.length - 1]).normalize().scale(1.015);
 
     if(!spotProgram) {
       spotProgram = layer.createProgram({
         transparent: true,
-        vertex: shaders.GEOMETRY_WITH_TEXTURE.vertex,
-        fragment: spotFragment,
+        ...shaders.NORMAL_GEOMETRY,
       });
-      _spot = new Plane(spotProgram, {
-        width: 0.05,
+      _spot = new Cylinder(spotProgram, {
+        radiusTop: 0.01,
+        radiusBottom: 0.03,
         height: 0.05,
         raycast: 'none',
       });
-      _spotEnd = new Plane(spotProgram, {
-        width: 0.05,
+      _spot.transpos();
+      _spotEnd = new Cylinder(spotProgram, {
+        radiusTop: 0.01,
+        radiusBottom: 0.03,
         height: 0.05,
         raycast: 'none',
       });
+      _spotEnd.transpos();
     }
 
     const spot = _spot.cloneNode();
@@ -194,6 +182,6 @@ export function launchMissile(parent, points, {colors}) {
       p.remove();
       spot.remove();
       spotEnd.remove();
-    }, duration * 1000);
+    }, duration * 1000 + 200);
   }
 }

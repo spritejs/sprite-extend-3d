@@ -10,7 +10,6 @@ const defaultOption = {
   alpha: true,
 };
 
-const _controls = Symbol('orbit_controls');
 const _orbitChecker = Symbol('orbit_checker');
 const _orbitChecking = Symbol('orbit_checking');
 const _utime = Symbol('utime');
@@ -28,7 +27,8 @@ const _renderOptions = Symbol('renderOptions');
 
 const _root = Symbol('root');
 const _camera = Symbol('camera');
-const _masks = Symbol('masks');
+const _sublayers = Symbol('sublayers');
+const _orbit = Symbol('orbit');
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
@@ -81,7 +81,8 @@ export default class Layer3D extends Layer {
     }
     this[_root] = new Group3d();
     this[_root].connect(this, 0);
-    this[_masks] = [];
+    this[_sublayers] = [];
+    this[_orbit] = false;
   }
 
   get body() {
@@ -99,10 +100,6 @@ export default class Layer3D extends Layer {
     return this.renderer.gl;
   }
 
-  get masks() {
-    return this[_masks];
-  }
-
   get meshes() {
     const children = this.children;
     const ret = [];
@@ -111,10 +108,6 @@ export default class Layer3D extends Layer {
       if(child.meshes && child.meshes.length) ret.push(...child.meshes);
     }
     return ret;
-  }
-
-  get orbitControls() {
-    return this[_controls];
   }
 
   get post() {
@@ -133,6 +126,10 @@ export default class Layer3D extends Layer {
     return this[_shadow];
   }
 
+  get sublayers() {
+    return this[_sublayers];
+  }
+
   get autoClear() {
     return this.renderer.autoClear;
   }
@@ -141,8 +138,9 @@ export default class Layer3D extends Layer {
     this.renderer.autoClear = value;
   }
 
-  addMask(mask) {
-    this[_masks].push(mask);
+  addSublayer(sublayer) {
+    // Layer.prototype.connect.call(sublayer, this, 0);
+    this[_sublayers].push(sublayer);
   }
 
   bindTarget(target, options = {}) {
@@ -153,13 +151,6 @@ export default class Layer3D extends Layer {
     program.timeline = this.timeline.fork(opts);
     this[_utime].push(program);
     this.forceUpdate();
-  }
-
-  createMask(camera = null) {
-    if(!camera && this.camera) camera = this.camera.cloneNode();
-    const root = new Group3d();
-    const mask = {root, camera};
-    return mask;
   }
 
   /* {vertex, fragment, uniforms = {}} */
@@ -180,6 +171,13 @@ export default class Layer3D extends Layer {
 
     if(extraUniforms) Object.assign(program.uniforms, extraUniforms);
     return program;
+  }
+
+  createSublayer(camera = null) {
+    if(!camera && this.camera) camera = this.camera.cloneNode();
+    const root = new Group3d();
+    root.camera = camera;
+    return root;
   }
 
   createText(text, {font = '16px Helvetica,Arial,sans-serif', fillColor, strokeColor, strokeWidth = 1} = {}) {
@@ -233,25 +231,11 @@ export default class Layer3D extends Layer {
     return new Shadow(gl, {width, height, light: light.body});
   }
 
-  deleteMask(mask) {
-    const idx = this[_masks].indexOf(mask);
-    if(idx >= 0) {
-      this[_masks].splice(idx, 1);
-    }
-  }
-
   /* override */
   dispatchPointerEvent(event) {
-    const raycast = this.raycast;
-    if(raycast) {
-      const mouse = new Vec2();
-      const renderer = this.renderer;
-      mouse.set(
-        2.0 * (event.x / renderer.width) - 1.0,
-        2.0 * (1.0 - event.y / renderer.height) - 1.0
-      );
-      raycast.castMouse(this[_camera].body, mouse);
-      const hits = raycast.intersectBounds(this.meshes.filter(mesh => mesh.geometry.raycast !== 'none'));
+    function dispatchEvent(raycast, subject, mouse) {
+      raycast.castMouse(subject.camera.body, mouse);
+      const hits = raycast.intersectBounds(subject.meshes.filter(mesh => mesh.geometry.raycast !== 'none'));
       if(hits && hits.length) {
         let target;
         for(let i = 0; i < hits.length; i++) {
@@ -272,7 +256,28 @@ export default class Layer3D extends Layer {
         }
       }
     }
-    return Block.prototype.dispatchPointerEvent.call(this, event);
+    let mouse;
+    const raycast = this.raycast;
+    if(raycast || this[_sublayers].length) {
+      const renderer = this.renderer;
+      mouse = new Vec2();
+      mouse.set(
+        2.0 * (event.x / renderer.width) - 1.0,
+        2.0 * (1.0 - event.y / renderer.height) - 1.0
+      );
+    }
+    let ret = false;
+    if(raycast) {
+      ret = dispatchEvent(raycast, this, mouse);
+    }
+    if(this[_sublayers].length) {
+      this[_sublayers].forEach((sublayer) => {
+        if(sublayer.raycast) {
+          ret = ret || dispatchEvent(sublayer.raycast, sublayer, mouse);
+        }
+      });
+    }
+    return ret || Block.prototype.dispatchPointerEvent.call(this, event);
   }
 
   async loadGLTF(src) {
@@ -318,6 +323,20 @@ export default class Layer3D extends Layer {
     return {vertex: data[0], fragment: data[1]};
   }
 
+  removeOrbit(camera = this[_camera]) {
+    if(camera.orbit) {
+      camera.orbit.remove();
+      delete camera.orbit;
+    }
+  }
+
+  removeSublayer(sublayer) {
+    const idx = this[_sublayers].indexOf(sublayer);
+    if(idx >= 0) {
+      this[_sublayers].splice(idx, 1);
+    }
+  }
+
   /* override */
   render() {
     const root = this[_root];
@@ -328,8 +347,9 @@ export default class Layer3D extends Layer {
         target.renderBy(this, options);
       });
     }
-    if(this[_controls]) {
-      this[_controls].update();
+    if(camera.orbit) {
+      camera.orbit.update();
+      camera.resyncState();
     }
     if(this[_shadow]) {
       this[_shadow].render({scene: root.body});
@@ -339,10 +359,15 @@ export default class Layer3D extends Layer {
     } else {
       this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     }
-    if(this[_masks].length) {
+    if(this[_sublayers].length) {
       this.renderer.autoClear = false;
-      this[_masks].forEach(({root, camera}) => {
-        this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
+      this[_sublayers].forEach((sublayer) => {
+        const camera = sublayer.camera;
+        if(camera.orbit) {
+          camera.orbit.update();
+          camera.resyncState();
+        }
+        this.renderer.render({scene: sublayer.body, camera: camera.body, ...this[_renderOptions]});
       });
       this.renderer.autoClear = true;
     }
@@ -380,33 +405,45 @@ export default class Layer3D extends Layer {
         () => { this.forceUpdate() },
       ];
     }
-    const camera = this[_camera];
-    if(this[_controls]) {
-      this[_controls].remove();
-      this.removeEventListener('mousedown', this[_orbitChecker][0]);
-      this.removeEventListener('mouseup', this[_orbitChecker][1]);
-      this.removeEventListener('mousemove', this[_orbitChecker][2]);
-      this.removeEventListener('touchstart', this[_orbitChecker][3]);
-      this.removeEventListener('touchend', this[_orbitChecker][3]);
-      this.removeEventListener('touchmove', this[_orbitChecker][3]);
-      this.removeEventListener('wheel', this[_orbitChecker][3], false);
-    }
-    if(options == null) {
-      delete this[_controls];
+    if(options == null) { // remove all
+      if(this[_camera]) this.removeOrbit();
+      if(this[_sublayers].length) {
+        this[_sublayers].forEach(({camera}) => {
+          if(camera) this.removeOrbit(camera);
+        });
+      }
+      if(this[_orbit]) {
+        this[_orbit] = false;
+        this.removeEventListener('mousedown', this[_orbitChecker][0]);
+        this.removeEventListener('mouseup', this[_orbitChecker][1]);
+        this.removeEventListener('mousemove', this[_orbitChecker][2]);
+        this.removeEventListener('touchstart', this[_orbitChecker][3]);
+        this.removeEventListener('touchend', this[_orbitChecker][3]);
+        this.removeEventListener('touchmove', this[_orbitChecker][3]);
+        this.removeEventListener('wheel', this[_orbitChecker][3], false);
+      }
       return null;
     }
+
+    const camera = options.camera || this[_camera];
     const target = options.target || [0, 0, 0];
     options.target = new Vec3(...target);
     options.element = options.element || this.parent.container;
-    this[_controls] = new Orbit(camera.body, options);
-    this.addEventListener('mousedown', this[_orbitChecker][0]);
-    this.addEventListener('mouseup', this[_orbitChecker][1]);
-    this.addEventListener('mousemove', this[_orbitChecker][2]);
-    this.addEventListener('touchstart', this[_orbitChecker][3]);
-    this.addEventListener('touchend', this[_orbitChecker][3]);
-    this.addEventListener('touchmove', this[_orbitChecker][3]);
-    this.addEventListener('wheel', this[_orbitChecker][3], false);
-    return this[_controls];
+    const orbit = new Orbit(camera.body, options);
+    camera.orbit = orbit;
+
+    if(!this[_orbit]) {
+      this.addEventListener('mousedown', this[_orbitChecker][0]);
+      this.addEventListener('mouseup', this[_orbitChecker][1]);
+      this.addEventListener('mousemove', this[_orbitChecker][2]);
+      this.addEventListener('touchstart', this[_orbitChecker][3]);
+      this.addEventListener('touchend', this[_orbitChecker][3]);
+      this.addEventListener('touchmove', this[_orbitChecker][3]);
+      this.addEventListener('wheel', this[_orbitChecker][3], false);
+    }
+    this[_orbit]++;
+
+    return orbit;
   }
 
   setRaycast(enable = true) {
@@ -441,6 +478,13 @@ export default class Layer3D extends Layer {
     const camera = this.camera;
     if(camera && this.options.camera.preserveAspect !== false) {
       camera.attributes.aspect = width / height;
+    }
+    if(this[_sublayers] && this[_sublayers].length) {
+      this[_sublayers].forEach(({camera}) => {
+        if(camera && this.options.camera.preserveAspect !== false) {
+          camera.attributes.aspect = width / height;
+        }
+      });
     }
     if(this[_post]) {
       this[_post].resize();

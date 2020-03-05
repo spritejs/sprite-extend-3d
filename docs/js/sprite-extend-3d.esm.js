@@ -108,6 +108,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GPGPU", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["GPGPU"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Raycast", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["Raycast"]; });
+
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(47);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
@@ -9019,8 +9021,6 @@ const defaultOption = {
   alpha: true
 };
 
-const _controls = Symbol('orbit_controls');
-
 const _orbitChecker = Symbol('orbit_checker');
 
 const _orbitChecking = Symbol('orbit_checking');
@@ -9046,6 +9046,10 @@ const _renderOptions = Symbol('renderOptions');
 const _root = Symbol('root');
 
 const _camera = Symbol('camera');
+
+const _sublayers = Symbol('sublayers');
+
+const _orbit = Symbol('orbit');
 
 class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
   constructor(options = {}) {
@@ -9104,6 +9108,9 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     this[_root] = new _group3d__WEBPACK_IMPORTED_MODULE_4__["default"]();
 
     this[_root].connect(this, 0);
+
+    this[_sublayers] = [];
+    this[_orbit] = false;
   }
 
   get body() {
@@ -9134,10 +9141,6 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     return ret;
   }
 
-  get orbitControls() {
-    return this[_controls];
-  }
-
   get post() {
     return this[_post];
   }
@@ -9154,12 +9157,21 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     return this[_shadow];
   }
 
+  get sublayers() {
+    return this[_sublayers];
+  }
+
   get autoClear() {
     return this.renderer.autoClear;
   }
 
   set autoClear(value) {
     this.renderer.autoClear = value;
+  }
+
+  addSublayer(sublayer) {
+    // Layer.prototype.connect.call(sublayer, this, 0);
+    this[_sublayers].push(sublayer);
   }
 
   bindTarget(target, options = {}) {
@@ -9215,6 +9227,13 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     };
     if (extraUniforms) Object.assign(program.uniforms, extraUniforms);
     return program;
+  }
+
+  createSublayer(camera = null) {
+    if (!camera && this.camera) camera = this.camera.cloneNode();
+    const root = new _group3d__WEBPACK_IMPORTED_MODULE_4__["default"]();
+    root.camera = camera;
+    return root;
   }
 
   createText(text, {
@@ -9295,14 +9314,9 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
 
   dispatchPointerEvent(event) {
-    const raycast = this.raycast;
-
-    if (raycast) {
-      const mouse = new ogl__WEBPACK_IMPORTED_MODULE_1__["Vec2"]();
-      const renderer = this.renderer;
-      mouse.set(2.0 * (event.x / renderer.width) - 1.0, 2.0 * (1.0 - event.y / renderer.height) - 1.0);
-      raycast.castMouse(this[_camera].body, mouse);
-      const hits = raycast.intersectBounds(this.meshes.filter(mesh => mesh.geometry.raycast !== 'none'));
+    function dispatchEvent(raycast, subject, mouse) {
+      raycast.castMouse(subject.camera.body, mouse);
+      const hits = raycast.intersectBounds(subject.meshes.filter(mesh => mesh.geometry.raycast !== 'none'));
 
       if (hits && hits.length) {
         let target;
@@ -9326,7 +9340,30 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       }
     }
 
-    return spritejs__WEBPACK_IMPORTED_MODULE_0__["Block"].prototype.dispatchPointerEvent.call(this, event);
+    let mouse;
+    const raycast = this.raycast;
+
+    if (raycast || this[_sublayers].length) {
+      const renderer = this.renderer;
+      mouse = new ogl__WEBPACK_IMPORTED_MODULE_1__["Vec2"]();
+      mouse.set(2.0 * (event.x / renderer.width) - 1.0, 2.0 * (1.0 - event.y / renderer.height) - 1.0);
+    }
+
+    let ret = false;
+
+    if (raycast) {
+      ret = dispatchEvent(raycast, this, mouse);
+    }
+
+    if (this[_sublayers].length) {
+      this[_sublayers].forEach(sublayer => {
+        if (sublayer.raycast) {
+          ret = ret || dispatchEvent(sublayer.raycast, sublayer, mouse);
+        }
+      });
+    }
+
+    return ret || spritejs__WEBPACK_IMPORTED_MODULE_0__["Block"].prototype.dispatchPointerEvent.call(this, event);
   }
 
   async loadGLTF(src) {
@@ -9382,6 +9419,21 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       fragment: data[1]
     };
   }
+
+  removeOrbit(camera = this[_camera]) {
+    if (camera.orbit) {
+      camera.orbit.remove();
+      delete camera.orbit;
+    }
+  }
+
+  removeSublayer(sublayer) {
+    const idx = this[_sublayers].indexOf(sublayer);
+
+    if (idx >= 0) {
+      this[_sublayers].splice(idx, 1);
+    }
+  }
   /* override */
 
 
@@ -9404,8 +9456,9 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       });
     }
 
-    if (this[_controls]) {
-      this[_controls].update();
+    if (camera.orbit) {
+      camera.orbit.update();
+      camera.resyncState();
     }
 
     if (this[_shadow]) {
@@ -9424,6 +9477,26 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
         scene: root.body,
         camera: camera.body
       }, this[_renderOptions]));
+    }
+
+    if (this[_sublayers].length) {
+      this.renderer.autoClear = false;
+
+      this[_sublayers].forEach(sublayer => {
+        const camera = sublayer.camera;
+
+        if (camera.orbit) {
+          camera.orbit.update();
+          camera.resyncState();
+        }
+
+        this.renderer.render(_objectSpread({
+          scene: sublayer.body,
+          camera: camera.body
+        }, this[_renderOptions]));
+      });
+
+      this.renderer.autoClear = true;
     }
 
     this._prepareRenderFinished();
@@ -9476,37 +9549,51 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       }];
     }
 
-    const camera = this[_camera];
-
-    if (this[_controls]) {
-      this[_controls].remove();
-
-      this.removeEventListener('mousedown', this[_orbitChecker][0]);
-      this.removeEventListener('mouseup', this[_orbitChecker][1]);
-      this.removeEventListener('mousemove', this[_orbitChecker][2]);
-      this.removeEventListener('touchstart', this[_orbitChecker][3]);
-      this.removeEventListener('touchend', this[_orbitChecker][3]);
-      this.removeEventListener('touchmove', this[_orbitChecker][3]);
-      this.removeEventListener('wheel', this[_orbitChecker][3], false);
-    }
-
     if (options == null) {
-      delete this[_controls];
+      // remove all
+      if (this[_camera]) this.removeOrbit();
+
+      if (this[_sublayers].length) {
+        this[_sublayers].forEach(({
+          camera
+        }) => {
+          if (camera) this.removeOrbit(camera);
+        });
+      }
+
+      if (this[_orbit]) {
+        this[_orbit] = false;
+        this.removeEventListener('mousedown', this[_orbitChecker][0]);
+        this.removeEventListener('mouseup', this[_orbitChecker][1]);
+        this.removeEventListener('mousemove', this[_orbitChecker][2]);
+        this.removeEventListener('touchstart', this[_orbitChecker][3]);
+        this.removeEventListener('touchend', this[_orbitChecker][3]);
+        this.removeEventListener('touchmove', this[_orbitChecker][3]);
+        this.removeEventListener('wheel', this[_orbitChecker][3], false);
+      }
+
       return null;
     }
 
+    const camera = options.camera || this[_camera];
     const target = options.target || [0, 0, 0];
     options.target = new ogl__WEBPACK_IMPORTED_MODULE_1__["Vec3"](...target);
     options.element = options.element || this.parent.container;
-    this[_controls] = new ogl__WEBPACK_IMPORTED_MODULE_1__["Orbit"](camera.body, options);
-    this.addEventListener('mousedown', this[_orbitChecker][0]);
-    this.addEventListener('mouseup', this[_orbitChecker][1]);
-    this.addEventListener('mousemove', this[_orbitChecker][2]);
-    this.addEventListener('touchstart', this[_orbitChecker][3]);
-    this.addEventListener('touchend', this[_orbitChecker][3]);
-    this.addEventListener('touchmove', this[_orbitChecker][3]);
-    this.addEventListener('wheel', this[_orbitChecker][3], false);
-    return this[_controls];
+    const orbit = new ogl__WEBPACK_IMPORTED_MODULE_1__["Orbit"](camera.body, options);
+    camera.orbit = orbit;
+
+    if (!this[_orbit]) {
+      this.addEventListener('mousedown', this[_orbitChecker][0]);
+      this.addEventListener('mouseup', this[_orbitChecker][1]);
+      this.addEventListener('mousemove', this[_orbitChecker][2]);
+      this.addEventListener('touchstart', this[_orbitChecker][3]);
+      this.addEventListener('touchend', this[_orbitChecker][3]);
+      this.addEventListener('touchmove', this[_orbitChecker][3]);
+      this.addEventListener('wheel', this[_orbitChecker][3], false);
+    }
+
+    this[_orbit]++;
+    return orbit;
   }
 
   setRaycast(enable = true) {
@@ -9544,6 +9631,16 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
     if (camera && this.options.camera.preserveAspect !== false) {
       camera.attributes.aspect = width / height;
+    }
+
+    if (this[_sublayers] && this[_sublayers].length) {
+      this[_sublayers].forEach(({
+        camera
+      }) => {
+        if (camera && this.options.camera.preserveAspect !== false) {
+          camera.attributes.aspect = width / height;
+        }
+      });
     }
 
     if (this[_post]) {
@@ -9662,6 +9759,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
+const changedAttrs = Symbol.for('spritejs_changedAttrs');
 class Camera extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
   constructor(gl, _ref = {}) {
     let {
@@ -9698,6 +9796,7 @@ class Camera extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
       top
     }), false);
     this.attributes[setAttribute]('mode', this.body.type);
+    this.gl = gl;
     if (attrs) this.attr(attrs);
   }
 
@@ -9715,6 +9814,20 @@ class Camera extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 
   get worldPosition() {
     return this.body.worldPosition;
+  }
+
+  cloneNode(deep = false) {
+    const attrs = this.attributes[changedAttrs];
+    const node = new this.constructor(this.gl, attrs);
+
+    if (deep) {
+      this.children.forEach(child => {
+        const childNode = child.cloneNode(deep);
+        node.appendChild(childNode);
+      });
+    }
+
+    return node;
   }
 
   frustumIntersects(node) {
@@ -10027,7 +10140,8 @@ function updateRotation({
 }, {
   rotation
 }) {
-  return attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI) || attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI) || attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+  const ops = [attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI), attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI), attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI)];
+  return ops.some(o => o);
 }
 
 class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
@@ -10215,6 +10329,20 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
 
       if (key === 'rotateOrder') {
         body.rotation.reorder(newValue);
+      }
+    }
+  }
+
+  resyncState(forceUpdate = false) {
+    // camera 的 orbit 或其他动作直接操作了 body，需要同步状态
+    const body = this[_body];
+
+    if (body) {
+      const attributes = this.attributes;
+      const ops = [updateRotation(this, body), attributes[setAttribute]('scaleX', body.scale.x), attributes[setAttribute]('scaleY', body.scale.y), attributes[setAttribute]('scaleZ', body.scale.z), attributes[setAttribute]('x', body.position.x), attributes[setAttribute]('y', body.position.y), attributes[setAttribute]('z', body.position.z)];
+
+      if (forceUpdate && ops.some(o => o)) {
+        this.forceUpdate();
       }
     }
   }
@@ -11005,6 +11133,36 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     }
   }
 
+  transpos(order = 'zxy') {
+    const geometry = this[_geometry];
+
+    if (geometry) {
+      order = [...order].map(c => {
+        if (c === 'x' || c === 'X') return 0;
+        if (c === 'y' || c === 'Y') return 1;
+        return 2;
+      });
+      const position = geometry.attributes.position;
+      const {
+        size,
+        data
+      } = position;
+
+      for (let i = 0; i < data.length; i += size) {
+        const pos = [data[i], data[i + 1], data[i + 2]];
+
+        for (let j = 0; j < 3; j++) {
+          const idx = order[j] != null ? order[j] : j;
+          data[i + j] = pos[idx];
+        } // [data[i], data[i + 1], data[i + 2]] = [data[i + 1], data[i + 2], data[i]];
+
+      }
+
+      position.needsUpdate = true;
+      this.forceUpdate();
+    }
+  }
+
   updateMesh() {
     if (this.program) {
       if (!this[_updateMeshPromise]) {
@@ -11180,11 +11338,11 @@ class Mesh3dAttr extends _node3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
   }
 
   set mode(value) {
-    if (typeof value === 'number' && value >= 0 && value < 5) {
-      value = ['POINTS', 'LINES', 'LINE_LOOP', 'LINE_STRIP', 'TRIANGLES'][value];
+    if (typeof value === 'number' && value >= 0 && value < 7) {
+      value = ['POINTS', 'LINES', 'LINE_LOOP', 'LINE_STRIP', 'TRIANGLES', 'TRIANGLE_STRIP', 'TRIANGLE_FAN'][value];
     }
 
-    if (value && value !== 'TRIANGLES' && value !== 'POINTS' && value !== 'LINES' && value !== 'LINE_LOOP' && value !== 'LINE_STRIP') {
+    if (value && value !== 'TRIANGLES' && value !== 'POINTS' && value !== 'LINES' && value !== 'LINE_LOOP' && value !== 'LINE_STRIP' && value !== 'TRIANGLE_STRIP' && value !== 'TRIANGLE_FAN') {
       throw new TypeError('Invalid mode value.');
     }
 
@@ -12130,6 +12288,8 @@ class CylinderAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this[setDefault]({
       radiusTop: 0.5,
       radiusBottom: 0.5,
+
+      /* radius */
       height: 1,
       radialSegments: 16,
       heightSegments: 1,
@@ -12153,6 +12313,16 @@ class CylinderAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
   set radiusBottom(value) {
     this[setAttribute]('radiusBottom', value);
+  }
+
+  get radius() {
+    return [this.radiusTop, this.radiusBottom];
+  }
+
+  set radius(value) {
+    if (!Array.isArray(value)) value = [value, value];
+    this.radiusTop = value[0];
+    this.radiusBottom = value[1];
   }
 
   get height() {
@@ -12657,6 +12827,7 @@ const _ext3d$Mat4 = ext3d['Mat4'];
 const _ext3d$Quat = ext3d['Quat'];
 const _ext3d$Euler = ext3d['Euler'];
 const _ext3d$GPGPU = ext3d['GPGPU'];
+const _ext3d$Raycast = ext3d['Raycast'];
 
 export {
     _ext3d$Layer3D as Layer3D,
@@ -12682,5 +12853,6 @@ export {
     _ext3d$Mat4 as Mat4,
     _ext3d$Quat as Quat,
     _ext3d$Euler as Euler,
-    _ext3d$GPGPU as GPGPU
+    _ext3d$GPGPU as GPGPU,
+    _ext3d$Raycast as Raycast
 }

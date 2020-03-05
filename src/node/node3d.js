@@ -7,9 +7,10 @@ const changedAttrs = Symbol.for('spritejs_changedAttrs');
 const setAttribute = Symbol.for('spritejs_setAttribute');
 
 function updateRotation({attributes}, {rotation}) {
-  return attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI)
-   || attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI)
-   || attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI);
+  const ops = [attributes[setAttribute]('rotateX', rotation.x * 180 / Math.PI),
+    attributes[setAttribute]('rotateY', rotation.y * 180 / Math.PI),
+    attributes[setAttribute]('rotateZ', rotation.z * 180 / Math.PI)];
+  return ops.some(o => o);
 }
 
 export default class Node3d extends Node {
@@ -170,6 +171,25 @@ export default class Node3d extends Node {
       }
       if(key === 'rotateOrder') {
         body.rotation.reorder(newValue);
+      }
+    }
+  }
+
+  resyncState(forceUpdate = false) { // camera 的 orbit 或其他动作直接操作了 body，需要同步状态
+    const body = this[_body];
+    if(body) {
+      const attributes = this.attributes;
+      const ops = [
+        updateRotation(this, body),
+        attributes[setAttribute]('scaleX', body.scale.x),
+        attributes[setAttribute]('scaleY', body.scale.y),
+        attributes[setAttribute]('scaleZ', body.scale.z),
+        attributes[setAttribute]('x', body.position.x),
+        attributes[setAttribute]('y', body.position.y),
+        attributes[setAttribute]('z', body.position.z),
+      ];
+      if(forceUpdate && ops.some(o => o)) {
+        this.forceUpdate();
       }
     }
   }
