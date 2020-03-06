@@ -97,8 +97,10 @@
     });
     sphere.speed = -0.5;
     layer.append(sphere);
+    sphere.geometry.preserveBuffers = true;
 
     const cube = new Cube(program, {width: 0.3, height: 0.3, depth: 0.3});
+    cube.geometry.preserveBuffers = true;
     const shapes = [sphere];
 
     // Create random array of shapes

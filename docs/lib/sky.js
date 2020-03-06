@@ -64,4 +64,6 @@ export function createSky(layer) {
   });
   skyBox.attributes.scale = 50;
   layer.append(skyBox);
+
+  return skyBox;
 }

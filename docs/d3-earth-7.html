@@ -27,10 +27,12 @@
   <script type="module">
     import {loadMap, highlightMap} from './lib/map.js';
     import {createSky} from './lib/sky.js';
-    import {launchMissile} from './lib/missile2.js';
+    import {createEarth} from './lib/earth.js';
+    import {launchMissile} from './lib/missile3.js';
+    import {unproject, latlng_projection} from './lib/utils.js';
 
     const {Scene} = spritejs;
-    const {Sphere, Vec3, Geometry, Mesh3d, shaders} = spritejs.ext3d;
+    const {Geometry, Mesh3d, Vec3} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -51,49 +53,6 @@
     layer.camera.lookAt([0, 0, 0]);
     layer.gl.clearColor(0, 0, 0, 1);
 
-    const earthFragment = `
-      precision highp float;
-      precision highp int;
-
-      varying vec3 vNormal;
-      varying vec4 vColor;
-
-      uniform vec4 directionalLight; //平行光
-
-      uniform sampler2D tMap;
-      varying vec2 vUv;
-
-      varying float fCos;
-
-      uniform vec4 pointLightColor; // 点光源颜色
-      uniform vec4 ambientColor; // 环境光
-
-      uniform vec2 uResolution;
-
-      void main() {
-        vec4 color = vColor;
-        vec4 texColor = texture2D(tMap, vUv);
-        vec2 st = gl_FragCoord.xy / uResolution;
-
-        vec3 light = normalize(directionalLight.xyz);
-        float shading = dot(vNormal, light) * directionalLight.w;
-
-        float alpha = texColor.a;
-        color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);
-        color.a = texColor.a + (1.0 - texColor.a) * color.a;
-
-        vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色
-        vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色
-
-        color = vec4(diffuse + ambient, color.a);
-
-        float d = distance(st, vec2(0.5));
-
-        gl_FragColor.rgb = color.rgb + shading + 0.3 * pow((1.0 - d), 3.0);
-        gl_FragColor.a = color.a;
-      }    
-    `;
-
     (async function () {
       // 默认宽高 960 X 500，默认 translate 是 480 X 250
       const projection = d3.geoEquirectangular();
@@ -104,69 +63,54 @@
       const texture = layer.createTexture({image});
 
       createSky(layer);
-
-      const program = layer.createProgram({
-        // transparent: true,
-        fragment: earthFragment,
-        vertex: shaders.GEOMETRY_WITH_TEXTURE.vertex,
-        // ...shaders.GEOMETRY_WITH_TEXTURE,
-        cullFace: null,
+      const earth = createEarth(layer, {
         texture,
-      });
-
-      const earth = new Sphere(program);
-      earth.attr({
         radius: 1,
-        // colors: '#7cf',
         colors: '#333',
+        rotateX: -30,
+        rotateY: 210,
       });
-      layer.append(earth);
-      earth.attributes.rotateY = 210;
-      earth.attributes.rotateX = -30;
 
       layer.tick(() => {
         earth.attributes.rotateY += 0.1;
       });
 
-      function get_coordinate(latitude, longitude) {
-        const [u, v] = projection([longitude, latitude]);
-        return project(u, v);
-      }
+      const get_coordinate = latlng_projection.bind(null, projection);
 
-      function project(u, v, radius = 1) {
-        u /= 1920;
-        v /= 1000;
-        const pLength = Math.PI * 2;
-        const tLength = Math.PI;
-        const x = -radius * Math.cos(u * pLength) * Math.sin(v * tLength);
-        const y = radius * Math.cos(v * tLength);
-        const z = radius * Math.sin(u * pLength) * Math.sin(v * tLength);
-        return new Vec3(x, y, z);
-      }
-
-      function unproject(x, y, z, radius = 1) {
-        const pLength = Math.PI * 2;
-        const tLength = Math.PI;
-        const v = Math.acos(y / radius) / tLength; // const y = radius * Math.cos(v * tLength);
-        let u = Math.atan2(-z, x) + Math.PI; // z / x = -1 * Math.tan(u * pLength);
-        u /= pLength;
-        return [u * 1920, v * 1000];
-      }
+      // function projectPoints(from, to, radius = 1) {
+      //   const dist = Math.hypot(from[0] - to[0], from[1] - to[1]);
+      //   const n = Math.min(Math.floor(0.5 * dist), 60);
+      //   const points = [];
+      //   points.push(get_coordinate(...from, radius).scale(1.05));
+      //   for(let i = 1; i < n; i++) {
+      //     const p = i / n;
+      //     const x = from[0] * (1 - p) + to[0] * p;
+      //     const y = from[1] * (1 - p) + to[1] * p;
+      //     points.push(get_coordinate(x, y, radius).scale(1.1));
+      //   }
+      //   points.push(get_coordinate(...to, radius).scale(1.05));
+      //   return points;
+      // }
 
       function projectPoints(from, to, radius = 1) {
-        const dist = Math.hypot(from[0] - to[0], from[1] - to[1]);
-        const n = Math.min(Math.floor(0.5 * dist), 60);
+        from = get_coordinate(...from, radius);
+        to = get_coordinate(...to, radius);
+
+        const dist = from.distance(to);
+        const n = Math.max(Math.floor(dist * 60), 24);
+
         const points = [];
-        points.push(get_coordinate(...from, radius).scale(1.05));
+        points.push(from);
         for(let i = 1; i < n; i++) {
-          const p = i / n;
-          const x = from[0] * (1 - p) + to[0] * p;
-          const y = from[1] * (1 - p) + to[1] * p;
-          points.push(get_coordinate(x, y, radius).scale(1.1));
+          const d = i / n;
+          const p = new Vec3().copy(from).lerp(to, d).normalize()
+            .scale(1.05 - 0.1 * Math.abs(d - 0.5) * radius);
+          points.push(p);
         }
-        points.push(get_coordinate(...to, radius).scale(1.05));
+        points.push(to);
         return points;
       }
+
 
       const colors = [
         'rgb(232,22,140)',
@@ -175,7 +119,7 @@
 
       function getRandomPos() {
         return projectPoints([90 - 180 * Math.random(), 180 - 360 * Math.random()],
-          [90 - 180 * Math.random(), 180 - 360 * Math.random()], 1.02);
+          [90 - 180 * Math.random(), 180 - 360 * Math.random()], 1);
       }
 
       setInterval(() => {
@@ -201,8 +145,6 @@
           texture.needsUpdate = true;
         }
       });
-
-      window.earth = earth;
 
       function makeCoronaVerts() {
         const vertex = [];
@@ -297,6 +239,8 @@
       layer.addSublayer(mask);
       layer.setOrbit({camera: mask.camera, enableRotate: false});
       mask.append(smoke);
+
+      window.layer = layer;
     }());
   </script>
 </body>

@@ -59,7 +59,7 @@
     `;
 
     const {Scene} = spritejs;
-    const {Cube} = spritejs.ext3d;
+    const {Cube, Mesh3d} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -80,8 +80,11 @@
     
     const count = 3000;
     const cubeModel = new Cube(program); // shared model
+    cubeModel.geometry.preserveBuffers = true;
+    
     for(let i = 0; i < count; ++i) {
       const cube = cubeModel.cloneNode();
+      // const cube = new Mesh3d(cubeModel.program, {model: cubeModel.geometry}); // share geometry
       cube.attributes.pos = [
         -100 + Math.random() * 200,
         -100 + Math.random() * 200,
