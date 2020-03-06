@@ -36,18 +36,22 @@ let _context,
   _bitmap;
 
 let highlightMapContxt = null;
+let lastIndex = -1;
+
 export function highlightMap(highlight, {bitmap = _bitmap, countries = _countries, projection = _projection} = {}) {
-  if(!highlightMapContxt) {
-    const canvas = new OffscreenCanvas(1920, 1000);
-    highlightMapContxt = canvas.getContext('2d');
-  }
   let idx = -1;
   countries.features.some((d, i) => {
     const ret = d3.geoContains(d, projection.invert(highlight));
     if(ret) idx = i;
     return ret;
   });
+  if(idx === lastIndex) return null;
+  lastIndex = idx;
   if(idx > 0) {
+    if(!highlightMapContxt) {
+      const canvas = new OffscreenCanvas(1920, 1000);
+      highlightMapContxt = canvas.getContext('2d');
+    }
     const path = d3.geoPath(projection).context(highlightMapContxt);
     // console.log(context.canvas);
     highlightMapContxt.clearRect(0, 0, 1920, 1000);

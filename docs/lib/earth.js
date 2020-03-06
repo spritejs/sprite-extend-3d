@@ -52,6 +52,11 @@ export function createEarth(layer, {vertex = defaultEarthVertex, fragment = defa
     texture,
   });
 
+  attrs = Object.assign({
+    widthSegments: 64,
+    heightSegments: 32,
+  }, attrs);
+
   const earth = new Sphere(program, attrs);
   layer.append(earth);
 

@@ -1,5 +1,5 @@
 const {Color} = spritejs;
-const {Plane, Vec3, Polyline3d, Geometry, Mesh3d, shaders} = spritejs.ext3d;
+const {Vec3, Polyline3d, Geometry, Mesh3d} = spritejs.ext3d;
 
 const vertex = `
 precision highp float;
@@ -167,8 +167,9 @@ function makeSpotVerts(radis = 1.0) {
 }
 
 let spotGeometry = null;
+let spotProgram = null;
+let spotEndProgram = null;
 
-let pp = 0;
 export function launchMissile(parent, points, {colors}) {
   const layer = parent.layer;
 
@@ -185,29 +186,28 @@ export function launchMissile(parent, points, {colors}) {
 
     const spots = [];
 
-    const spotProgram = layer.createProgram({
-      transparent: true,
-      vertex: spotVertex,
-      fragment: spotFragment,
-      uniforms: {
-        uTime: {value: 0},
-        uColor: {value: new Color('rgb(245,250,113)').slice(0, 3)},
-        zoff: {value: 0},
-      },
-    });
-    layer.bindTime(spotProgram);
-
-    const spotEndProgram = layer.createProgram({
-      transparent: true,
-      vertex: spotVertex,
-      fragment: spotFragment,
-      uniforms: {
-        uTime: {value: 0},
-        uColor: {value: new Color('rgba(56,154,70,0.5)').slice(0, 3)},
-        zoff: {value: 0},
-      },
-    });
-    layer.bindTime(spotEndProgram);
+    if(!spotProgram) {
+      spotProgram = layer.createProgram({
+        transparent: true,
+        vertex: spotVertex,
+        fragment: spotFragment,
+        uniforms: {
+          uTime: {value: 0},
+          uColor: {value: new Color('rgb(245,250,113)').slice(0, 3)},
+          zoff: {value: 0},
+        },
+      });
+      spotEndProgram = layer.createProgram({
+        transparent: true,
+        vertex: spotVertex,
+        fragment: spotFragment,
+        uniforms: {
+          uTime: {value: 0},
+          uColor: {value: new Color('rgba(56,154,70,0.5)').slice(0, 3)},
+          zoff: {value: 0},
+        },
+      });
+    }
 
     const spot = new Mesh3d(spotProgram, {model: spotGeometry, mode: 'TRIANGLE_STRIP'});
     spot.attr({
@@ -219,6 +219,11 @@ export function launchMissile(parent, points, {colors}) {
     spot.lookAt(sp);
     parent.append(spot);
     spots.push(spot);
+    spot.timeline = layer.timeline.fork();
+    spot.addEventListener('beforerender', (evt) => {
+      const time = spot.timeline.currentTime * 0.001;
+      spotProgram.uniforms.uTime.value = time;
+    });
 
     const spotEnd = new Mesh3d(spotEndProgram, {model: spotGeometry, mode: 'TRIANGLE_STRIP'});
     spotEnd.attr({
@@ -230,6 +235,11 @@ export function launchMissile(parent, points, {colors}) {
     spotEnd.lookAt(sp2);
     parent.append(spotEnd);
     spots.push(spotEnd);
+    spotEnd.timeline = layer.timeline.fork();
+    spotEnd.addEventListener('beforerender', (evt) => {
+      const time = spotEnd.timeline.currentTime * 0.001;
+      spotEndProgram.uniforms.uTime.value = time;
+    });
 
     const duration = 1;
 
@@ -254,17 +264,15 @@ export function launchMissile(parent, points, {colors}) {
       pos: pe, // 曲线要设在结束点的位置，否则的话计算zDepth会导致透明度叠加出问题
     });
     parent.append(p);
-    pp++;
 
     setTimeout(() => {
       layer.unbindTime(curveProgram);
       p.dispose();
-      pp--;
       curveProgram.remove();
       spots.forEach((spot, i) => {
         spot.dispose();
         layer.unbindTime(spot.program);
-        spot.program.remove();
+        // spot.program.remove();
       });
     }, duration * 1000 + 200);
   }
