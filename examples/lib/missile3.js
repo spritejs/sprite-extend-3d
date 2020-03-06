@@ -238,7 +238,7 @@ export function launchMissile(parent, points, {colors}) {
       vertex,
       fragment,
       uniforms: {
-        uThickness: {value: 4},
+        uThickness: {value: 1.5},
         uTime: {value: 0},
         uDuration: {value: duration},
       },
