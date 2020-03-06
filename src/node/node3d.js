@@ -133,6 +133,10 @@ export default class Node3d extends Node {
     }
   }
 
+  dispose() {
+    this.remove();
+  }
+
   lookAt(target, invert = false) {
     const body = this[_body];
     if(body) {

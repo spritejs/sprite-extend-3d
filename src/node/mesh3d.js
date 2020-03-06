@@ -155,7 +155,8 @@ export default class Mesh3d extends Group3d {
   /* override */
   cloneNode(deep = false) {
     const attrs = this.attributes[changedAttrs];
-    const cloned = new this.constructor(this[_program], {...attrs, model: this[_geometry]});
+    const model = this[_geometry].preserveBuffers ? this[_geometry] : this[_model];
+    const cloned = new this.constructor(this[_program], {...attrs, model});
     if(deep) {
       this.children.forEach((child) => {
         const childNode = child.cloneNode(deep);
@@ -163,6 +164,20 @@ export default class Mesh3d extends Group3d {
       });
     }
     return cloned;
+  }
+
+  /* override */
+  dispose() {
+    const children = this.children;
+    for(let i = children.length - 1; i >= 0; i--) {
+      children[i].dispose();
+    }
+    const geometry = this[_geometry];
+    if(geometry && !geometry.preserveBuffers) {
+      geometry.remove();
+      delete this[_geometry];
+    }
+    super.dispose();
   }
 
   /* override */
@@ -229,7 +244,7 @@ export default class Mesh3d extends Group3d {
     if(model instanceof _Geometry) {
       geometry = model;
     } else {
-      geometry = new Geometry(gl, model);
+      geometry = new Geometry(gl, model, false);
     }
     if(!geometry.attributes.normal && program.attributeLocations.has('normal')) {
       const position = geometry.attributes.position.data;
@@ -261,8 +276,13 @@ export default class Mesh3d extends Group3d {
       });
     }
     geometry.raycast = this.attributes.raycast;
+    const oldGeometry = this[_geometry];
+    if(oldGeometry && oldGeometry !== geometry && !oldGeometry.preserveBuffers) {
+      oldGeometry.remove();
+    }
     this[_geometry] = geometry;
-    this[_model] = geometry.attributes;
+    // this[_model] = geometry.attributes;
+    this[_model] = model;
     const mode = this.attributes.mode;
     const mesh = this._createMesh({mode: gl[mode], geometry, program});
     this.setBody(mesh);

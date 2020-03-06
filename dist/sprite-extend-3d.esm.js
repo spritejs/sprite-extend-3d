@@ -10281,6 +10281,10 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
     }
   }
 
+  dispose() {
+    this.remove();
+  }
+
   lookAt(target, invert = false) {
     const body = this[_body];
 
@@ -10906,8 +10910,9 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
 
   cloneNode(deep = false) {
     const attrs = this.attributes[changedAttrs];
+    const model = this[_geometry].preserveBuffers ? this[_geometry] : this[_model];
     const cloned = new this.constructor(this[_program], _objectSpread({}, attrs, {
-      model: this[_geometry]
+      model
     }));
 
     if (deep) {
@@ -10918,6 +10923,25 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     }
 
     return cloned;
+  }
+  /* override */
+
+
+  dispose() {
+    const children = this.children;
+
+    for (let i = children.length - 1; i >= 0; i--) {
+      children[i].dispose();
+    }
+
+    const geometry = this[_geometry];
+
+    if (geometry && !geometry.preserveBuffers) {
+      geometry.remove();
+      delete this[_geometry];
+    }
+
+    super.dispose();
   }
   /* override */
 
@@ -10998,7 +11022,7 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     if (model instanceof ogl__WEBPACK_IMPORTED_MODULE_1__["Geometry"]) {
       geometry = model;
     } else {
-      geometry = new _helper_geometry__WEBPACK_IMPORTED_MODULE_2__["default"](gl, model);
+      geometry = new _helper_geometry__WEBPACK_IMPORTED_MODULE_2__["default"](gl, model, false);
     }
 
     if (!geometry.attributes.normal && program.attributeLocations.has('normal')) {
@@ -11038,8 +11062,15 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     }
 
     geometry.raycast = this.attributes.raycast;
-    this[_geometry] = geometry;
-    this[_model] = geometry.attributes;
+    const oldGeometry = this[_geometry];
+
+    if (oldGeometry && oldGeometry !== geometry && !oldGeometry.preserveBuffers) {
+      oldGeometry.remove();
+    }
+
+    this[_geometry] = geometry; // this[_model] = geometry.attributes;
+
+    this[_model] = model;
     const mode = this.attributes.mode;
 
     const mesh = this._createMesh({
@@ -11221,7 +11252,7 @@ function parseData(data, size = 3) {
 }
 
 class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
-  constructor(gl, model) {
+  constructor(gl, model, preserveBuffers = true) {
     const {
       position,
       uv,
@@ -11266,7 +11297,9 @@ class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
       });
     }
 
-    super(gl, attributes);
+    super(gl, attributes); // prevent remove geometry before setGeometry
+
+    this.preserveBuffers = preserveBuffers;
   }
 
 }

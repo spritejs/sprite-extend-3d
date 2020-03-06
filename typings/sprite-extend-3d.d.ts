@@ -166,6 +166,7 @@ declare namespace ext3d {
     drawRange: Record<string, any>;
     instancedCount: number;
     glState: any;
+    preserveBuffers: any;
     addAttribute(key: string, attr: Record<string, any>): void;
     updateAttribute(attr: Record<string, any>): void;
     setIndex(value: Record<string, any>): void;
@@ -185,7 +186,8 @@ declare namespace ext3d {
   }
 
   export class Geometry extends BaseGeometry {
-    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, model: any);
+    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, model: any, preserveBuffers?: boolean);
+    preserveBuffers: boolean;
   }
 
   class BaseRenderTarget {
@@ -384,6 +386,7 @@ declare namespace ext3d {
     get program(): Program;
     addEventListener(type: string, listener: Function, options?: Record<string, any>): this;
     cloneNode(deep?: boolean): Mesh3d;
+    dispose(): void;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     remesh(): void;
     removeAllListeners(type: string, options?: Record<string, any>): this;
@@ -410,6 +413,7 @@ declare namespace ext3d {
     set up(value: Array<number>);
     connect(parent: Node, zOrder: number): void;
     disconnect(parent: Node): void;
+    dispose(): void;
     lookAt(target: Array<number>, invert: boolean): void;
     lookAt(target: Node3d, invert: boolean): void;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;

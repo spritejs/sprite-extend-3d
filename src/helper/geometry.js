@@ -13,7 +13,7 @@ function parseData(data, size = 3) {
 }
 
 export default class Geometry extends _Geometry {
-  constructor(gl, model) {
+  constructor(gl, model, preserveBuffers = true) {
     const {position, uv, normal, index, ...others} = model;
     const attributes = {};
     if(position) attributes.position = parseData(position);
@@ -42,5 +42,7 @@ export default class Geometry extends _Geometry {
       });
     }
     super(gl, attributes);
+    // prevent remove geometry before setGeometry
+    this.preserveBuffers = preserveBuffers;
   }
 }
