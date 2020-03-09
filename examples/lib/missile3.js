@@ -100,7 +100,8 @@ void main() {
   else {
     ep = step(p - 1.0, sp) * smoothstep(p - 0.5, p - 0.2, sp);
   }
-  gl_FragColor = vColor * ep + 0.35 * light; // TODO: 亮度用 hsb 调
+  gl_FragColor.rgb = vColor.rgb * ep + 0.35 * light; // TODO: 亮度用 hsb 调
+  gl_FragColor.a = vColor.a * ep * ep;
 }
 `;
 
@@ -256,7 +257,7 @@ export function launchMissile(parent, points, {colors}) {
     });
     layer.bindTime(curveProgram);
 
-    const pe = new Vec3().copy(points[points.length - 1]).scale(10);
+    const pe = new Vec3().copy(points[Math.floor(points.length * 0.5)]).scale(10);
     const _points = points.map((p, i) => [p[0] - pe[0], p[1] - pe[1], p[2] - pe[2]]);
     const p = new Polyline3d(curveProgram, {
       points: _points,
