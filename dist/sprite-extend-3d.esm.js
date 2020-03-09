@@ -10395,6 +10395,19 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
     }
   }
 
+  transform(m) {
+    const body = this[_body];
+
+    if (body) {
+      body.matrix.multiply(m);
+      body.matrix.getRotation(body.quaternion);
+      body.matrix.getTranslation(body.position);
+      body.matrix.getScaling(body.scale);
+      body.rotation.fromQuaternion(body.quaternion);
+      this.resyncState();
+    }
+  }
+
   traverse(callback) {
     if (this[_body]) {
       this[_body].traverse(body => {
@@ -11164,32 +11177,11 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     }
   }
 
-  transpos(order = 'zxy') {
+  transpose(order = 'zxy') {
     const geometry = this[_geometry];
 
     if (geometry) {
-      order = [...order].map(c => {
-        if (c === 'x' || c === 'X') return 0;
-        if (c === 'y' || c === 'Y') return 1;
-        return 2;
-      });
-      const position = geometry.attributes.position;
-      const {
-        size,
-        data
-      } = position;
-
-      for (let i = 0; i < data.length; i += size) {
-        const pos = [data[i], data[i + 1], data[i + 2]];
-
-        for (let j = 0; j < 3; j++) {
-          const idx = order[j] != null ? order[j] : j;
-          data[i + j] = pos[idx];
-        } // [data[i], data[i + 1], data[i + 2]] = [data[i + 1], data[i + 2], data[i]];
-
-      }
-
-      position.needsUpdate = true;
+      geometry.transpose(order);
       this.forceUpdate();
     }
   }
@@ -11250,6 +11242,34 @@ function parseData(data, size = 3) {
     data: d
   };
 }
+
+ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"].prototype.transpose = function (order = 'zxy') {
+  const geometry = this;
+
+  if (geometry) {
+    order = [...order].map(c => {
+      if (c === 'x' || c === 'X') return 0;
+      if (c === 'y' || c === 'Y') return 1;
+      return 2;
+    });
+    const position = geometry.attributes.position;
+    const {
+      size,
+      data
+    } = position;
+
+    for (let i = 0; i < data.length; i += size) {
+      const pos = [data[i], data[i + 1], data[i + 2]];
+
+      for (let j = 0; j < 3; j++) {
+        const idx = order[j] != null ? order[j] : j;
+        data[i + j] = pos[idx];
+      }
+    }
+
+    position.needsUpdate = true;
+  }
+};
 
 class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
   constructor(gl, model, preserveBuffers = true) {
