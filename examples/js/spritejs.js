@@ -8025,6 +8025,7 @@ function drawFilterContext(renderer, filterContext, width, height) {
     height
   });
   filterMesh.setTexture(filterTexture);
+  renderer.setMeshData([filterMesh.meshData]);
   draw(renderer);
   filterTexture.delete();
   filterContext.clearRect(0, 0, width, height);
@@ -8158,7 +8159,8 @@ class Renderer {
       const img = _utils_env__WEBPACK_IMPORTED_MODULE_9__["default"].createText(text, {
         font,
         fillColor,
-        strokeColor
+        strokeColor,
+        strokeWidth
       });
       return {
         image: this.createTexture(img.image),
@@ -8171,6 +8173,7 @@ class Renderer {
         font,
         fillColor,
         strokeColor,
+        strokeWidth,
         text
       }
     };
@@ -9798,7 +9801,7 @@ function createText(text, {
   }
 
   if (strokeColor) {
-    textContext.lineWidth = strokeWidth;
+    textContext.lineWidth = strokeWidth * ratio;
     if (Array.isArray(strokeColor)) strokeColor = Object(_vector_to_rgba__WEBPACK_IMPORTED_MODULE_2__["default"])(strokeColor);else if (strokeColor.vector) {
       let gradient;
       const {
@@ -10220,6 +10223,7 @@ function drawMesh2D(mesh, context, enableFilter = true, cloudFill = null, cloudS
       }
 
       if (drawTexture) {
+        context.save();
         context.clip();
         let {
           image,
@@ -10235,24 +10239,39 @@ function drawMesh2D(mesh, context, enableFilter = true, cloudFill = null, cloudS
             font,
             fillColor,
             strokeColor,
+            strokeWidth,
             text
           } = image;
           if (!fillColor && !strokeColor) fillColor = '#000';
+          if (Array.isArray(fillColor)) fillColor = Object(_vector_to_rgba__WEBPACK_IMPORTED_MODULE_1__["default"])(fillColor);
+          if (Array.isArray(strokeColor)) strokeColor = Object(_vector_to_rgba__WEBPACK_IMPORTED_MODULE_1__["default"])(strokeColor);
           context.font = font;
           const {
             width
           } = context.measureText(text);
           const fontInfo = Object(_parse_font__WEBPACK_IMPORTED_MODULE_2__["default"])(font);
-          const height = fontInfo.pxLineHeight;
+          const height = Math.max(fontInfo.pxLineHeight, fontInfo.pxHeight * 1.13);
           context.textAlign = 'center';
-          context.textBaseline = 'middle';
-          if (fillColor) context.fillStyle = fillColor;
-          if (strokeColor) context.strokeStyle = strokeColor;
+          context.textBaseline = 'middle'; // text ignore rect scale
+
           const rect = options.rect;
-          const top = rect[0] + height / 2;
-          const left = rect[1] + width / 2;
-          context.scale(rect[2] / width, rect[3] / height);
-          context.fillText(text, left, top);
+          const top = rect[0] + height * 0.5 + fontInfo.pxHeight * 0.06;
+          const left = rect[1] + width * 0.5;
+
+          if (rect[2] != null) {
+            context.scale(rect[2] / width, rect[3] / height);
+          }
+
+          if (fillColor) {
+            context.fillStyle = fillColor;
+            context.fillText(text, left, top);
+          }
+
+          if (strokeColor) {
+            context.lineWidth = strokeWidth;
+            context.strokeStyle = strokeColor;
+            context.strokeText(text, left, top);
+          }
         } else {
           let rect = options.rect;
           const srcRect = options.srcRect;
@@ -10270,7 +10289,6 @@ function drawMesh2D(mesh, context, enableFilter = true, cloudFill = null, cloudS
           }
 
           if (options.rotated) {
-            context.save();
             context.translate(0, rect ? rect[2] : image.width);
             context.rotate(-0.5 * Math.PI);
           }
@@ -10282,11 +10300,9 @@ function drawMesh2D(mesh, context, enableFilter = true, cloudFill = null, cloudS
           } else {
             context.drawImage(image, 0, 0);
           }
-
-          if (options.rotated) {
-            context.restore();
-          }
         }
+
+        context.restore();
       }
 
       if (stroke) {
@@ -11195,7 +11211,7 @@ const _hasCloudFilter = Symbol('cloudFilter');
     return this[_mesh].isPointCollision(...p, type);
   }
 
-  isPointInPath(idx, [x, y]) {
+  isPointInFill(idx, [x, y]) {
     return this.isPointCollision(idx, [x, y], 'fill');
   }
 
@@ -11304,19 +11320,19 @@ function multiply(a, b) {
 
 function grayscale(p) {
   p = Object(_math__WEBPACK_IMPORTED_MODULE_0__["clamp"])(0, 1, p);
-  const r = 0.212 * p;
-  const g = 0.714 * p;
-  const b = 0.074 * p;
+  const r = 0.2126 * p;
+  const g = 0.7152 * p;
+  const b = 0.0722 * p;
   return [r + 1 - p, g, b, 0, 0, r, g + 1 - p, b, 0, 0, r, g, b + 1 - p, 0, 0, 0, 0, 0, 1, 0];
 }
 function brightness(p) {
   return [p, 0, 0, 0, 0, 0, p, 0, 0, 0, 0, 0, p, 0, 0, 0, 0, 0, 1, 0];
 }
 function saturate(p) {
-  p = Object(_math__WEBPACK_IMPORTED_MODULE_0__["clamp"])(0, 1, p);
-  const r = 0.212 * (1 - p);
-  const g = 0.714 * (1 - p);
-  const b = 0.074 * (1 - p);
+  // p = clamp(0, 1, p);
+  const r = 0.2126 * (1 - p);
+  const g = 0.7152 * (1 - p);
+  const b = 0.0722 * (1 - p);
   return [r + p, g, b, 0, 0, r, g + p, b, 0, 0, r, g, b + p, 0, 0, 0, 0, 0, 1, 0];
 }
 function contrast(p) {
@@ -11337,9 +11353,9 @@ function hueRotate(deg) {
   const rotation = deg / 180 * Math.PI;
   const cos = Math.cos(rotation),
         sin = Math.sin(rotation),
-        lumR = 0.213,
-        lumG = 0.715,
-        lumB = 0.072;
+        lumR = 0.2126,
+        lumG = 0.7152,
+        lumB = 0.0722;
   return [lumR + cos * (1 - lumR) + sin * -lumR, lumG + cos * -lumG + sin * -lumG, lumB + cos * -lumB + sin * (1 - lumB), 0, 0, lumR + cos * -lumR + sin * 0.143, lumG + cos * (1 - lumG) + sin * 0.140, lumB + cos * -lumB + sin * -0.283, 0, 0, lumR + cos * -lumR + sin * -(1 - lumR), lumG + cos * -lumG + sin * lumG, lumB + cos * (1 - lumB) + sin * lumB, 0, 0, 0, 0, 0, 1, 0];
 }
 
@@ -14361,7 +14377,7 @@ class Mesh2D {
     return false;
   }
 
-  isPointInPath(x, y) {
+  isPointInFill(x, y) {
     return this.isPointCollision(x, y, 'fill');
   }
 
@@ -18430,7 +18446,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision mediump float;\n\nvarying vec4 vColor;\nvarying float flagBackground;\n\n#ifdef TEXTURE\nvarying vec3 vTextureCoord;\nvarying vec4 vSourceRect;\n#endif\n\n#ifdef FILTER\nuniform int u_filterFlag;\nuniform float u_colorMatrix[20];\n#endif\n\n#ifdef GRADIENT\nvarying vec3 vGradientVector1;\nvarying vec3 vGradientVector2;\nuniform float u_colorSteps[40];\nuniform int u_gradientType;\n// uniform float u_radialGradientVector[6];\n\nvoid gradient(inout vec4 color, vec3 gv1, vec3 gv2, float colorSteps[40]) {\n  float t;\n  // center circle radius\n  float cr = gv1.z;\n  // focal circle radius\n  float fr = gv2.z;\n\n  if(cr > 0.0 || fr > 0.0) {\n    // radial gradient\n    vec2 center = gv1.xy;\n    vec2 focal = gv2.xy;\n    float x = focal.x - gl_FragCoord.x;\n    float y = focal.y - gl_FragCoord.y;\n    float dx = focal.x - center.x;\n    float dy = focal.y - center.y;\n    float dr = cr - fr;\n    float a = dx * dx + dy * dy - dr * dr;\n    float b = -2.0 * (y * dy + x * dx + fr * dr);\n    float c = x * x + y * y - fr * fr;\n    t = 1.0 - 0.5 * (1.0 / a) * (-b + sqrt(b * b - 4.0 * a * c));\n  } else {\n    // linear gradient\n    vec2 v1 = gl_FragCoord.xy - gv1.xy;\n    vec2 v2 = gv2.xy - gv1.xy;\n    t = (v1.x * v2.x + v1.y * v2.y) / (v2.x * v2.x + v2.y * v2.y);\n  }\n\n  vec4 colors[8];\n  colors[0] = vec4(colorSteps[1], colorSteps[2], colorSteps[3], colorSteps[4]);\n  colors[1] = vec4(colorSteps[6], colorSteps[7], colorSteps[8], colorSteps[9]);\n  colors[2] = vec4(colorSteps[11], colorSteps[12], colorSteps[13], colorSteps[14]);\n  colors[3] = vec4(colorSteps[16], colorSteps[17], colorSteps[18], colorSteps[19]);\n  colors[4] = vec4(colorSteps[21], colorSteps[22], colorSteps[23], colorSteps[24]);\n  colors[5] = vec4(colorSteps[26], colorSteps[27], colorSteps[28], colorSteps[29]);\n  colors[6] = vec4(colorSteps[31], colorSteps[32], colorSteps[33], colorSteps[34]);\n  colors[7] = vec4(colorSteps[36], colorSteps[37], colorSteps[38], colorSteps[39]);\n  \n  float steps[8];\n  steps[0] = colorSteps[0];\n  steps[1] = colorSteps[5];\n  steps[2] = colorSteps[10];\n  steps[3] = colorSteps[15];\n  steps[4] = colorSteps[20];\n  steps[5] = colorSteps[25];\n  steps[6] = colorSteps[30];\n  steps[7] = colorSteps[35];\n\n  color = colors[0];\n  for (int i = 1; i < 8; i++) {\n    if (steps[i] < 0.0 || steps[i] > 1.0) {\n      break;\n    }\n    if(steps[i] == steps[i - 1]) {\n      color = colors[i];\n    } else {\n      color = mix(color, colors[i], clamp((t - steps[i - 1]) / (steps[i] - steps[i - 1]), 0.0, 1.0));\n    }\n    if (steps[i] >= t) {\n      break;\n    }\n  }\n}\n#endif\n\n#ifdef FILTER\nvoid transformColor(inout vec4 color, in float colorMatrix[20]) {\n  float r = color.r, g = color.g, b = color.b, a = color.a;\n  color[0] = colorMatrix[0] * r + colorMatrix[1] * g + colorMatrix[2] * b + colorMatrix[3] * a + colorMatrix[4];\n  color[1] = colorMatrix[5] * r + colorMatrix[6] * g + colorMatrix[7] * b + colorMatrix[8] * a + colorMatrix[9];\n  color[2] = colorMatrix[10] * r + colorMatrix[11] * g + colorMatrix[12] * b + colorMatrix[13] * a + colorMatrix[14];\n  color[3] = colorMatrix[15] * r + colorMatrix[16] * g + colorMatrix[17] * b + colorMatrix[18] * a + colorMatrix[19];\n}\n#endif\n\nvoid main() {\n  vec4 color = vColor;\n  float opacity = abs(flagBackground);\n\n#ifdef GRADIENT\n  if(u_gradientType > 0 && flagBackground > 0.0 || u_gradientType == 0 && flagBackground <= 0.0) {\n    gradient(color, vGradientVector1, vGradientVector2, u_colorSteps);\n  }\n#endif\n\n  if(opacity < 1.0) {\n    color.a *= opacity;\n  }\n\n#ifdef TEXTURE\n  if(flagBackground > 0.0) {\n    vec3 texCoord = vTextureCoord;\n\n    if(texCoord.z == 1.0) {\n      texCoord = fract(texCoord);\n    }\n\n    if(texCoord.x <= 1.0 && texCoord.x >= 0.0\n      && texCoord.y <= 1.0 && texCoord.y >= 0.0) {\n      if(vSourceRect.z > 0.0) {\n        texCoord.x = vSourceRect.x + texCoord.x * vSourceRect.z;\n        texCoord.y = 1.0 - (vSourceRect.y + (1.0 - texCoord.y) * vSourceRect.w);\n      }\n      vec4 texColor = texture2D(u_texSampler, texCoord.xy);\n      float alpha = texColor.a;\n      if(opacity < 1.0) {\n        texColor.a *= opacity;\n        alpha *= mix(0.465, 1.0, opacity);\n      }\n      // color = mix(color, texColor, texColor.a);\n      color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);\n      color.a = texColor.a + (1.0 - texColor.a) * color.a;\n    }\n  }\n#endif\n\n#ifdef FILTER\n  if(u_filterFlag > 0) {\n    transformColor(color, u_colorMatrix);\n  }\n#endif\n\n  gl_FragColor = color;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision mediump float;\n\nvarying vec4 vColor;\nvarying float flagBackground;\n\n#ifdef TEXTURE\nvarying vec3 vTextureCoord;\nvarying vec4 vSourceRect;\n#endif\n\n#ifdef FILTER\nuniform int u_filterFlag;\nuniform float u_colorMatrix[20];\n#endif\n\n#ifdef GRADIENT\nvarying vec3 vGradientVector1;\nvarying vec3 vGradientVector2;\nuniform float u_colorSteps[40];\nuniform int u_gradientType;\n// uniform float u_radialGradientVector[6];\n\nvoid gradient(inout vec4 color, vec3 gv1, vec3 gv2, float colorSteps[40]) {\n  float t;\n  // center circle radius\n  float cr = gv1.z;\n  // focal circle radius\n  float fr = gv2.z;\n\n  if(cr > 0.0 || fr > 0.0) {\n    // radial gradient\n    vec2 center = gv1.xy;\n    vec2 focal = gv2.xy;\n    float x = focal.x - gl_FragCoord.x;\n    float y = focal.y - gl_FragCoord.y;\n    float dx = focal.x - center.x;\n    float dy = focal.y - center.y;\n    float dr = cr - fr;\n    float a = dx * dx + dy * dy - dr * dr;\n    float b = -2.0 * (y * dy + x * dx + fr * dr);\n    float c = x * x + y * y - fr * fr;\n    t = 1.0 - 0.5 * (1.0 / a) * (-b + sqrt(b * b - 4.0 * a * c));\n  } else {\n    // linear gradient\n    vec2 v1 = gl_FragCoord.xy - gv1.xy;\n    vec2 v2 = gv2.xy - gv1.xy;\n    t = (v1.x * v2.x + v1.y * v2.y) / (v2.x * v2.x + v2.y * v2.y);\n  }\n\n  vec4 colors[8];\n  colors[0] = vec4(colorSteps[1], colorSteps[2], colorSteps[3], colorSteps[4]);\n  colors[1] = vec4(colorSteps[6], colorSteps[7], colorSteps[8], colorSteps[9]);\n  colors[2] = vec4(colorSteps[11], colorSteps[12], colorSteps[13], colorSteps[14]);\n  colors[3] = vec4(colorSteps[16], colorSteps[17], colorSteps[18], colorSteps[19]);\n  colors[4] = vec4(colorSteps[21], colorSteps[22], colorSteps[23], colorSteps[24]);\n  colors[5] = vec4(colorSteps[26], colorSteps[27], colorSteps[28], colorSteps[29]);\n  colors[6] = vec4(colorSteps[31], colorSteps[32], colorSteps[33], colorSteps[34]);\n  colors[7] = vec4(colorSteps[36], colorSteps[37], colorSteps[38], colorSteps[39]);\n  \n  float steps[8];\n  steps[0] = colorSteps[0];\n  steps[1] = colorSteps[5];\n  steps[2] = colorSteps[10];\n  steps[3] = colorSteps[15];\n  steps[4] = colorSteps[20];\n  steps[5] = colorSteps[25];\n  steps[6] = colorSteps[30];\n  steps[7] = colorSteps[35];\n\n  color = colors[0];\n  for (int i = 1; i < 8; i++) {\n    if (steps[i] < 0.0 || steps[i] > 1.0) {\n      break;\n    }\n    if(steps[i] == steps[i - 1]) {\n      color = colors[i];\n    } else {\n      color = mix(color, colors[i], clamp((t - steps[i - 1]) / (steps[i] - steps[i - 1]), 0.0, 1.0));\n    }\n    if (steps[i] >= t) {\n      break;\n    }\n  }\n}\n#endif\n\n#ifdef FILTER\nvoid transformColor(inout vec4 color, in float colorMatrix[20]) {\n  float r = color.r, g = color.g, b = color.b, a = color.a;\n  color[0] = colorMatrix[0] * r + colorMatrix[1] * g + colorMatrix[2] * b + colorMatrix[3] * a + colorMatrix[4];\n  color[1] = colorMatrix[5] * r + colorMatrix[6] * g + colorMatrix[7] * b + colorMatrix[8] * a + colorMatrix[9];\n  color[2] = colorMatrix[10] * r + colorMatrix[11] * g + colorMatrix[12] * b + colorMatrix[13] * a + colorMatrix[14];\n  color[3] = colorMatrix[15] * r + colorMatrix[16] * g + colorMatrix[17] * b + colorMatrix[18] * a + colorMatrix[19];\n}\n#endif\n\nvoid main() {\n  vec4 color = vColor;\n  float opacity = abs(flagBackground);\n\n#ifdef GRADIENT\n  if(u_gradientType > 0 && flagBackground > 0.0 || u_gradientType == 0 && flagBackground <= 0.0) {\n    gradient(color, vGradientVector1, vGradientVector2, u_colorSteps);\n  }\n#endif\n\n  if(opacity < 1.0) {\n    color.a *= opacity;\n  }\n\n#ifdef TEXTURE\n  if(flagBackground > 0.0) {\n    vec3 texCoord = vTextureCoord;\n\n    if(texCoord.z == 1.0) {\n      texCoord = fract(texCoord);\n    }\n\n    if(texCoord.x <= 1.0 && texCoord.x >= 0.0\n      && texCoord.y <= 1.0 && texCoord.y >= 0.0) {\n      if(vSourceRect.z > 0.0) {\n        texCoord.x = vSourceRect.x + texCoord.x * vSourceRect.z;\n        texCoord.y = 1.0 - (vSourceRect.y + (1.0 - texCoord.y) * vSourceRect.w);\n      }\n      vec4 texColor = texture2D(u_texSampler, texCoord.xy);\n      float alpha = texColor.a;\n      if(opacity < 1.0) {\n        texColor.a *= opacity;\n        alpha *= mix(0.465, 1.0, opacity);\n      }\n      // color = mix(color, texColor, texColor.a);\n      color.rgb = mix(color.rgb, texColor.rgb, alpha);\n      // color.rgb = mix(texColor.rgb, color.rgb, color.a);\n      color.rgb = mix(texColor.rgb, color.rgb, color.a / max(0.0001, texColor.a));\n      color.a = texColor.a + (1.0 - texColor.a) * color.a;\n    }\n  }\n#endif\n\n#ifdef FILTER\n  if(u_filterFlag > 0) {\n    transformColor(color, u_colorMatrix);\n  }\n#endif\n\n  gl_FragColor = color;\n}");
 
 /***/ }),
 /* 73 */
@@ -25250,7 +25266,8 @@ function createTexture(image, renderer) {
 const _textureContext = Symbol('textureContext');
 
 function drawTexture(node, mesh) {
-  const textureImage = node.textureImage;
+  const textureImage = node.textureImage instanceof String // for wechat miniprogram
+  ? String(node.textureImage) : node.textureImage;
   const textureImageRotated = node.textureImageRotated;
   const texture = mesh.texture;
 
@@ -27858,6 +27875,7 @@ function getPath(attr) {
   const {
     points,
     smooth,
+    smoothRange,
     close
   } = attr;
   const p = [];
@@ -27872,7 +27890,7 @@ function getPath(attr) {
     // if(close) {
     //   p.push([...p[0]]);
     // }
-    d = Object(_utils_smooth_curve__WEBPACK_IMPORTED_MODULE_2__["makeSmoothCurveLine"])(p);
+    d = Object(_utils_smooth_curve__WEBPACK_IMPORTED_MODULE_2__["makeSmoothCurveLine"])(p, smoothRange);
   } else if (p.length) {
     d = `M${p.map(v => v.join(' ')).join('L')}`;
   }
@@ -27890,6 +27908,7 @@ class Polyline extends _path__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this[setDefault]({
       points: [],
       smooth: false,
+      smoothRange: [0],
       closeType: 'none' // none | normal
 
       /* close */
@@ -27939,6 +27958,21 @@ class Polyline extends _path__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
   }
 
+  get smoothRange() {
+    return this[getAttribute]('smoothRange');
+  }
+
+  set smoothRange(value) {
+    if (value && !Array.isArray(value)) value = [value];
+
+    if (this[setAttribute]('smoothRange', value)) {
+      if (this.smooth) {
+        const d = getPath(this);
+        this[setAttribute]('d', d);
+      }
+    }
+  }
+
   get points() {
     return this[getAttribute]('points');
   }
@@ -27979,7 +28013,7 @@ __webpack_require__(1).glMatrix.setMatrixArrayType(Array);
  * 使用 贝塞尔曲线 模拟绘制平滑曲线
  * @param {*} points 绘制点
  */
-function makeSmoothCurveLine(points) {
+function makeSmoothCurveLine(points, smoothRange = [0]) {
   /**
    * 获取 模拟贝塞尔曲线关键控制点
    * @param {*} i
@@ -28028,12 +28062,21 @@ function makeSmoothCurveLine(points) {
     y
   }));
   let d = '';
+  let j = 0;
   points.forEach((point, i) => {
     if (i === 0) {
       d += `M${point.x} ${point.y}`;
     } else {
-      const [A, B] = getCtrlPoint(i - 1);
-      d += `C${[A.x, A.y, B.x, B.y, point.x, point.y].join(' ')}`;
+      while (i > smoothRange[j]) {
+        j++;
+      }
+
+      if (j % 2) {
+        const [A, B] = getCtrlPoint(i - 1);
+        d += `C${[A.x, A.y, B.x, B.y, point.x, point.y].join(' ')}`;
+      } else {
+        d += `L${point.x} ${point.y}`;
+      }
     }
   });
   return d;
@@ -32443,7 +32486,9 @@ __webpack_require__(1).glMatrix.setMatrixArrayType(Array);
 
 const defaultOptions = {
   antialias: true,
-  autoRender: true
+  autoRender: true,
+  alpha: true // for wx-miniprogram
+
 };
 
 const _autoRender = Symbol('autoRender');
@@ -32522,6 +32567,14 @@ class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
       height
     } = this.getResolution();
     return height / this.displayRatio;
+  }
+
+  get gl() {
+    if (this.renderer.glRenderer) {
+      return this.renderer.glRenderer.gl;
+    }
+
+    return null;
   }
   /* override */
 

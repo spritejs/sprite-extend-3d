@@ -12,6 +12,27 @@ function parseData(data, size = 3) {
   return {size: s, data: d};
 }
 
+_Geometry.prototype.transpose = function (order = 'zxy') {
+  const geometry = this;
+  if(geometry) {
+    order = [...order].map((c) => {
+      if(c === 'x' || c === 'X') return 0;
+      if(c === 'y' || c === 'Y') return 1;
+      return 2;
+    });
+    const position = geometry.attributes.position;
+    const {size, data} = position;
+    for(let i = 0; i < data.length; i += size) {
+      const pos = [data[i], data[i + 1], data[i + 2]];
+      for(let j = 0; j < 3; j++) {
+        const idx = order[j] != null ? order[j] : j;
+        data[i + j] = pos[idx];
+      }
+    }
+    position.needsUpdate = true;
+  }
+};
+
 export default class Geometry extends _Geometry {
   constructor(gl, model, preserveBuffers = true) {
     const {position, uv, normal, index, ...others} = model;

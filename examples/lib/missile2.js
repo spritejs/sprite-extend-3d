@@ -125,14 +125,14 @@ export function launchMissile(parent, points, {colors}) {
         height: 0.05,
         raycast: 'none',
       });
-      _spot.transpos();
+      _spot.transpose();
       _spotEnd = new Cylinder(spotProgram, {
         radiusTop: 0.01,
         radiusBottom: 0.03,
         height: 0.05,
         raycast: 'none',
       });
-      _spotEnd.transpos();
+      _spotEnd.transpose();
     }
 
     const spot = _spot.cloneNode();
