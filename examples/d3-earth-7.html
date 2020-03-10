@@ -77,6 +77,36 @@
 
       const get_coordinate = latlng_projection.bind(null, projection);
 
+      function cameraTo(lat, lng, duration = 500) {
+        layer.setOrbit(null);
+        const camera = layer.camera;
+        const from = new Vec3(...camera.attributes.pos);
+        const r = from.len();
+        const to = get_coordinate(lat, lng).scale(r);
+        const startTime = Date.now();
+
+        function update() {
+          const p = Math.min((Date.now() - startTime) / duration);
+          const pos = new Vec3().copy(from).lerp(to, p);
+          camera.attributes.pos = pos;
+          camera.lookAt([0, 0, 0]);
+          if(p < 1.0) {
+            requestAnimationFrame(update);
+          } else {
+            layer.setOrbit();
+            const mask = layer.mask;
+            if(mask) {
+              layer.setOrbit({camera: mask.camera, enableRotate: false});
+            }
+          }
+        }
+        update();
+      }
+
+      setTimeout(() => {
+        cameraTo(-100, 160, 1500);
+      }, 500);
+
       // function projectPoints(from, to, radius = 1) {
       //   const dist = Math.hypot(from[0] - to[0], from[1] - to[1]);
       //   const n = Math.min(Math.floor(0.5 * dist), 60);
@@ -236,6 +266,7 @@
 
       const smoke = new Mesh3d(coronaProgram, {model: geometry, mode: 'TRIANGLE_STRIP'});
       const mask = layer.createSublayer();
+      layer.mask = mask;
       layer.addSublayer(mask);
       layer.setOrbit({camera: mask.camera, enableRotate: false});
       mask.append(smoke);

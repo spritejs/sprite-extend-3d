@@ -413,7 +413,7 @@ export default class Layer3D extends Layer {
         });
       }
       if(this[_orbit]) {
-        this[_orbit] = false;
+        this[_orbit] = 0;
         this.removeEventListener('mousedown', this[_orbitChecker][0]);
         this.removeEventListener('mouseup', this[_orbitChecker][1]);
         this.removeEventListener('mousemove', this[_orbitChecker][2]);
