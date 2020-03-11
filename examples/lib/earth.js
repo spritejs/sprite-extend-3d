@@ -43,6 +43,15 @@ const defaultEarthFragment = `precision highp float;
 
 const defaultEarthVertex = shaders.GEOMETRY_WITH_TEXTURE.vertex;
 
+const defaultAttrs = {
+  radius: 1,
+  colors: '#333',
+  rotateX: -30,
+  rotateY: 210,
+  widthSegments: 64,
+  heightSegments: 32,
+};
+
 export function createEarth(layer, {vertex = defaultEarthVertex, fragment = defaultEarthFragment, texture, ...attrs} = {}) {
   const program = layer.createProgram({
     fragment,
@@ -52,10 +61,7 @@ export function createEarth(layer, {vertex = defaultEarthVertex, fragment = defa
     texture,
   });
 
-  attrs = Object.assign({
-    widthSegments: 64,
-    heightSegments: 32,
-  }, attrs);
+  attrs = Object.assign({}, defaultAttrs, attrs);
 
   const earth = new Sphere(program, attrs);
   layer.append(earth);

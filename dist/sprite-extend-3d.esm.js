@@ -9256,7 +9256,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     });
   }
 
-  createTexture(opts) {
+  createTexture(opts = {}) {
     const gl = this.renderer.gl;
     let src;
 
@@ -9467,6 +9467,23 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       });
     }
 
+    if (this[_sublayers].length) {
+      this[_sublayers].forEach((sublayer, i) => {
+        const camera = sublayer.camera;
+
+        if (camera.orbit) {
+          camera.orbit.update();
+          camera.resyncState();
+        }
+
+        this.renderer.render(_objectSpread({
+          scene: sublayer.body,
+          camera: camera.body
+        }, this[_renderOptions]));
+        if (i === 0) this.renderer.autoClear = false;
+      });
+    }
+
     if (this[_post]) {
       this[_post].render(_objectSpread({
         scene: root.body,
@@ -9479,25 +9496,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       }, this[_renderOptions]));
     }
 
-    if (this[_sublayers].length) {
-      this.renderer.autoClear = false;
-
-      this[_sublayers].forEach(sublayer => {
-        const camera = sublayer.camera;
-
-        if (camera.orbit) {
-          camera.orbit.update();
-          camera.resyncState();
-        }
-
-        this.renderer.render(_objectSpread({
-          scene: sublayer.body,
-          camera: camera.body
-        }, this[_renderOptions]));
-      });
-
-      this.renderer.autoClear = true;
-    }
+    if (this[_sublayers].length) this.renderer.autoClear = true;
 
     this._prepareRenderFinished();
 

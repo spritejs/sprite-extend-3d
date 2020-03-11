@@ -190,7 +190,7 @@ export default class Layer3D extends Layer {
     });
   }
 
-  createTexture(opts) {
+  createTexture(opts = {}) {
     const gl = this.renderer.gl;
     let src;
 
@@ -354,23 +354,23 @@ export default class Layer3D extends Layer {
     if(this[_shadow]) {
       this[_shadow].render({scene: root.body});
     }
-    if(this[_post]) {
-      this[_post].render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
-    } else {
-      this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
-    }
     if(this[_sublayers].length) {
-      this.renderer.autoClear = false;
-      this[_sublayers].forEach((sublayer) => {
+      this[_sublayers].forEach((sublayer, i) => {
         const camera = sublayer.camera;
         if(camera.orbit) {
           camera.orbit.update();
           camera.resyncState();
         }
         this.renderer.render({scene: sublayer.body, camera: camera.body, ...this[_renderOptions]});
+        if(i === 0) this.renderer.autoClear = false;
       });
-      this.renderer.autoClear = true;
     }
+    if(this[_post]) {
+      this[_post].render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
+    } else {
+      this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
+    }
+    if(this[_sublayers].length) this.renderer.autoClear = true;
     this._prepareRenderFinished();
     if(this[_utime].length) {
       this[_utime].forEach((program) => {
