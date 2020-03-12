@@ -246,6 +246,7 @@ declare namespace ext3d {
 
   export class Group3d extends Node3d {
     constructor(attrs?: Attrs);
+    camera?: Camera;
     get childNodes(): Array<Node3d>;
     get children(): Array<Node3d>;
     get meshes(): Array<Mesh3d>;
@@ -306,7 +307,6 @@ declare namespace ext3d {
     get sublayers(): Array<Group3d>;
     get autoClear(): boolean;
     set autoClear(value: boolean);
-    addSublayer(sublayer: Group3d): void;
     bindTarget(target: RenderTarget, options?: Record<string, any>): void;
     bindTime(program: Program, options?: Record<string, any>): void;
     /**
@@ -339,7 +339,6 @@ declare namespace ext3d {
      */
     loadShader(options: Record<string, any>): Promise<Record<string, any>>;
     removeOrbit(camera?: Camera): void;
-    removeSublayer(sublayer: Group3d): void;
     render(): void;
     /**
      * renderTarget

@@ -138,11 +138,6 @@ export default class Layer3D extends Layer {
     this.renderer.autoClear = value;
   }
 
-  addSublayer(sublayer) {
-    // Layer.prototype.connect.call(sublayer, this, 0);
-    this[_sublayers].push(sublayer);
-  }
-
   bindTarget(target, options = {}) {
     this[_targets].push({target, options});
   }
@@ -173,9 +168,9 @@ export default class Layer3D extends Layer {
     return program;
   }
 
-  createSublayer(camera = null) {
+  createSublayer({camera = null, ...attrs} = {}) {
     if(!camera && this.camera) camera = this.camera.cloneNode();
-    const root = new Group3d();
+    const root = new Group3d(attrs);
     root.camera = camera;
     return root;
   }
@@ -258,24 +253,15 @@ export default class Layer3D extends Layer {
     }
     let mouse;
     const raycast = this.raycast;
-    if(raycast || this[_sublayers].length) {
+    let ret = false;
+    if(raycast) {
       const renderer = this.renderer;
       mouse = new Vec2();
       mouse.set(
         2.0 * (event.x / renderer.width) - 1.0,
         2.0 * (1.0 - event.y / renderer.height) - 1.0
       );
-    }
-    let ret = false;
-    if(raycast) {
       ret = dispatchEvent(raycast, this, mouse);
-    }
-    if(this[_sublayers].length) {
-      this[_sublayers].forEach((sublayer) => {
-        if(sublayer.raycast) {
-          ret = ret || dispatchEvent(sublayer.raycast, sublayer, mouse);
-        }
-      });
     }
     return ret || Block.prototype.dispatchPointerEvent.call(this, event);
   }
@@ -327,13 +313,6 @@ export default class Layer3D extends Layer {
     if(camera.orbit) {
       camera.orbit.remove();
       delete camera.orbit;
-    }
-  }
-
-  removeSublayer(sublayer) {
-    const idx = this[_sublayers].indexOf(sublayer);
-    if(idx >= 0) {
-      this[_sublayers].splice(idx, 1);
     }
   }
 

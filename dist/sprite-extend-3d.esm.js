@@ -9169,11 +9169,6 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     this.renderer.autoClear = value;
   }
 
-  addSublayer(sublayer) {
-    // Layer.prototype.connect.call(sublayer, this, 0);
-    this[_sublayers].push(sublayer);
-  }
-
   bindTarget(target, options = {}) {
     this[_targets].push({
       target,
@@ -9229,9 +9224,14 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     return program;
   }
 
-  createSublayer(camera = null) {
+  createSublayer(_ref2 = {}) {
+    let {
+      camera = null
+    } = _ref2,
+        attrs = _objectWithoutProperties(_ref2, ["camera"]);
+
     if (!camera && this.camera) camera = this.camera.cloneNode();
-    const root = new _group3d__WEBPACK_IMPORTED_MODULE_4__["default"]();
+    const root = new _group3d__WEBPACK_IMPORTED_MODULE_4__["default"](attrs);
     root.camera = camera;
     return root;
   }
@@ -9342,25 +9342,13 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
     let mouse;
     const raycast = this.raycast;
-
-    if (raycast || this[_sublayers].length) {
-      const renderer = this.renderer;
-      mouse = new ogl__WEBPACK_IMPORTED_MODULE_1__["Vec2"]();
-      mouse.set(2.0 * (event.x / renderer.width) - 1.0, 2.0 * (1.0 - event.y / renderer.height) - 1.0);
-    }
-
     let ret = false;
 
     if (raycast) {
+      const renderer = this.renderer;
+      mouse = new ogl__WEBPACK_IMPORTED_MODULE_1__["Vec2"]();
+      mouse.set(2.0 * (event.x / renderer.width) - 1.0, 2.0 * (1.0 - event.y / renderer.height) - 1.0);
       ret = dispatchEvent(raycast, this, mouse);
-    }
-
-    if (this[_sublayers].length) {
-      this[_sublayers].forEach(sublayer => {
-        if (sublayer.raycast) {
-          ret = ret || dispatchEvent(sublayer.raycast, sublayer, mouse);
-        }
-      });
     }
 
     return ret || spritejs__WEBPACK_IMPORTED_MODULE_0__["Block"].prototype.dispatchPointerEvent.call(this, event);
@@ -9424,14 +9412,6 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     if (camera.orbit) {
       camera.orbit.remove();
       delete camera.orbit;
-    }
-  }
-
-  removeSublayer(sublayer) {
-    const idx = this[_sublayers].indexOf(sublayer);
-
-    if (idx >= 0) {
-      this[_sublayers].splice(idx, 1);
     }
   }
   /* override */
@@ -10242,14 +10222,20 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
     super.connect(parent, zOrder);
 
     if (this[_body]) {
-      const parentBody = parent.groupBody || parent.body;
+      if (!this.camera) {
+        const parentBody = parent.groupBody || parent.body;
 
-      if (parentBody && parentBody !== this[_body]) {
-        this[_body].setParent(parentBody);
+        if (parentBody && parentBody !== this[_body]) {
+          this[_body].setParent(parentBody);
 
-        if (parent.groupBody && parent.groupBody.parent == null) {
-          parent.groupBody.setParent(parent.body);
+          if (parent.groupBody && parent.groupBody.parent == null) {
+            parent.groupBody.setParent(parent.body);
+          }
         }
+      } else if (parent.sublayers) {
+        parent.sublayers.push(this);
+      } else {
+        throw new Error('Node3d with camera should only use as sublayers');
       }
     }
   }
@@ -10270,6 +10256,15 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
     super.disconnect(parent);
 
     if (this[_body]) {
+      if (this.camera && parent.sublayers) {
+        // remove sublayer from layer3d
+        const idx = parent.sublayers.indexOf(this);
+
+        if (idx >= 0) {
+          parent.sublayers.splice(idx, 1);
+        }
+      }
+
       this[_body].setParent(null);
 
       const parentBody = parent.groupBody;

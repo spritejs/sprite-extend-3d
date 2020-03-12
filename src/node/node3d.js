@@ -102,12 +102,18 @@ export default class Node3d extends Node {
   connect(parent, zOrder) {
     super.connect(parent, zOrder);
     if(this[_body]) {
-      const parentBody = parent.groupBody || parent.body;
-      if(parentBody && parentBody !== this[_body]) {
-        this[_body].setParent(parentBody);
-        if(parent.groupBody && parent.groupBody.parent == null) {
-          parent.groupBody.setParent(parent.body);
+      if(!this.camera) {
+        const parentBody = parent.groupBody || parent.body;
+        if(parentBody && parentBody !== this[_body]) {
+          this[_body].setParent(parentBody);
+          if(parent.groupBody && parent.groupBody.parent == null) {
+            parent.groupBody.setParent(parent.body);
+          }
         }
+      } else if(parent.sublayers) {
+        parent.sublayers.push(this);
+      } else {
+        throw new Error('Node3d with camera should only use as sublayers');
       }
     }
   }
@@ -125,6 +131,13 @@ export default class Node3d extends Node {
   disconnect(parent) {
     super.disconnect(parent);
     if(this[_body]) {
+      if(this.camera && parent.sublayers) {
+        // remove sublayer from layer3d
+        const idx = parent.sublayers.indexOf(this);
+        if(idx >= 0) {
+          parent.sublayers.splice(idx, 1);
+        }
+      }
       this[_body].setParent(null);
       const parentBody = parent.groupBody;
       if(parentBody && parentBody.children && parentBody.children.length <= 0) {
