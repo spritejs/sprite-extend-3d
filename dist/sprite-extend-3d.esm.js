@@ -6254,6 +6254,7 @@ __webpack_require__.r(__webpack_exports__);
 // Based from ThreeJS' OrbitControls class, rewritten using es6 with some additions and subtractions.
 // TODO: abstract event handlers so can be fed from other sources
 // TODO: make scroll zoom more accurate than just >/< zero
+// TODO: be able to pass in new camera position
 
 
 const STATE = {
@@ -6501,9 +6502,8 @@ function Orbit(object, {
   };
 
   const onMouseUp = () => {
-    if (!this.enabled) return;
-    document.removeEventListener('mousemove', onMouseMove, false);
-    document.removeEventListener('mouseup', onMouseUp, false);
+    window.removeEventListener('mousemove', onMouseMove, false);
+    window.removeEventListener('mouseup', onMouseUp, false);
     state = STATE.NONE;
   };
 
@@ -6743,7 +6743,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 
 const CATMULLROM = 'catmullrom';
-const CUBICBEZIER = 'cubicbezier'; // temp
+const CUBICBEZIER = 'cubicbezier';
+const QUADRATICBEZIER = 'quadraticbezier'; // temp
 
 const _a0 = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
       _a1 = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
@@ -6775,7 +6776,21 @@ function getCtrlPoint(points, i, a = 0.168, b = 0.168) {
   return [_a0.clone(), _a1.clone()];
 }
 
-function getBezierPoint(t, p0, c0, c1, p1) {
+function getQuadraticBezierPoint(t, p0, c0, p1) {
+  const k = 1 - t;
+
+  _a0.copy(p0).scale(k ** 2);
+
+  _a1.copy(c0).scale(2 * k * t);
+
+  _a2.copy(p1).scale(t ** 2);
+
+  const ret = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+  ret.add(_a0, _a1).add(_a2);
+  return ret;
+}
+
+function getCubicBezierPoint(t, p0, c0, c1, p1) {
   const k = 1 - t;
 
   _a0.copy(p0).scale(k ** 3);
@@ -6802,6 +6817,42 @@ class Curve {
     this.type = type;
   }
 
+  _getQuadraticBezierPoints(divisions = this.divisions) {
+    const points = [];
+    const count = this.points.length;
+
+    if (count < 3) {
+      console.warn('Not enough points provided.');
+      return [];
+    }
+
+    const p0 = this.points[0];
+    let c0 = this.points[1],
+        p1 = this.points[2];
+
+    for (let i = 0; i <= divisions; i++) {
+      const p = getQuadraticBezierPoint(i / divisions, p0, c0, p1);
+      points.push(p);
+    }
+
+    let offset = 3;
+
+    while (count - offset > 0) {
+      p0.copy(p1);
+      c0 = p1.scale(2).sub(c0);
+      p1 = this.points[offset];
+
+      for (let i = 1; i <= divisions; i++) {
+        const p = getQuadraticBezierPoint(i / divisions, p0, c0, p1);
+        points.push(p);
+      }
+
+      offset++;
+    }
+
+    return points;
+  }
+
   _getCubicBezierPoints(divisions = this.divisions) {
     const points = [];
     const count = this.points.length;
@@ -6817,7 +6868,7 @@ class Curve {
         p1 = this.points[3];
 
     for (let i = 0; i <= divisions; i++) {
-      const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
+      const p = getCubicBezierPoint(i / divisions, p0, c0, c1, p1);
       points.push(p);
     }
 
@@ -6830,7 +6881,7 @@ class Curve {
       p1 = this.points[offset + 1];
 
       for (let i = 1; i <= divisions; i++) {
-        const p = getBezierPoint(i / divisions, p0, c0, c1, p1);
+        const p = getCubicBezierPoint(i / divisions, p0, c0, c1, p1);
         points.push(p);
       }
 
@@ -6869,6 +6920,10 @@ class Curve {
   getPoints(divisions = this.divisions, a = 0.168, b = 0.168) {
     const type = this.type;
 
+    if (type === QUADRATICBEZIER) {
+      return this._getQuadraticBezierPoints(divisions);
+    }
+
     if (type === CUBICBEZIER) {
       return this._getCubicBezierPoints(divisions);
     }
@@ -6883,6 +6938,7 @@ class Curve {
 }
 Curve.CATMULLROM = CATMULLROM;
 Curve.CUBICBEZIER = CUBICBEZIER;
+Curve.QUADRATICBEZIER = QUADRATICBEZIER;
 
 /***/ }),
 /* 34 */
@@ -8286,8 +8342,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_Texture_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 /* harmony import */ var _KTXTexture_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(43);
 
- // TODO: store cache with sampler arguments
-// For compressed textures, generate using https://github.com/TimvanScherpenzeel/texture-compressor
+ // For compressed textures, generate using https://github.com/TimvanScherpenzeel/texture-compressor
 
 const cache = {};
 const supportedExtensions = [];
@@ -8336,8 +8391,12 @@ class TextureLoader {
           break;
         }
       }
-    }
+    } // Stringify props
 
+
+    const cacheID = src + wrapS + wrapT + anisotropy + format + internalFormat + generateMipmaps + minFilter + magFilter + premultiplyAlpha + unpackAlignment + flipY; // Check cache for existing texture
+
+    if (cache[cacheID]) return cache[cacheID];
     let texture;
 
     switch (ext) {
@@ -8382,8 +8441,8 @@ class TextureLoader {
         texture = new _core_Texture_js__WEBPACK_IMPORTED_MODULE_0__["Texture"](gl);
     }
 
-    texture.ext = ext; // TODO: store in cache
-
+    texture.ext = ext;
+    cache[cacheID] = texture;
     return texture;
   }
 
@@ -11848,27 +11907,7 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Curve; });
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
- // temp
 
-const _a0 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
-      _a1 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
-      _a2 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-
-function getQuadraticBezierPoint(t, p0, c0, p1) {
-  const k = 1 - t;
-
-  _a0.copy(p0).scale(k ** 2);
-
-  _a1.copy(c0).scale(2 * k * t);
-
-  _a2.copy(p1).scale(t ** 2);
-
-  const ret = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-  ret.add(_a0, _a1).add(_a2);
-  return ret;
-}
-
-const QUADBEZIER = 'quadraticbezier';
 class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
   constructor({
     points,
@@ -11886,48 +11925,7 @@ class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
     });
   }
 
-  getPoints(divisions = this.divisions, a = 0.168, b = 0.168) {
-    if (this.type === QUADBEZIER) {
-      const points = [];
-      const count = this.points.length;
-
-      if (count < 3) {
-        console.warn('Not enough points provided.');
-        return [];
-      }
-
-      const p0 = this.points[0];
-      let c0 = this.points[1],
-          p1 = this.points[2];
-
-      for (let i = 0; i <= divisions; i++) {
-        const p = getQuadraticBezierPoint(i / divisions, p0, c0, p1);
-        points.push(p);
-      }
-
-      let offset = 3;
-
-      while (count - offset > 0) {
-        p0.copy(p1);
-        c0 = p1.scale(2).sub(c0);
-        p1 = this.points[offset];
-
-        for (let i = 1; i <= divisions; i++) {
-          const p = getQuadraticBezierPoint(i / divisions, p0, c0, p1);
-          points.push(p);
-        }
-
-        offset++;
-      }
-
-      return points;
-    }
-
-    return super.getPoints(divisions, a, b);
-  }
-
 }
-Curve.QUADRATICBEZIER = QUADBEZIER;
 
 /***/ }),
 /* 64 */
