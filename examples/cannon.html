@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/cannon.min.js"></script>
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    /* globals CANNON */
+    // Setup our world
+    const world = new CANNON.World();
+    world.gravity.set(0, -9.82, 0); // m/s²
+
+    // Create a sphere
+    const radius = 1; // m
+    const sphereBody = new CANNON.Body({
+      mass: 5, // kg
+      position: new CANNON.Vec3(0, 10, 1), // m
+      shape: new CANNON.Sphere(radius),
+    });
+    world.addBody(sphereBody);
+
+    // Create a plane
+    const groundBody = new CANNON.Body({
+      mass: 0, // mass == 0 makes the body static
+    });
+
+    const groundShape = new CANNON.Plane();
+    groundBody.addShape(groundShape);
+    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+    world.addBody(groundBody);
+
+    const fixedTimeStep = 1.0 / 60.0; // seconds
+    const maxSubSteps = 3;
+
+    console.log(groundBody);
+
+    const {Scene} = spritejs;
+    const {Camera, Sphere, Plane, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [25, 13, 16];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+    });
+
+    const plane = new Plane(program);
+    plane.attributes.pos = groundBody.position;
+    plane.attributes.colors = 'black';
+    plane.setQuaternion(groundBody.quaternion);
+    layer.append(plane);
+
+    const sphere = new Sphere(program);
+    sphere.attributes.pos = sphereBody.position;
+    sphere.attributes.colors = 'red';
+    sphere.attributes.radius = sphereBody.boundingRadius;
+    sphere.setQuaternion(sphereBody.quaternion);
+    layer.append(sphere);
+
+    // Start the simulation loop
+    let lastTime = 0;
+    layer.tick((time) => {
+      const dt = (time - lastTime) / 1000;
+      world.step(fixedTimeStep, dt, maxSubSteps);
+      sphere.attributes.y = sphereBody.position.y;
+      console.log(time, dt, sphereBody.position.y);
+      lastTime = time;
+    });
+
+    // const cube = new Cube(program);
+    // cube.attributes.pos = [0.5, 1.3, 1.5];
+    // cube.attributes.colors = 'orange blue';
+    // layer.append(cube);
+    // cube.animate([
+    //   {rotateY: 0},
+    //   {rotateY: -360},
+    // ], {
+    //   duration: 5000,
+    //   iterations: Infinity,
+    // });
+
+    // const light = new Camera(layer.gl, {
+    //   left: -3,
+    //   right: 3,
+    //   bottom: -3,
+    //   top: 3,
+    //   // fov: 30,
+    //   near: 1,
+    //   far: 20,
+    // });
+    // light.attributes.pos = [3, 10, 5];
+    // light.lookAt([0, 0, 0]);
+    // const shadow = layer.createShadow({light});
+    // shadow.add(plane);
+    // shadow.add(cube);
+    // layer.setShadow(shadow);
+  </script>
+</body>
+</html>

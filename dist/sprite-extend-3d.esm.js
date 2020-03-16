@@ -10305,8 +10305,7 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
 
     if (body) {
       body.decompose();
-      const needsUpdate = updateRotation(this, body);
-      if (needsUpdate) this.forceUpdate();
+      this.resyncState();
     }
   }
   /* override */
@@ -10449,16 +10448,30 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
     }
   }
 
+  setQuaternion(quat) {
+    const body = this[_body];
+
+    if (body) {
+      if (!Array.isArray(quat)) {
+        quat = [quat.x, quat.y, quat.z, quat.w];
+      }
+
+      body.quaternion.x = quat[0];
+      body.quaternion.y = quat[1];
+      body.quaternion.z = quat[2];
+      body.quaternion.w = quat[3];
+      body.rotation.fromQuaternion(body.quaternion);
+      const needsUpdate = updateRotation(this, body);
+      if (needsUpdate) this.forceUpdate();
+    }
+  }
+
   transform(m) {
     const body = this[_body];
 
     if (body) {
       body.matrix.multiply(m);
-      body.matrix.getRotation(body.quaternion);
-      body.matrix.getTranslation(body.position);
-      body.matrix.getScaling(body.scale);
-      body.rotation.fromQuaternion(body.quaternion);
-      this.resyncState();
+      this.decompose();
     }
   }
 
@@ -10553,7 +10566,14 @@ class Node3dAttr extends Attr {
   }
 
   set pos(value) {
-    if (!Array.isArray(value)) value = [value, value, value];
+    if (!Array.isArray(value)) {
+      if (value.x != null && value.y != null && value.z != null) {
+        value = [value.x, value.y, value.z];
+      } else {
+        value = [value, value, value];
+      }
+    }
+
     this.x = value[0];
     this.y = value[1];
     this.z = value[2];

@@ -122,8 +122,7 @@ export default class Node3d extends Node {
     const body = this[_body];
     if(body) {
       body.decompose();
-      const needsUpdate = updateRotation(this, body);
-      if(needsUpdate) this.forceUpdate();
+      this.resyncState();
     }
   }
 
@@ -249,15 +248,27 @@ export default class Node3d extends Node {
     }
   }
 
+  setQuaternion(quat) {
+    const body = this[_body];
+    if(body) {
+      if(!Array.isArray(quat)) {
+        quat = [quat.x, quat.y, quat.z, quat.w];
+      }
+      body.quaternion.x = quat[0];
+      body.quaternion.y = quat[1];
+      body.quaternion.z = quat[2];
+      body.quaternion.w = quat[3];
+      body.rotation.fromQuaternion(body.quaternion);
+      const needsUpdate = updateRotation(this, body);
+      if(needsUpdate) this.forceUpdate();
+    }
+  }
+
   transform(m) {
     const body = this[_body];
     if(body) {
       body.matrix.multiply(m);
-      body.matrix.getRotation(body.quaternion);
-      body.matrix.getTranslation(body.position);
-      body.matrix.getScaling(body.scale);
-      body.rotation.fromQuaternion(body.quaternion);
-      this.resyncState();
+      this.decompose();
     }
   }
 

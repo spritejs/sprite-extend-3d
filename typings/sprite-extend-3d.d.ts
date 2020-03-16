@@ -424,6 +424,7 @@ declare namespace ext3d {
      */
     rotate(deg: number, axis: Array<number>): void;
     setBody(body: Transform, update: boolean): void;
+    setQuaternion(quat: any): void;
     traverse(callback: (el: Node3d) => boolean|void): void;
     updateMatrix(): void;
     updateMatrixWorld(force?: boolean): void;

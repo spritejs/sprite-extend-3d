@@ -49,7 +49,13 @@ export default class Node3dAttr extends Attr {
   }
 
   set pos(value) {
-    if(!Array.isArray(value)) value = [value, value, value];
+    if(!Array.isArray(value)) {
+      if(value.x != null && value.y != null && value.z != null) {
+        value = [value.x, value.y, value.z];
+      } else {
+        value = [value, value, value];
+      }
+    }
     this.x = value[0];
     this.y = value[1];
     this.z = value[2];
