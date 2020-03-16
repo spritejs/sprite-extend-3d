@@ -9476,9 +9476,12 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
   /* override */
 
 
-  render() {
+  render({
+    clear = true
+  } = {}) {
     const root = this[_root];
     const camera = this[_camera];
+    this.renderer.autoClear = clear;
     this.dispatchEvent({
       type: 'beforerender',
       detail: {
@@ -9534,8 +9537,6 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
         camera: camera.body
       }, this[_renderOptions]));
     }
-
-    if (this[_sublayers].length) this.renderer.autoClear = true;
 
     this._prepareRenderFinished();
 

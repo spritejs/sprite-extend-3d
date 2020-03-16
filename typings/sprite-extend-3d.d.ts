@@ -339,7 +339,7 @@ declare namespace ext3d {
      */
     loadShader(options: Record<string, any>): Promise<Record<string, any>>;
     removeOrbit(camera?: Camera): void;
-    render(): void;
+    render(options?: Record<string, any>): void;
     /**
      * renderTarget
      * @param target 

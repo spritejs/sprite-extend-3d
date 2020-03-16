@@ -317,9 +317,10 @@ export default class Layer3D extends Layer {
   }
 
   /* override */
-  render() {
+  render({clear = true} = {}) {
     const root = this[_root];
     const camera = this[_camera];
+    this.renderer.autoClear = clear;
     this.dispatchEvent({type: 'beforerender', detail: {camera: camera.body}});
     if(this[_targets].length) {
       this[_targets].forEach(({target, options}) => {
@@ -349,7 +350,6 @@ export default class Layer3D extends Layer {
     } else {
       this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     }
-    if(this[_sublayers].length) this.renderer.autoClear = true;
     this._prepareRenderFinished();
     if(this[_utime].length) {
       this[_utime].forEach((program) => {
