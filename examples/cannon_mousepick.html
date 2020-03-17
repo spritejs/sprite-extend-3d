@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/cannon.min.js"></script>
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 1000px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Camera, Sphere, Cube, Plane, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+
+    const layer = scene.layer3d('fglayer', {
+      // alpha: false,
+      camera: {
+        fov: 35,
+      },
+      directionalLight: [-2, 0, 0.5, 0.5],
+    });
+
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    layer.camera.attributes.pos = [0, 4, -7];
+    layer.camera.lookAt([0, 1.5, 0]);
+
+    const light = new Camera(layer.gl, {
+      left: -10,
+      right: 10,
+      bottom: -10,
+      top: 10,
+      // fov: 30,
+      near: 1,
+      far: 20,
+    });
+    light.attributes.pos = [3.5, 10, -1.0];
+    light.lookAt([0, 1.5, 0]);
+
+    const shadow = layer.createShadow({light});
+
+    const program = layer.createProgram({
+      ...shaders.GEOMETRY_WITH_SHADOW,
+      uniforms: {
+        uShadow: {value: 0.99},
+      },
+    });
+
+    const program2 = layer.createProgram({
+      ...shaders.GEOMETRY_WITH_SHADOW,
+      cullFace: null,
+      uniforms: {
+        uShadow: {value: 0.77},
+      },
+    });
+
+    const ground = new Plane(program2, {
+      pos: [0, 0, 0],
+      colors: '#999',
+      rotateX: -90,
+      width: 12,
+      height: 8,
+      raycast: 'none',
+    });
+    layer.append(ground);
+
+    const cube = new Cube(program, {
+      pos: [0, 5.5, -0.5],
+      colors: '#ccc',
+    });
+    layer.append(cube);
+
+    shadow.add(cube);
+    shadow.add(ground);
+    layer.setShadow(shadow);
+
+    const world = new CANNON.World();
+    world.quatNormalizeSkip = 0;
+    world.quatNormalizeFast = false;
+    world.gravity.set(0, -10, 0);
+    world.broadphase = new CANNON.NaiveBroadphase();
+    /* globals CANNON */
+    const boxShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5));
+    const boxBody = new CANNON.Body({mass: 5});
+    boxBody.addShape(boxShape);
+    boxBody.position.set(0, 5.5, -0.5);
+    boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 1, 0), -Math.PI / 3);
+    world.addBody(boxBody);
+
+    const groundShape = new CANNON.Plane();
+    const groundBody = new CANNON.Body({mass: 0});
+    groundBody.addShape(groundShape);
+    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+    world.addBody(groundBody);
+
+    // Joint body
+    const shape = new CANNON.Sphere(0.1);
+    const jointBody = new CANNON.Body({mass: 0});
+    jointBody.addShape(shape);
+    jointBody.collisionFilterGroup = 0;
+    jointBody.collisionFilterMask = 0;
+    world.addBody(jointBody);
+    
+    const fixedTimeStep = 1.0 / 60.0; // seconds
+    const maxSubSteps = 10;
+    
+    let lastTime = 0;
+    layer.tick((time) => {
+      const dt = (time - lastTime) / 1000;
+      // world.step(dt);
+      world.step(fixedTimeStep, dt, maxSubSteps);
+      cube.setQuaternion(boxBody.quaternion);
+      cube.attributes.pos = boxBody.position;
+      lastTime = time;
+    });
+
+    let clickMarker = null;
+    function setClickMarker(x, y, z) {
+      if(!clickMarker) {
+        const program = layer.createProgram({
+          ...shaders.NORMAL,
+        });
+        clickMarker = new Sphere(program, {
+          radius: 0.2,
+          display: 'none',
+          raycast: 'none',
+        });
+        layer.append(clickMarker);
+      }
+      // clickMarker.show();
+      clickMarker.attributes.pos = [x, y, z];
+    }
+
+    let gplane = null;
+    // This function creates a virtual movement plane for the mouseJoint to move in
+    function setScreenPerpCenter(point) {
+      // If it does not exist, create a new one
+      if(!gplane) {
+        const program = layer.createProgram({
+          transparent: true,
+          ...shaders.NORMAL_GEOMETRY,
+        });
+        gplane = new Plane(program, {
+          width: 100,
+          height: 100,
+          colors: 'rgba(0,0,0,0)',
+          display: 'none',
+        });
+        layer.append(gplane);
+
+        gplane.addEventListener('mousemove', (evt) => {
+          const pos = evt.hit.point;
+          clickMarker.attributes.pos = pos;
+          jointBody.position.set(...pos);
+        });
+      }
+
+      // Center at mouse position
+      gplane.attributes.pos = point;
+      gplane.attributes.display = '';
+
+      // Make it face toward the camera
+      gplane.lookAt(layer.camera.attributes.pos);
+    }
+
+    let constrainedBody = null;
+    let mouseConstraint = null;
+    function addMouseConstraint(x, y, z, body) {
+      // The cannon body constrained by the mouse joint
+      constrainedBody = body;
+
+      // Vector to the clicked point, relative to the body
+      const v1 = new CANNON.Vec3(x, y, z).vsub(constrainedBody.position);
+
+      // Apply anti-quaternion to vector to tranform it into the local body coordinate system
+      const antiRot = constrainedBody.quaternion.inverse();
+      const pivot = antiRot.vmult(v1); // pivot is not in local body coordinates
+
+      // Move the cannon click marker particle to the click position
+      jointBody.position.set(x, y, z);
+
+      // Create a new constraint
+      // The pivot for the jointBody is zero
+      mouseConstraint = new CANNON.PointToPointConstraint(constrainedBody, pivot, jointBody, new CANNON.Vec3(0, 0, 0));
+
+      // Add the constriant to world
+      world.addConstraint(mouseConstraint);
+    }
+
+    let constraintDown = false;
+    cube.addEventListener('mousedown', (evt) => {
+      if(!constraintDown) {
+        const pos = evt.hit.point;
+        constraintDown = true;
+        // Set marker on contact point
+        setClickMarker(pos.x, pos.y, pos.z);
+
+        // Set the movement plane
+        setScreenPerpCenter(pos);
+        addMouseConstraint(...pos, boxBody);
+      }
+    });
+
+    layer.addEventListener('mouseup', (evt) => {
+      if(constraintDown) {
+        gplane.hide();
+        clickMarker.hide();
+        world.removeConstraint(mouseConstraint);
+        mouseConstraint = null;
+        constraintDown = false;
+      }
+    });
+
+    layer.setRaycast();
+    // layer.setOrbit();
+  </script>
+</body>
+</html>
