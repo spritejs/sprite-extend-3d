@@ -8198,7 +8198,7 @@ class Shadow {
       if (!!~this.castMeshes.indexOf(node)) {
         node.program = node.depthProgram;
       } else {
-        if (node.visible) node.isForceVisibility = true;
+        node.isForceVisibility = node.visible;
         node.visible = false;
       }
     }); // Render the depth shadow map using the light as the camera
@@ -8215,7 +8215,7 @@ class Shadow {
       if (!!~this.castMeshes.indexOf(node)) {
         node.program = node.colorProgram;
       } else {
-        if (node.isForceVisibility) node.visible = true;
+        node.visible = node.isForceVisibility;
       }
     });
   }
@@ -9769,6 +9769,21 @@ class Shadow extends ogl__WEBPACK_IMPORTED_MODULE_0__["Shadow"] {
       this.add(node, opts);
     });
     super.add(opts);
+  }
+
+  remove(node) {
+    const mesh = node.body;
+
+    if (mesh) {
+      const idx = this.castMeshes.indexOf(mesh);
+
+      if (idx >= 0) {
+        this.castMeshes.splice(idx, 1);
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

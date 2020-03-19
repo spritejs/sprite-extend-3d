@@ -12,4 +12,16 @@ export default class Shadow extends _Shadow {
     });
     super.add(opts);
   }
+
+  remove(node) {
+    const mesh = node.body;
+    if(mesh) {
+      const idx = this.castMeshes.indexOf(mesh);
+      if(idx >= 0) {
+        this.castMeshes.splice(idx, 1);
+        return true;
+      }
+    }
+    return false;
+  }
 }

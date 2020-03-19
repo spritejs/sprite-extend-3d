@@ -470,6 +470,7 @@ declare namespace ext3d {
      * @param options 
      */
     add(node: Node3d, options?: Record<string, any>): Promise<undefined>;
+    remove(node: Node3d): boolean;
     /**
      * render({scene})
      * @param options 

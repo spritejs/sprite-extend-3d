@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/cannon.min.js"></script>
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 1000px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    /* globals CANNON */
+    function initCannonWorld() {
+      const world = new CANNON.World();
+      world.gravity.set(0, -50, 0);
+      world.broadphase = new CANNON.NaiveBroadphase();
+      world.solver.iterations = 5;
+
+      world.defaultContactMaterial.contactEquationStiffness = 5e6;
+      world.defaultContactMaterial.contactEquationRelaxation = 10;
+
+      // Since we have many bodies and they don't move very much, we can use the less accurate quaternion normalization
+      world.quatNormalizeFast = true;
+      world.quatNormalizeSkip = 3; // ...and we do not have to normalize every step.
+
+      // ground plane
+      const groundShape = new CANNON.Plane(new CANNON.Vec3(0, 0, 1));
+      const groundBody = new CANNON.Body({mass: 0});
+      groundBody.addShape(groundShape);
+      groundBody.position.set(0, 0, 0);
+      groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+      world.addBody(groundBody);
+
+      // plane -x
+      const planeShapeXmin = new CANNON.Plane();
+      const planeXmin = new CANNON.Body({mass: 0});
+      planeXmin.addShape(planeShapeXmin);
+      planeXmin.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), Math.PI / 2);
+      planeXmin.position.set(-5, 0, 0);
+      world.addBody(planeXmin);
+
+      // Plane +x
+      const planeShapeXmax = new CANNON.Plane();
+      const planeXmax = new CANNON.Body({mass: 0});
+      planeXmax.addShape(planeShapeXmax);
+      planeXmax.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI / 2);
+      planeXmax.position.set(5, 0, 0);
+      world.addBody(planeXmax);
+
+      // Plane -z
+      const planeShapeZmin = new CANNON.Plane();
+      const planeZmin = new CANNON.Body({mass: 0});
+      planeZmin.addShape(planeShapeZmin);
+      planeZmin.position.set(0, 0, -5);
+      world.addBody(planeZmin);
+
+      // Plane +z
+      const planeShapeZmax = new CANNON.Plane();
+      const planeZmax = new CANNON.Body({mass: 0});
+      planeZmax.addShape(planeShapeZmax);
+      planeZmax.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI);
+      planeZmax.position.set(0, 0, 5);
+      world.addBody(planeZmax);
+      return world;
+    }
+
+    const {Scene} = spritejs;
+    const {Camera, Sphere, Cube, Plane, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+
+    const layer = scene.layer3d('fglayer', {
+      // alpha: false,
+      camera: {
+        fov: 35,
+      },
+      directionalLight: [-2, 0, 0.5, 0.5],
+    });
+
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    layer.camera.attributes.pos = [0, 4, -7];
+    layer.camera.lookAt([0, 1.5, 0]);
+
+    const light = new Camera(layer.gl, {
+      left: -10,
+      right: 10,
+      bottom: -10,
+      top: 10,
+      // fov: 30,
+      near: 1,
+      far: 20,
+    });
+    light.attributes.pos = [3.5, 10, -1.0];
+    light.lookAt([0, 1.5, 0]);
+
+    const shadow = layer.createShadow({light});
+
+    const program = layer.createProgram({
+      ...shaders.GEOMETRY_WITH_SHADOW,
+      uniforms: {
+        uShadow: {value: 0.99},
+      },
+    });
+
+    const program2 = layer.createProgram({
+      ...shaders.GEOMETRY_WITH_SHADOW,
+      cullFace: null,
+      uniforms: {
+        uShadow: {value: 0.77},
+      },
+    });
+
+    const ground = new Plane(program2, {
+      pos: [0, 0, 0],
+      colors: '#999',
+      rotateX: -90,
+      width: 30,
+      height: 30,
+      raycast: 'none',
+    });
+    layer.append(ground);
+
+    shadow.add(ground);
+    layer.setShadow(shadow);
+
+    const world = initCannonWorld();
+    let i = 0;
+    const bodies = [];
+
+    setInterval(() => {
+      i++;
+      const sphereShape = new CANNON.Sphere(1);
+      const b1 = new CANNON.Body({
+        mass: 5,
+        position: new CANNON.Vec3(
+          Math.sin(i),
+          7,
+          Math.cos(i),
+        ),
+      });
+      b1.addShape(sphereShape);
+      world.addBody(b1);
+      bodies.push(b1);
+
+      const s1 = new Sphere(program, {radius: 1});
+      layer.append(s1);
+      shadow.add(s1);
+      b1.node = s1;
+
+      if(bodies.length > 80) {
+        const b = bodies.shift();
+        shadow.remove(b.node);
+        b.node.dispose();
+        world.remove(b);
+      }
+    }, 100);
+
+    layer.tick((time) => {
+      world.step(1 / 60);
+      bodies.forEach((body) => {
+        const s = body.node;
+        s.setQuaternion(body.quaternion);
+        s.attributes.pos = body.position;
+      });
+    });
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>
