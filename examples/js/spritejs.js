@@ -8235,9 +8235,11 @@ class Renderer {
 
   drawMeshCloud(cloud, {
     clear = false,
-    program = null
+    program: drawProgram = null
   } = {}) {
     const renderer = this[_glRenderer] || this[_canvasRenderer]; // if(!this.isWebGL2) throw new Error('Only webgl2 context support drawMeshCloud.');
+
+    const program = drawProgram || cloud.program;
 
     if (this[_glRenderer]) {
       const gl = renderer.gl;
@@ -9751,11 +9753,8 @@ function createText(text, {
 }) {
   const key = [text, font, String(fillColor), String(strokeColor), String(strokeWidth)].join('###');
   let textCanvas = cacheMap[key];
-  if (textCanvas) return textCanvas; // cannot use offscreen canvas because use offscreen canvas as texture will fail in early versions of Chrome.
-
-  textCanvas = createCanvas(1, 1, {
-    offscreen: false
-  });
+  if (textCanvas) return textCanvas;
+  textCanvas = createCanvas(1, 1);
   const textContext = textCanvas.getContext('2d');
   textContext.save();
   textContext.font = font;
@@ -9843,10 +9842,21 @@ function createText(text, {
     rect: [0, 0, w, h]
   };
   return cacheMap[key];
+} // Fixed: use offscreen canvas as texture will fail in early chrome.
+
+
+let isEarlyChrome = false;
+
+if (typeof navigator === 'object' && typeof navigator.userAgent === 'string') {
+  const matched = navigator.userAgent.toLowerCase().match(/chrome\/(\d+)/);
+
+  if (matched) {
+    isEarlyChrome = Number(matched[1]) < 70;
+  }
 }
 
 function createCanvas(width, height, options = {}) {
-  const offscreen = options.offscreen !== false;
+  const offscreen = options.offscreen || !isEarlyChrome && options.offscreen !== false;
   let canvas;
 
   if (typeof global.createCanvas === 'function') {
@@ -11176,6 +11186,14 @@ const _hasCloudFilter = Symbol('cloudFilter');
     }
 
     return meshData;
+  }
+
+  setProgram(program) {
+    this[_mesh].setProgram(program);
+  }
+
+  get program() {
+    return this[_mesh].program;
   }
 
   transform(idx, m) {
@@ -13785,10 +13803,22 @@ class Mesh2D {
 
           this[_mesh].attributes[name] = [];
 
-          for (let j = 0; j < positions.length; j++) {
-            const p = positions[j];
+          if (name === 'uv' && !setter) {
+            const bounds = bound_points__WEBPACK_IMPORTED_MODULE_1___default()(positions);
+            const [w, h] = [bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1]];
 
-            this[_mesh].attributes[name].push(setter ? setter(p, i, positions) : Array(opts.size).fill(0));
+            for (let j = 0; j < positions.length; j++) {
+              const p = positions[j];
+              const uv = [(p[0] - bounds[0][0]) / w, (p[1] - bounds[0][1]) / h];
+
+              this[_mesh].attributes[name].push(uv);
+            }
+          } else {
+            for (let j = 0; j < positions.length; j++) {
+              const p = positions[j];
+
+              this[_mesh].attributes[name].push(setter ? setter(p, i, positions) : Array(opts.size).fill(0));
+            }
           }
         }
       }
@@ -18812,6 +18842,16 @@ class Node {
     return m;
   }
 
+  get opacity() {
+    let opacity = this.attributes.opacity;
+
+    if (this.parent && this.parent.opacity != null) {
+      opacity *= this.parent.opacity;
+    }
+
+    return opacity;
+  }
+
   get program() {
     return this[_program];
   }
@@ -18881,6 +18921,10 @@ class Node {
 
   get mesh() {
     return null;
+  }
+
+  get shaderAttrs() {
+    return this[_shaderAttrs] || {};
   }
 
   activateAnimations() {
@@ -24996,6 +25040,31 @@ class Cloud extends _node__WEBPACK_IMPORTED_MODULE_2__["default"] {
     super.draw(meshes);
 
     if (this.meshCloud) {
+      if (this.program) {
+        this.meshCloud.setProgram(this.program);
+        const shaderAttrs = this.shaderAttrs;
+
+        if (shaderAttrs) {
+          Object.entries(shaderAttrs).forEach(([key, setter]) => {
+            this.meshCloud.mesh.setAttribute(key, setter);
+          });
+        }
+
+        const uniforms = this.uniforms;
+
+        if (this.uniforms) {
+          const _uniform = {};
+          Object.entries(uniforms).forEach(([key, value]) => {
+            if (typeof value === 'function') {
+              value = value(this, key);
+            }
+
+            _uniform[key] = value;
+          });
+          this.meshCloud.mesh.setUniforms(_uniform);
+        }
+      }
+
       if (this.meshNode.textureImage) {
         Object(_utils_texture__WEBPACK_IMPORTED_MODULE_1__["drawTexture"])(this.meshNode, this.meshNode.mesh);
       }
@@ -25510,13 +25579,19 @@ class Block extends _node__WEBPACK_IMPORTED_MODULE_1__["default"] {
             lineDash: borderDash,
             lineDashOffset: borderDashOffset
           });
-        }
+        } // mesh.setOpacity(this.attributes.opacity);
 
-        mesh.setOpacity(this.attributes.opacity);
+
         this[_mesh] = mesh;
       } else if (mesh.box !== box) {
         mesh.contours = box.contours;
         mesh.box = box;
+      }
+
+      const opacity = this.opacity;
+
+      if (mesh.getOpacity() !== opacity) {
+        mesh.setOpacity(opacity);
       }
 
       mesh.setTransform(...this.renderMatrix);
@@ -25541,7 +25616,7 @@ class Block extends _node__WEBPACK_IMPORTED_MODULE_1__["default"] {
   }
 
   get originalClientRect() {
-    if (this.clientBox) {
+    if (this.mesh) {
       const boundingBox = this.mesh.boundingBox;
       return [boundingBox[0][0], boundingBox[0][1], boundingBox[1][0] - boundingBox[0][0], boundingBox[1][1] - boundingBox[0][1]];
     }
@@ -25585,11 +25660,10 @@ class Block extends _node__WEBPACK_IMPORTED_MODULE_1__["default"] {
 
     if (key === 'anchorX' || key === 'anchorY' || key === 'boxSizing' || key === 'width' || key === 'height' || key === 'borderWidth' || key === 'paddingLeft' || key === 'paddingRight' || key === 'paddingTop' || key === 'paddingBottom' || /^border(TopLeft|TopRight|BottomRight|BottomLeft)Radius$/.test(key)) {
       this.updateContours();
-    }
-
-    if (key === 'opacity') {
-      if (this[_mesh]) this[_mesh].setOpacity(newValue);
-    } // if(key === 'anchorX' || key === 'anchorY' || key === 'boxSizing') {
+    } // if(key === 'opacity') {
+    //   if(this[_mesh]) this[_mesh].setOpacity(this.opacity);
+    // }
+    // if(key === 'anchorX' || key === 'anchorY' || key === 'boxSizing') {
     //   if(this[_mesh]) {
     //     const bgcolor = this.attributes.bgcolor;
     //     if(bgcolor && bgcolor.vector) {
@@ -26517,13 +26591,19 @@ class Path extends _node__WEBPACK_IMPORTED_MODULE_2__["default"] {
             lineDash,
             lineDashOffset
           });
-        }
+        } // mesh.setOpacity(this.attributes.opacity);
 
-        mesh.setOpacity(this.attributes.opacity);
+
         this[_mesh] = mesh;
       } else if (mesh.path !== path) {
         mesh.contours = path.contours;
         mesh.path = path;
+      }
+
+      const opacity = this.opacity;
+
+      if (mesh.getOpacity() !== opacity) {
+        mesh.setOpacity(opacity);
       }
 
       mesh.setTransform(...this.renderMatrix);
@@ -26613,11 +26693,10 @@ class Path extends _node__WEBPACK_IMPORTED_MODULE_2__["default"] {
 
     if (key === 'd' || key === 'normalize') {
       this.updateContours();
-    }
+    } // if(key === 'opacity') {
+    //   if(this[_mesh]) this[_mesh].setOpacity(this.opacity);
+    // }
 
-    if (key === 'opacity') {
-      if (this[_mesh]) this[_mesh].setOpacity(newValue);
-    }
 
     if (this[_mesh] && key === 'fillColor') {
       Object(_utils_color__WEBPACK_IMPORTED_MODULE_4__["setFillColor"])(this[_mesh], {
@@ -29526,7 +29605,7 @@ class Group extends _block__WEBPACK_IMPORTED_MODULE_1__["default"] {
     this.__cacheRenderMatrix = this.renderMatrix;
     super.draw(meshes);
 
-    if (!this[_sealed]) {
+    if (!this[_sealed] && this.attributes.display !== 'none') {
       const children = this.orderedChildren;
 
       for (let i = 0; i < children.length; i++) {

@@ -19,7 +19,8 @@ function colorAttribute(node, geometry) {
   const updateColor = geometry.attributes.color;
 
   const positions = geometry.attributes.position.data;
-  const len = positions.length / 3;
+  const size = geometry.attributes.position.size || 3;
+  const len = positions.length / size;
 
   const color = updateColor ? updateColor.data : new Float32Array(4 * len);
   const colors = node.attributes.colors;

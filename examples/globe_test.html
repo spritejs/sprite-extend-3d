@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://lib.baomitu.com/topojson/3.0.2/topojson.min.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-color: black;
+      overflow: hidden;
+    }
+    #container {
+      width: 900px;
+      height: 900px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Sphere, Geometry, Mesh3d, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+    });
+    layer.camera.attributes.pos = [0, 0, 2.5];
+    layer.camera.lookAt([0, 0, 0]);
+    layer.gl.clearColor(0, 0, 0, 1);
+    
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+    });
+    const sphere = new Sphere(program, {
+      widthSegments: 60,
+      heightSegments: 30,
+      colors: '#222',
+    });
+    layer.append(sphere);
+
+    function mkPoints(count = 2000, radius = 1) {
+      const pLength = Math.PI * 2;
+      const tLength = Math.PI;
+      const points = new Float32Array(count * 4);
+
+      for(let i = 0; i < count; i++) {
+        const u = Math.random();
+        const v = Math.random();
+        const x = -radius * Math.cos(u * pLength) * Math.sin(v * tLength);
+        const y = radius * Math.cos(v * tLength);
+        const z = radius * Math.sin(u * pLength) * Math.sin(v * tLength);
+        points.set([x, y, z, Math.random()], i * 4);
+      }
+      return {data: points, size: 4};
+    }
+
+    const vertex = `
+      precision highp float;
+      precision highp int;
+
+      attribute vec4 position;
+      attribute vec4 color;
+
+      uniform mat4 modelViewMatrix;
+      uniform mat4 projectionMatrix;
+      varying vec4 vColor;
+
+      uniform float uTime;
+
+      highp float random(vec2 co) {
+          highp float a = 12.9898;
+          highp float b = 78.233;
+          highp float c = 43758.5453;
+          highp float dt= dot(co.xy ,vec2(a,b));
+          highp float sn= mod(dt,3.14);
+          return fract(sin(sn) * c);
+      }
+
+      void main() {
+        gl_PointSize = 1.0;
+        float w = position.w;
+        vec4 pos = projectionMatrix * modelViewMatrix * vec4(position.xyz, 1.0);
+        float sy = max(pos.y, 5.5 * random(vec2(pos.y, w)));
+        float delay = random(position.xz);
+        float time = max(0.0, uTime - delay);
+        float d = sy - pos.y;
+        float t = d;
+        pos.y = mix(sy, pos.y, clamp(0.0, 1.0, time / t));
+        gl_Position = pos;
+        vColor = color;
+      }
+    `;
+
+    const fragment = `
+      precision highp float;
+      varying vec4 vColor;
+
+      void main() {
+        gl_FragColor = vColor;
+      }
+    `;
+
+    const position = mkPoints(200000, 0.5);
+    const geometry = new Geometry(layer.gl, {position});
+    
+    const pointsProgram = layer.createProgram({
+      vertex,
+      fragment,
+      uniforms: {
+        uTime: {value: 0},
+      },
+    });
+
+    const mesh = new Mesh3d(pointsProgram, {
+      model: geometry,
+      mode: layer.gl.POINTS,
+      colors: 'white blue yellow green red',
+    });
+
+    layer.append(mesh);
+
+    layer.bindTime(pointsProgram);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>
