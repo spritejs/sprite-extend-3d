@@ -9482,6 +9482,9 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     const root = this[_root];
     const camera = this[_camera];
     this.renderer.autoClear = clear;
+
+    this._prepareRenderFinished();
+
     this.dispatchEvent({
       type: 'beforerender',
       detail: {
@@ -9537,8 +9540,6 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
         camera: camera.body
       }, this[_renderOptions]));
     }
-
-    this._prepareRenderFinished();
 
     if (this[_utime].length) {
       this[_utime].forEach(program => {
@@ -10401,6 +10402,10 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
 
       if (key === 'rotateOrder') {
         body.rotation.reorder(newValue);
+      }
+
+      if (key === 'zIndex') {
+        body.renderOrder = newValue;
       }
     }
   }
