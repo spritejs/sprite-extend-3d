@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Plane, Sphere, shaders} = spritejs.ext3d;
+    const {Plane, Sphere, Vec3, Mat4, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -43,7 +43,7 @@
 
     const texture = layer.createText('你好 SpriteJS 3D', {
       font: '48px Arial',
-      fillColor: 'red',
+      fillColor: 'green',
     });
 
     const program = layer.createProgram({
@@ -60,18 +60,25 @@
       zIndex: 100,
     });
 
-    layer.append(label);
-
     const sphereProgram = layer.createProgram({
       ...shaders.NORMAL_GEOMETRY,
     });
-    const sphere = new Sphere(sphereProgram);
+    const sphere = new Sphere(sphereProgram, {
+      colors: 'red blue orange',
+    });
     layer.append(sphere);
+    sphere.append(label);
 
     layer.setOrbit();
 
     label.addEventListener('beforerender', () => {
-      label.lookAt(layer.camera.worldPosition);
+      const target = new Vec3().copy(layer.camera.worldPosition);
+      const m = new Mat4().copy(sphere.worldMatrix).inverse();
+      label.lookAt(target.applyMatrix4(m));
+    });
+
+    layer.tick(() => {
+      sphere.attributes.rotateY += 2;
     });
   </script>
 </body>
