@@ -321,6 +321,7 @@ export default class Layer3D extends Layer {
     const root = this[_root];
     const camera = this[_camera];
     this.renderer.autoClear = clear;
+    this._prepareRenderFinished();
     this.dispatchEvent({type: 'beforerender', detail: {camera: camera.body}});
     if(this[_targets].length) {
       this[_targets].forEach(({target, options}) => {
@@ -350,7 +351,6 @@ export default class Layer3D extends Layer {
     } else {
       this.renderer.render({scene: root.body, camera: camera.body, ...this[_renderOptions]});
     }
-    this._prepareRenderFinished();
     if(this[_utime].length) {
       this[_utime].forEach((program) => {
         program.uniforms.uTime.value = program.timeline.currentTime * 0.001;

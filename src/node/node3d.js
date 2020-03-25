@@ -188,6 +188,9 @@ export default class Node3d extends Node {
       if(key === 'rotateOrder') {
         body.rotation.reorder(newValue);
       }
+      if(key === 'zIndex') {
+        body.renderOrder = newValue;
+      }
     }
   }
 
