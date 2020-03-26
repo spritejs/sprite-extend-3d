@@ -1,6 +1,6 @@
 import {Raycast, GPGPU, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler} from 'ogl';
 import {Scene} from 'spritejs';
-import Layer3D from './node/layer3d';
+import Layer3d from './node/layer3d';
 import Mesh3d from './node/mesh3d';
 import Skin from './node/skin';
 import Sphere from './node/sphere';
@@ -26,13 +26,13 @@ Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
     if(layers[i].id === id) return layers[i];
   }
 
-  const layer = new Layer3D(options);
+  const layer = new Layer3d(options);
   this.appendChild(layer);
   return layer;
 };
 
 export {
-  Layer3D,
+  Layer3d,
   Sphere,
   Plane,
   Polyline3d,

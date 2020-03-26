@@ -113,7 +113,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(47);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layer3D", function() { return _node_layer3d__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layer3d", function() { return _node_layer3d__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
 /* harmony import */ var _node_mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mesh3d", function() { return _node_mesh3d__WEBPACK_IMPORTED_MODULE_3__["default"]; });
@@ -1524,6 +1524,7 @@ __webpack_require__.r(__webpack_exports__);
 // gl.clearStencil( stencil );
 
 const tempVec3 = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+let ID = 1;
 class Renderer {
   constructor({
     canvas = document.createElement('canvas'),
@@ -1555,7 +1556,8 @@ class Renderer {
     this.depth = depth;
     this.stencil = stencil;
     this.premultipliedAlpha = premultipliedAlpha;
-    this.autoClear = autoClear; // Attempt WebGL2 unless forced to 1, if not supported fallback to WebGL1
+    this.autoClear = autoClear;
+    this.id = ID++; // Attempt WebGL2 unless forced to 1, if not supported fallback to WebGL1
 
     if (webgl === 2) this.gl = canvas.getContext('webgl2', attributes);
     this.isWebgl2 = !!this.gl;
@@ -8344,7 +8346,7 @@ __webpack_require__.r(__webpack_exports__);
 
  // For compressed textures, generate using https://github.com/TimvanScherpenzeel/texture-compressor
 
-const cache = {};
+let cache = {};
 const supportedExtensions = [];
 class TextureLoader {
   static load(gl, {
@@ -8394,7 +8396,7 @@ class TextureLoader {
     } // Stringify props
 
 
-    const cacheID = src + wrapS + wrapT + anisotropy + format + internalFormat + generateMipmaps + minFilter + magFilter + premultiplyAlpha + unpackAlignment + flipY; // Check cache for existing texture
+    const cacheID = src + wrapS + wrapT + anisotropy + format + internalFormat + generateMipmaps + minFilter + magFilter + premultiplyAlpha + unpackAlignment + flipY + gl.renderer.id; // Check cache for existing texture
 
     if (cache[cacheID]) return cache[cacheID];
     let texture;
@@ -8485,6 +8487,10 @@ class TextureLoader {
         texture.onUpdate = null;
       };
     });
+  }
+
+  static clearCache() {
+    cache = {};
   }
 
 }
@@ -12890,7 +12896,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ ]);
 
 
-const _ext3d$Layer3D = ext3d['Layer3D'];
+const _ext3d$Layer3d = ext3d['Layer3d'];
 const _ext3d$Sphere = ext3d['Sphere'];
 const _ext3d$Plane = ext3d['Plane'];
 const _ext3d$Polyline3d = ext3d['Polyline3d'];
@@ -12917,7 +12923,7 @@ const _ext3d$GPGPU = ext3d['GPGPU'];
 const _ext3d$Raycast = ext3d['Raycast'];
 
 export {
-    _ext3d$Layer3D as Layer3D,
+    _ext3d$Layer3d as Layer3d,
     _ext3d$Sphere as Sphere,
     _ext3d$Plane as Plane,
     _ext3d$Polyline3d as Polyline3d,
