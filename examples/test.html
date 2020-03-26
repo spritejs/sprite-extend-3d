@@ -34,8 +34,12 @@
       height: 600,
       mode: 'stickyHeight',
     });
-    const layer = scene.layer3d('fglayer');
-    layer.camera.attributes.z = 5;
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        z: 5,
+      },
+    });
+    // layer.camera.attributes.z = 5;
 
     const vertex = `attribute vec3 position;
       uniform mat4 modelViewMatrix;
