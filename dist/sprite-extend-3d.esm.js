@@ -110,6 +110,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Raycast", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["Raycast"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FrameBuffer", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["RenderTarget"]; });
+
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(47);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
@@ -7004,7 +7006,8 @@ class Post {
     fragment = defaultFragment,
     uniforms = {},
     textureUniform = 'tMap',
-    enabled = true
+    enabled = true,
+    clear = true
   } = {}) {
     uniforms[textureUniform] = {
       value: this.fbo.read.texture
@@ -7023,7 +7026,8 @@ class Post {
       program,
       uniforms,
       enabled,
-      textureUniform
+      textureUniform,
+      clear
     };
     this.passes.push(pass);
     return pass;
@@ -7074,7 +7078,7 @@ class Post {
       this.gl.renderer.render({
         scene: pass.mesh,
         target: i === enabledPasses.length - 1 && (target || !this.targetOnly) ? target : this.fbo.write,
-        clear: i === enabledPasses.length - 1 ? true : false
+        clear: true
       });
       this.fbo.swap();
     });
@@ -9565,6 +9569,17 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
   renderTarget(target, options = {}) {
     return target.renderBy(this, options);
+  }
+
+  renderTo(target, options = {}) {
+    const opts = Object.assign(options, this[_renderOptions]);
+    const root = this[_root];
+    const camera = this[_camera];
+    return this.renderer.render(_objectSpread({
+      scene: root.body,
+      camera: camera.body,
+      target
+    }, opts));
   }
 
   setLights(program, {
@@ -12921,6 +12936,7 @@ const _ext3d$Quat = ext3d['Quat'];
 const _ext3d$Euler = ext3d['Euler'];
 const _ext3d$GPGPU = ext3d['GPGPU'];
 const _ext3d$Raycast = ext3d['Raycast'];
+const _ext3d$FrameBuffer = ext3d['FrameBuffer'];
 
 export {
     _ext3d$Layer3d as Layer3d,
@@ -12947,5 +12963,6 @@ export {
     _ext3d$Quat as Quat,
     _ext3d$Euler as Euler,
     _ext3d$GPGPU as GPGPU,
-    _ext3d$Raycast as Raycast
+    _ext3d$Raycast as Raycast,
+    _ext3d$FrameBuffer as FrameBuffer
 }

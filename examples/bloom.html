@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 800px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Cube, Vec3, FrameBuffer, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      width: 800,
+      height: 800,
+      mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        pos: [0, 0, 50],
+      },
+      post: true,
+    });
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+    });
+
+    function randomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function randomVec3() {
+      const v = new Vec3(
+        1 - 2 * Math.random(),
+        1 - 2 * Math.random(),
+        1 - 2 * Math.random(),
+      );
+      return v.normalize();
+    }
+
+    function randomCube() {
+      const cube = new Cube(program);
+      cube.attr({
+        colors: randomColor(),
+        pos: randomVec3().scale(20 * Math.random()),
+        rotate: randomVec3(),
+      });
+      layer.append(cube);
+    }
+
+    for(let i = 0; i < 100; i++) {
+      randomCube();
+    }
+
+    const fragment = /* glsl */ `
+      precision highp float;
+
+      uniform sampler2D tMap;
+      uniform vec2 uResolution;
+      uniform bool filter;
+      varying vec2 vUv;
+
+      void main() {
+        vec4 color = texture2D(tMap, vUv);
+        float brightness = 1.0;
+        if(filter) {
+          brightness = dot(color.rgb, vec3(0.2126, 0.7152, 0.0722));
+          brightness = step(0.75, brightness);
+        }
+
+        float weight[5];
+        weight[0] = 0.227027;
+        weight[1] = 0.1945946;
+        weight[2] = 0.1216216;
+        weight[3] = 0.054054;
+        weight[4] = 0.016216;
+
+        vec2 tex_offset = 1.0 / uResolution; // gets size of single texel
+        vec3 result = color.rgb;
+        result *= weight[0];
+        for(int i = 1; i < 5; ++i) {
+          float f = float(i);
+          result += texture2D(tMap, vUv + vec2(tex_offset.x * f, 0.0)).rgb * weight[i];
+          result += texture2D(tMap, vUv - vec2(tex_offset.x * f, 0.0)).rgb * weight[i];
+        }
+
+        gl_FragColor.rgb = result * brightness;
+        gl_FragColor.a = 1.0;
+      }
+    `;
+
+    const fragment2 = /* glsl */ `
+      precision highp float;
+
+      uniform sampler2D tMap;
+      uniform vec2 uResolution;
+      varying vec2 vUv;
+
+      void main() {
+        vec4 color = texture2D(tMap, vUv);
+
+        float weight[5];
+        weight[0] = 0.227027;
+        weight[1] = 0.1945946;
+        weight[2] = 0.1216216;
+        weight[3] = 0.054054;
+        weight[4] = 0.016216;
+
+        vec2 tex_offset = 1.0 / uResolution; // gets size of single texel
+        vec3 result = color.rgb;
+        result *= weight[0];
+        for(int i = 1; i < 5; ++i)
+        {
+          float f = float(i);
+          result += texture2D(tMap, vUv + vec2(0.0, tex_offset.y * f)).rgb * weight[i];
+          result += texture2D(tMap, vUv - vec2(0.0, tex_offset.y * f)).rgb * weight[i];
+        }
+
+        gl_FragColor.rgb = result;
+        gl_FragColor.a = 1.0;
+      }
+    `;
+
+    const fragment3 = `
+      precision highp float;
+
+      uniform sampler2D tMap;
+      uniform sampler2D tLayerMap;
+
+      varying vec2 vUv;
+
+      void main() {
+        vec3 color = texture2D(tLayerMap, vUv).rgb;
+        vec3 bloomColor = texture2D(tMap, vUv).rgb;
+        color += bloomColor;
+        // tone mapping
+        float exposure = 2.0;
+        float gamma = 2.2;
+        vec3 result = vec3(1.0) - exp(-color * exposure);
+        // also gamma correct while we're at it       
+        result = pow(result, vec3(1.0 / gamma));
+        gl_FragColor.rgb = result;
+        gl_FragColor.a = 1.0;
+      }
+    `;
+
+    const post = layer.post;
+    const {width, height} = layer.getResolution();
+    post.addPass({
+      fragment,
+      uniforms: {
+        filter: {value: true},
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment: fragment2,
+      uniforms: {
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment,
+      uniforms: {
+        filter: {value: false},
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment: fragment2,
+      uniforms: {
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment,
+      uniforms: {
+        filter: {value: false},
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment: fragment2,
+      uniforms: {
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment,
+      uniforms: {
+        filter: {value: false},
+        uResolution: {value: [width, height]},
+      },
+    });
+    post.addPass({
+      fragment: fragment2,
+      uniforms: {
+        uResolution: {value: [width, height]},
+      },
+    });
+    const pass5 = post.addPass({
+      fragment: fragment3,
+      clear: false,
+      uniforms: {
+        tLayerMap: {value: null},
+      },
+    });
+
+    layer.tick(() => {
+      const target = new FrameBuffer(layer.gl);
+      layer.renderTo(target);
+      pass5.uniforms.tLayerMap.value = target.texture;
+    });
+    layer.setOrbit();
+  </script>
+</body>
+</html>

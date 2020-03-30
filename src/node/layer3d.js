@@ -364,6 +364,13 @@ export default class Layer3D extends Layer {
     return target.renderBy(this, options);
   }
 
+  renderTo(target, options = {}) {
+    const opts = Object.assign(options, this[_renderOptions]);
+    const root = this[_root];
+    const camera = this[_camera];
+    return this.renderer.render({scene: root.body, camera: camera.body, target, ...opts});
+  }
+
   setLights(program, {directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],
     pointLightColor = this[_pointLightColor],

@@ -190,7 +190,7 @@ declare namespace ext3d {
     preserveBuffers: boolean;
   }
 
-  class BaseRenderTarget {
+  export class FrameBuffer {
     /**
      *  constructor(gl, {
           width = gl.canvas.width,
@@ -225,8 +225,8 @@ declare namespace ext3d {
   }
 
   interface FBO {
-    read: BaseRenderTarget;
-    write: BaseRenderTarget;
+    read: FrameBuffer;
+    write: FrameBuffer;
     swap: Function;
   }
 
@@ -346,6 +346,7 @@ declare namespace ext3d {
      * @param options 
      */
     renderTarget(target: RenderTarget, options?: Record<string, any>): void;
+    renderTo(target: FrameBuffer, options = {}): void; 
     /**
      * setLights(program, {directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],

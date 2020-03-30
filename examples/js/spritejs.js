@@ -8274,6 +8274,10 @@ class Renderer {
           a_strokeCloudColor: {
             type: 'UNSIGNED_BYTE',
             normalize: true
+          },
+          a_frameIndex: {
+            type: 'UNSIGNED_BYTE',
+            normalize: false
           }
         });
       }
@@ -10786,20 +10790,6 @@ const _mesh = Symbol('mesh');
 
 const _count = Symbol('count');
 
-const _transform0 = Symbol('transform');
-
-const _transform1 = Symbol('transform');
-
-const _color0 = Symbol('color');
-
-const _color1 = Symbol('color');
-
-const _color2 = Symbol('color');
-
-const _color3 = Symbol('color');
-
-const _color4 = Symbol('color');
-
 const _blend = Symbol('blend');
 
 const _filters = Symbol('filter');
@@ -10808,55 +10798,93 @@ const _textures = Symbol('textures');
 
 const _textureOptions = Symbol('textureOptions');
 
-const _frameIndex = Symbol('frameIndex');
-
-const _fillColor = Symbol('fillColor');
-
-const _strokeColor = Symbol('strokeColor');
-
 const _hasCloudColor = Symbol('cloudColor');
 
 const _hasCloudFilter = Symbol('cloudFilter');
 
+const _buffer = Symbol('buffer');
+
+function createBuffer(buffer, oldBuffer = null) {
+  const transform0 = new Float32Array(4 * buffer);
+  const transform1 = new Float32Array(4 * buffer);
+  const color0 = new Float32Array(4 * buffer);
+  const color1 = new Float32Array(4 * buffer);
+  const color2 = new Float32Array(4 * buffer);
+  const color3 = new Float32Array(4 * buffer);
+  const color4 = new Float32Array(4 * buffer);
+  const frameIndex = new Uint8Array(buffer);
+  const fillColor = new Uint8Array(4 * buffer);
+  const strokeColor = new Uint8Array(4 * buffer);
+
+  if (oldBuffer) {
+    transform0.set(oldBuffer.transform0, 0);
+    transform1.set(oldBuffer.transform1, 0);
+    color0.set(oldBuffer.color0, 0);
+    color1.set(oldBuffer.color1, 0);
+    color2.set(oldBuffer.color2, 0);
+    color3.set(oldBuffer.color3, 0);
+    color4.set(oldBuffer.color4, 0);
+    frameIndex.set(oldBuffer.frameIndex, 0);
+    fillColor.set(oldBuffer.fillColor, 0);
+    strokeColor.set(oldBuffer.strokeColor, 0);
+  }
+
+  return {
+    bufferSize: buffer,
+    transform0,
+    transform1,
+    color0,
+    color1,
+    color2,
+    color3,
+    color4,
+    frameIndex,
+    fillColor,
+    strokeColor
+  };
+}
+
 /* harmony default export */ __webpack_exports__["default"] = (class {
-  constructor(mesh, amount = 1) {
+  constructor(mesh, amount = 1, {
+    buffer = 1000
+  } = {}) {
+    buffer = Math.max(buffer, amount);
     this[_count] = amount;
     this[_mesh] = mesh;
-    this[_transform0] = [];
-    this[_transform1] = [];
-    this[_color0] = [];
-    this[_color1] = [];
-    this[_color2] = [];
-    this[_color3] = [];
-    this[_color4] = [];
+    this[_buffer] = createBuffer(buffer);
     this[_textures] = [];
-    this[_frameIndex] = [];
     this[_filters] = [];
-    this[_fillColor] = [];
-    this[_strokeColor] = [];
     this[_hasCloudColor] = false;
     this[_hasCloudFilter] = false;
     this[_blend] = false;
+    this.initBuffer();
+  }
+
+  initBuffer(offset = 0) {
+    const amount = this[_count];
+    const mesh = this[_mesh];
     const {
       width,
       height
     } = mesh;
 
-    for (let i = 0; i < amount; i++) {
-      this[_transform0].push([1, 0, 0, width]);
+    for (let i = offset; i < amount; i++) {
+      this[_buffer].transform0.set([1, 0, 0, width], i * 4);
 
-      this[_transform1].push([1, 0, 0, height]);
+      this[_buffer].transform1.set([1, 0, 0, height], i * 4);
 
-      this[_frameIndex].push([-1]);
+      this[_buffer].frameIndex.set([-1], i);
 
-      this[_filters].push([]);
+      this[_buffer].fillColor.set([0, 0, 0, 0], i * 4);
 
-      this[_fillColor].push([0, 0, 0, 0]);
-
-      this[_strokeColor].push([0, 0, 0, 0]);
+      this[_buffer].strokeColor.set([0, 0, 0, 0], i * 4);
 
       this.setColorTransform(i, null);
     }
+  }
+
+  get bufferSize() {
+    return this[_buffer].bufferSize;
   }
 
   get mesh() {
@@ -10879,8 +10907,13 @@ const _hasCloudFilter = Symbol('cloudFilter');
     return this[_hasCloudFilter];
   }
 
+  _getFilter(idx) {
+    this[_filters][idx] = this[_filters][idx] || [];
+    return this[_filters][idx];
+  }
+
   getFilter(idx) {
-    return this[_filters][idx].join(' ');
+    return this._getFilter(idx).join(' ');
   }
 
   get enableBlend() {
@@ -10891,22 +10924,69 @@ const _hasCloudFilter = Symbol('cloudFilter');
     return this[_mesh].canIgnore();
   }
 
+  delete(idx) {
+    if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
+    const {
+      transform0,
+      transform1,
+      color0,
+      color1,
+      color2,
+      color3,
+      color4,
+      frameIndex,
+      fillColor,
+      strokeColor
+    } = this[_buffer];
+    transform0.set(transform0.subarray(4 * (idx + 1)), 4 * idx);
+    transform1.set(transform1.subarray(4 * (idx + 1)), 4 * idx);
+    color0.set(color0.subarray(4 * (idx + 1)), 4 * idx);
+    color1.set(color1.subarray(4 * (idx + 1)), 4 * idx);
+    color2.set(color2.subarray(4 * (idx + 1)), 4 * idx);
+    color3.set(color3.subarray(4 * (idx + 1)), 4 * idx);
+    color4.set(color4.subarray(4 * (idx + 1)), 4 * idx);
+    frameIndex.set(frameIndex.subarray(idx + 1), idx);
+    fillColor.set(fillColor.subarray(4 * (idx + 1)), 4 * idx);
+    strokeColor.set(strokeColor.subarray(4 * (idx + 1)), 4 * idx);
+
+    for (const i in this[_filters]) {
+      // eslint-disable-line no-restricted-syntax
+      if (i === idx) {
+        delete this[_filters][i];
+      } else if (i > idx) {
+        this[_filters][i - 1] = this[_filters][i];
+        delete this[_filters][i];
+      }
+    }
+
+    this[_count]--;
+  }
+
   setColorTransform(idx, m) {
+    if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
+    idx *= 4;
+    const {
+      color0,
+      color1,
+      color2,
+      color3,
+      color4
+    } = this[_buffer];
+
     if (m != null) {
-      if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
-      this[_color0][idx] = [m[0], m[5], m[10], m[15]];
-      this[_color1][idx] = [m[1], m[6], m[11], m[16]];
-      this[_color2][idx] = [m[2], m[7], m[12], m[17]];
-      this[_color3][idx] = [m[3], m[8], m[13], m[18]];
-      this[_color4][idx] = [m[4], m[9], m[14], m[19]];
+      color0.set([m[0], m[5], m[10], m[15]], idx);
+      color1.set([m[1], m[6], m[11], m[16]], idx);
+      color2.set([m[2], m[7], m[12], m[17]], idx);
+      color3.set([m[3], m[8], m[13], m[18]], idx);
+      color4.set([m[4], m[9], m[14], m[19]], idx);
       this[_blend] = this[_blend] || m[18] < 1.0;
       this[_hasCloudFilter] = true;
     } else {
-      this[_color0][idx] = [1, 0, 0, 0];
-      this[_color1][idx] = [0, 1, 0, 0];
-      this[_color2][idx] = [0, 0, 1, 0];
-      this[_color3][idx] = [0, 0, 0, 1];
-      this[_color4][idx] = [0, 0, 0, 0];
+      color0.set([1, 0, 0, 0], idx);
+      color1.set([0, 1, 0, 0], idx);
+      color2.set([0, 0, 1, 0], idx);
+      color3.set([0, 0, 0, 1], idx);
+      color4.set([0, 0, 0, 0], idx);
     }
 
     return this;
@@ -10914,7 +10994,15 @@ const _hasCloudFilter = Symbol('cloudFilter');
 
   getColorTransform(idx) {
     if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
-    return [this[_color0][idx][0], this[_color1][idx][0], this[_color2][idx][0], this[_color3][idx][0], this[_color4][idx][0], this[_color0][idx][1], this[_color1][idx][1], this[_color2][idx][1], this[_color3][idx][1], this[_color4][idx][1], this[_color0][idx][2], this[_color1][idx][2], this[_color2][idx][2], this[_color3][idx][2], this[_color4][idx][2], this[_color0][idx][3], this[_color1][idx][3], this[_color2][idx][3], this[_color3][idx][3], this[_color4][idx][3]];
+    idx *= 4;
+    const {
+      color0,
+      color1,
+      color2,
+      color3,
+      color4
+    } = this[_buffer];
+    return [color0[idx], color1[idx], color2[idx], color3[idx], color4[idx], color0[idx + 1], color1[idx + 1], color2[idx + 1], color3[idx + 1], color4[idx + 1], color0[idx + 2], color1[idx + 2], color2[idx + 2], color3[idx + 2], color4[idx + 2], color0[idx + 3], color1[idx + 3], color2[idx + 3], color3[idx + 3], color4[idx + 3]];
   }
 
   transformColor(idx, m) {
@@ -10925,96 +11013,112 @@ const _hasCloudFilter = Symbol('cloudFilter');
   }
 
   setFillColor(idx, color) {
+    if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
     if (typeof color === 'string') color = Object(_utils_parse_color__WEBPACK_IMPORTED_MODULE_3__["default"])(color);
     if (color[3] > 0.0) this[_hasCloudColor] = true;
-    this[_fillColor][idx] = color.map(c => Math.round(255 * c));
+
+    this[_buffer].fillColor.set(color.map(c => Math.round(255 * c)), 4 * idx);
   }
 
   setStrokeColor(idx, color) {
+    if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
     if (typeof color === 'string') color = Object(_utils_parse_color__WEBPACK_IMPORTED_MODULE_3__["default"])(color);
     if (color[3] > 0.0) this[_hasCloudColor] = true;
-    this[_strokeColor][idx] = color.map(c => Math.round(255 * c));
+
+    this[_buffer].strokeColor.set(color.map(c => Math.round(255 * c)), 4 * idx);
   }
 
   getCloudRGBA(idx) {
-    const fillColor = [...this[_fillColor][idx]];
-    const strokeColor = [...this[_strokeColor][idx]];
-    fillColor[3] /= 255;
-    strokeColor[3] /= 255;
+    if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
+    idx *= 4;
+    const {
+      fillColor,
+      strokeColor
+    } = this[_buffer];
+    const _fillColor = [fillColor[idx], fillColor[idx + 1], fillColor[idx + 2], fillColor[idx + 3]];
+    const _strokeColor = [strokeColor[idx], strokeColor[idx + 1], strokeColor[idx + 2], strokeColor[idx + 3]];
+    _fillColor[3] /= 255;
+    _strokeColor[3] /= 255;
     return {
-      fill: `rgba(${fillColor.join()})`,
-      stroke: `rgba(${strokeColor.join()})`
+      fill: `rgba(${_fillColor.join()})`,
+      stroke: `rgba(${_strokeColor.join()})`
     };
   }
 
   grayscale(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["grayscale"])(p));
 
-    this[_filters][idx].push(`grayscale(${100 * p}%)`);
+    this._getFilter(idx).push(`grayscale(${100 * p}%)`);
   }
 
   brightness(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["brightness"])(p));
 
-    this[_filters][idx].push(`brightness(${100 * p}%)`);
+    this._getFilter(idx).push(`brightness(${100 * p}%)`);
   }
 
   saturate(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["saturate"])(p));
 
-    this[_filters][idx].push(`saturate(${100 * p}%)`);
+    this._getFilter(idx).push(`saturate(${100 * p}%)`);
   }
 
   contrast(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["contrast"])(p));
 
-    this[_filters][idx].push(`contrast(${100 * p}%)`);
+    this._getFilter(idx).push(`contrast(${100 * p}%)`);
   }
 
   invert(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["invert"])(p));
 
-    this[_filters][idx].push(`invert(${100 * p}%)`);
+    this._getFilter(idx).push(`invert(${100 * p}%)`);
   }
 
   sepia(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["sepia"])(p));
 
-    this[_filters][idx].push(`sepia(${100 * p}%)`);
+    this._getFilter(idx).push(`sepia(${100 * p}%)`);
   }
 
   opacity(idx, p) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["opacity"])(p));
 
-    this[_filters][idx].push(`opacity(${100 * p}%)`);
+    this._getFilter(idx).push(`opacity(${100 * p}%)`);
   }
 
   hueRotate(idx, deg) {
     this.transformColor(idx, Object(_utils_color_matrix__WEBPACK_IMPORTED_MODULE_1__["hueRotate"])(deg));
 
-    this[_filters][idx].push(`hue-rotate(${deg}deg)`);
+    this._getFilter(idx).push(`hue-rotate(${deg}deg)`);
   }
 
   setTransform(idx, m) {
     if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
+    idx *= 4;
     if (m == null) m = [1, 0, 0, 1, 0, 0];
-    this[_transform0][idx][0] = m[0];
-    this[_transform0][idx][1] = m[1];
-    this[_transform0][idx][2] = m[2];
-    this[_transform1][idx][0] = m[3];
-    this[_transform1][idx][1] = m[4];
-    this[_transform1][idx][2] = m[5];
+    const {
+      transform0,
+      transform1
+    } = this[_buffer];
+    transform0.set([m[0], m[1], m[2]], idx);
+    transform1.set([m[3], m[4], m[5]], idx);
     return this;
   }
 
   getTransform(idx) {
     if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
-    const m = [...this[_transform0][idx].slice(0, 3), ...this[_transform1][idx].slice(0, 3)];
+    idx *= 4;
+    const {
+      transform0,
+      transform1
+    } = this[_buffer];
+    const m = [transform0[idx], transform0[idx + 1], transform0[idx + 2], transform1[idx], transform1[idx + 1], transform1[idx + 2]];
     return m;
   }
 
   getTextureFrame(idx) {
-    return this[_textures][this[_frameIndex][idx]];
+    return this[_textures][this[_buffer].frameIndex[idx]];
   }
 
   setTextureFrames(frames = [], options = {}) {
@@ -11035,7 +11139,7 @@ const _hasCloudFilter = Symbol('cloudFilter');
     if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
     const len = this[_textures].length;
     if (len <= 0) throw new Error('No frames');
-    this[_frameIndex][idx] = frameIndex % len;
+    this[_buffer].frameIndex[idx] = frameIndex % len;
   }
 
   get amount() {
@@ -11046,70 +11150,15 @@ const _hasCloudFilter = Symbol('cloudFilter');
     const amount = this[_count];
     if (value === amount) return;
 
-    if (value < amount) {
-      this[_transform0].length = value;
-      this[_transform1].length = value;
-      this[_frameIndex].length = value;
-      this[_filters].length = value;
-      this[_fillColor].length = value;
-      this[_strokeColor].length = value;
-      this[_color0].length = value;
-      this[_color1].length = value;
-      this[_color2].length = value;
-      this[_color3].length = value;
-      this[_color4].length = value;
-    } else {
-      const {
-        width,
-        height
-      } = this[_mesh];
-
-      for (let i = amount; i < value; i++) {
-        this[_transform0].push([1, 0, 0, width]);
-
-        this[_transform1].push([1, 0, 0, height]);
-
-        this[_frameIndex].push([-1]);
-
-        this[_filters].push([]);
-
-        this[_fillColor].push([0, 0, 0, 0]);
-
-        this[_strokeColor].push([0, 0, 0, 0]);
-
-        this.setColorTransform(i, null);
-      }
+    if (value > this[_buffer].bufferSize) {
+      this[_buffer] = createBuffer(Math.max(value, this[_buffer].bufferSize + 1000), this[_buffer]);
     }
 
     this[_count] = value;
-  }
 
-  delete(idx) {
-    if (idx >= this[_count] || idx < 0) throw new Error('Out of range.');
-
-    this[_transform0].splice(idx, 1);
-
-    this[_transform1].splice(idx, 1);
-
-    this[_frameIndex].splice(idx, 1);
-
-    this[_filters].splice(idx, 1);
-
-    this[_fillColor].splice(idx, 1);
-
-    this[_strokeColor].splice(idx, 1);
-
-    this[_color0].splice(idx, 1);
-
-    this[_color1].splice(idx, 1);
-
-    this[_color2].splice(idx, 1);
-
-    this[_color3].splice(idx, 1);
-
-    this[_color4].splice(idx, 1);
-
-    this[_count]--;
+    if (value > amount) {
+      this.initBuffer(amount);
+    }
   }
 
   get meshData() {
@@ -11137,50 +11186,63 @@ const _hasCloudFilter = Symbol('cloudFilter');
       });
     }
 
+    const {
+      transform0,
+      transform1,
+      color0,
+      color1,
+      color2,
+      color3,
+      color4,
+      fillColor,
+      strokeColor,
+      frameIndex
+    } = this[_buffer];
+
     if (this[_mesh].uniforms.u_texSampler) {
       meshData.attributes.a_frameIndex = {
-        data: this[_frameIndex],
+        data: frameIndex,
         divisor: 1
       };
     } // console.log(this[_mesh].meshData)
 
 
     meshData.attributes.a_transform0 = {
-      data: this[_transform0],
+      data: transform0,
       divisor: 1
     };
     meshData.attributes.a_transform1 = {
-      data: this[_transform1],
+      data: transform1,
       divisor: 1
     };
     meshData.attributes.a_colorCloud0 = {
-      data: this[_color0],
+      data: color0,
       divisor: 1
     };
     meshData.attributes.a_colorCloud1 = {
-      data: this[_color1],
+      data: color1,
       divisor: 1
     };
     meshData.attributes.a_colorCloud2 = {
-      data: this[_color2],
+      data: color2,
       divisor: 1
     };
     meshData.attributes.a_colorCloud3 = {
-      data: this[_color3],
+      data: color3,
       divisor: 1
     };
     meshData.attributes.a_colorCloud4 = {
-      data: this[_color4],
+      data: color4,
       divisor: 1
     };
 
     if (this.hasCloudColor) {
       meshData.attributes.a_fillCloudColor = {
-        data: this[_fillColor],
+        data: fillColor,
         divisor: 1
       };
       meshData.attributes.a_strokeCloudColor = {
-        data: this[_strokeColor],
+        data: strokeColor,
         divisor: 1
       };
     }
@@ -18465,6 +18527,10 @@ function applyCloudShader(renderer, {
       a_strokeCloudColor: {
         type: 'UNSIGNED_BYTE',
         normalize: true
+      },
+      a_frameIndex: {
+        type: 'UNSIGNED_BYTE',
+        normalize: false
       }
     });
   }
@@ -18500,7 +18566,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision mediump float;\n\nvarying vec4 vColor;\nvarying float flagBackground;\n\n#ifdef TEXTURE\nvarying float frameIndex;\nvarying vec3 vTextureCoord;\nvarying vec4 vSourceRect;\n#endif\n\n#ifdef FILTER\nuniform int u_filterFlag;\nuniform float u_colorMatrix[20];\n#endif\n\n#ifdef CLOUDFILTER\nvarying vec4 colorCloud0;\nvarying vec4 colorCloud1;\nvarying vec4 colorCloud2;\nvarying vec4 colorCloud3;\nvarying vec4 colorCloud4;\n#endif\n\n#ifdef GRADIENT\nvarying vec3 vGradientVector1;\nvarying vec3 vGradientVector2;\nuniform float u_colorSteps[40];\nuniform int u_gradientType;\n\nvoid gradient(inout vec4 color, vec3 gv1, vec3 gv2, float colorSteps[40]) {\n  float t;\n  // center circle radius\n  float cr = gv1.z;\n  // focal circle radius\n  float fr = gv2.z;\n\n  if(cr > 0.0 || fr > 0.0) {\n    // radial gradient\n    vec2 center = gv1.xy;\n    vec2 focal = gv2.xy;\n    float x = focal.x - gl_FragCoord.x;\n    float y = focal.y - gl_FragCoord.y;\n    float dx = focal.x - center.x;\n    float dy = focal.y - center.y;\n    float dr = cr - fr;\n    float a = dx * dx + dy * dy - dr * dr;\n    float b = -2.0 * (y * dy + x * dx + fr * dr);\n    float c = x * x + y * y - fr * fr;\n    t = 1.0 - 0.5 * (1.0 / a) * (-b + sqrt(b * b - 4.0 * a * c));\n  } else {\n    // linear gradient\n    vec2 v1 = gl_FragCoord.xy - gv1.xy;\n    vec2 v2 = gv2.xy - gv1.xy;\n    t = (v1.x * v2.x + v1.y * v2.y) / (v2.x * v2.x + v2.y * v2.y);\n  }\n\n  vec4 colors[8];\n  colors[0] = vec4(colorSteps[1], colorSteps[2], colorSteps[3], colorSteps[4]);\n  colors[1] = vec4(colorSteps[6], colorSteps[7], colorSteps[8], colorSteps[9]);\n  colors[2] = vec4(colorSteps[11], colorSteps[12], colorSteps[13], colorSteps[14]);\n  colors[3] = vec4(colorSteps[16], colorSteps[17], colorSteps[18], colorSteps[19]);\n  colors[4] = vec4(colorSteps[21], colorSteps[22], colorSteps[23], colorSteps[24]);\n  colors[5] = vec4(colorSteps[26], colorSteps[27], colorSteps[28], colorSteps[29]);\n  colors[6] = vec4(colorSteps[31], colorSteps[32], colorSteps[33], colorSteps[34]);\n  colors[7] = vec4(colorSteps[36], colorSteps[37], colorSteps[38], colorSteps[39]);\n  \n  float steps[8];\n  steps[0] = colorSteps[0];\n  steps[1] = colorSteps[5];\n  steps[2] = colorSteps[10];\n  steps[3] = colorSteps[15];\n  steps[4] = colorSteps[20];\n  steps[5] = colorSteps[25];\n  steps[6] = colorSteps[30];\n  steps[7] = colorSteps[35];\n\n  color = colors[0];\n  for (int i = 1; i < 8; i++) {\n    if (steps[i] < 0.0 || steps[i] > 1.0) {\n      break;\n    }\n    if(steps[i] == steps[i - 1]) {\n      color = colors[i];\n    } else {\n      color = mix(color, colors[i], clamp((t - steps[i - 1]) / (steps[i] - steps[i - 1]), 0.0, 1.0));\n    }\n    if (steps[i] >= t) {\n      break;\n    }\n  }\n}\n#endif\n\nvoid transformColor(inout vec4 color, in float colorMatrix[20]) {\n  float r = color.r, g = color.g, b = color.b, a = color.a;\n  color[0] = colorMatrix[0] * r + colorMatrix[1] * g + colorMatrix[2] * b + colorMatrix[3] * a + colorMatrix[4];\n  color[1] = colorMatrix[5] * r + colorMatrix[6] * g + colorMatrix[7] * b + colorMatrix[8] * a + colorMatrix[9];\n  color[2] = colorMatrix[10] * r + colorMatrix[11] * g + colorMatrix[12] * b + colorMatrix[13] * a + colorMatrix[14];\n  color[3] = colorMatrix[15] * r + colorMatrix[16] * g + colorMatrix[17] * b + colorMatrix[18] * a + colorMatrix[19];\n}\n\n#ifdef CLOUDFILTER\nvoid buildCloudColor(inout float colorCloudMatrix[20]) {\n  colorCloudMatrix[0] = colorCloud0[0];\n  colorCloudMatrix[1] = colorCloud1[0];\n  colorCloudMatrix[2] = colorCloud2[0];\n  colorCloudMatrix[3] = colorCloud3[0];\n  colorCloudMatrix[4] = colorCloud4[0];\n\n  colorCloudMatrix[5] = colorCloud0[1];\n  colorCloudMatrix[6] = colorCloud1[1];\n  colorCloudMatrix[7] = colorCloud2[1];\n  colorCloudMatrix[8] = colorCloud3[1];\n  colorCloudMatrix[9] = colorCloud4[1];\n\n  colorCloudMatrix[10] = colorCloud0[2];\n  colorCloudMatrix[11] = colorCloud1[2];\n  colorCloudMatrix[12] = colorCloud2[2];\n  colorCloudMatrix[13] = colorCloud3[2];\n  colorCloudMatrix[14] = colorCloud4[2];\n\n  colorCloudMatrix[15] = colorCloud0[3];\n  colorCloudMatrix[16] = colorCloud1[3];\n  colorCloudMatrix[17] = colorCloud2[3];\n  colorCloudMatrix[18] = colorCloud3[3];\n  colorCloudMatrix[19] = colorCloud4[3];\n}\n#endif\n\nvoid main() {\n  vec4 color = vColor;\n  float opacity = abs(flagBackground);\n\n#ifdef GRADIENT\n  if(u_gradientType > 0 && flagBackground > 0.0 || u_gradientType == 0 && flagBackground <= 0.0) {\n    gradient(color, vGradientVector1, vGradientVector2, u_colorSteps);\n  }\n#endif\n\n  if(opacity < 1.0) {\n    color.a *= opacity;\n  }\n\n#ifdef TEXTURE\n  if(flagBackground > 0.0) {\n    vec3 texCoord = vTextureCoord;\n\n    if(texCoord.z == 1.0) {\n      texCoord = fract(texCoord);\n    }\n\n    if(texCoord.x <= 1.0 && texCoord.x >= 0.0\n      && texCoord.y <= 1.0 && texCoord.y >= 0.0) {\n      if(vSourceRect.z > 0.0) {\n        texCoord.x = vSourceRect.x + texCoord.x * vSourceRect.z;\n        texCoord.y = 1.0 - (vSourceRect.y + (1.0 - texCoord.y) * vSourceRect.w);\n      }\n      if(frameIndex < 0.0) {\n        vec4 texColor = texture2D(u_texSampler, texCoord.xy);\n        color = mix(color, texColor, texColor.a);\n      } else {\n        int index = int(floor(clamp(0.0, 11.0, frameIndex)));\n        vec4 texColor;\n        if(index == 0) texColor = texture2D(u_texFrame0, texCoord.xy);\n        else if(index == 1) texColor = texture2D(u_texFrame1, texCoord.xy);\n        else if(index == 2) texColor = texture2D(u_texFrame2, texCoord.xy);\n        else if(index == 3) texColor = texture2D(u_texFrame3, texCoord.xy);\n        else if(index == 4) texColor = texture2D(u_texFrame4, texCoord.xy);\n        else if(index == 5) texColor = texture2D(u_texFrame5, texCoord.xy);\n        else if(index == 6) texColor = texture2D(u_texFrame6, texCoord.xy);\n        else if(index == 7) texColor = texture2D(u_texFrame7, texCoord.xy);\n        else if(index == 8) texColor = texture2D(u_texFrame8, texCoord.xy);\n        else if(index == 9) texColor = texture2D(u_texFrame9, texCoord.xy);\n        else if(index == 10) texColor = texture2D(u_texFrame10, texCoord.xy);\n        else texColor = texture2D(u_texFrame11, texCoord.xy);\n        float alpha = texColor.a;\n        if(opacity < 1.0) {\n          texColor.a *= opacity;\n          alpha *= mix(0.465, 1.0, opacity);\n        }\n        // color = mix(color, texColor, texColor.a);\n        color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);\n        color.a = texColor.a + (1.0 - texColor.a) * color.a;\n      }\n    }\n  }\n#endif\n\n#ifdef FILTER\n  if(u_filterFlag > 0) {\n    transformColor(color, u_colorMatrix);\n  }\n#endif\n\n#ifdef CLOUDFILTER\n  float colorCloudMatrix[20];\n  buildCloudColor(colorCloudMatrix);\n  transformColor(color, colorCloudMatrix);\n#endif\n\n  gl_FragColor = color;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision mediump float;\n\nvarying vec4 vColor;\nvarying float flagBackground;\n\n#ifdef TEXTURE\nvarying float frameIndex;\nvarying vec3 vTextureCoord;\nvarying vec4 vSourceRect;\n#endif\n\n#ifdef FILTER\nuniform int u_filterFlag;\nuniform float u_colorMatrix[20];\n#endif\n\n#ifdef CLOUDFILTER\nvarying vec4 colorCloud0;\nvarying vec4 colorCloud1;\nvarying vec4 colorCloud2;\nvarying vec4 colorCloud3;\nvarying vec4 colorCloud4;\n#endif\n\n#ifdef GRADIENT\nvarying vec3 vGradientVector1;\nvarying vec3 vGradientVector2;\nuniform float u_colorSteps[40];\nuniform int u_gradientType;\n\nvoid gradient(inout vec4 color, vec3 gv1, vec3 gv2, float colorSteps[40]) {\n  float t;\n  // center circle radius\n  float cr = gv1.z;\n  // focal circle radius\n  float fr = gv2.z;\n\n  if(cr > 0.0 || fr > 0.0) {\n    // radial gradient\n    vec2 center = gv1.xy;\n    vec2 focal = gv2.xy;\n    float x = focal.x - gl_FragCoord.x;\n    float y = focal.y - gl_FragCoord.y;\n    float dx = focal.x - center.x;\n    float dy = focal.y - center.y;\n    float dr = cr - fr;\n    float a = dx * dx + dy * dy - dr * dr;\n    float b = -2.0 * (y * dy + x * dx + fr * dr);\n    float c = x * x + y * y - fr * fr;\n    t = 1.0 - 0.5 * (1.0 / a) * (-b + sqrt(b * b - 4.0 * a * c));\n  } else {\n    // linear gradient\n    vec2 v1 = gl_FragCoord.xy - gv1.xy;\n    vec2 v2 = gv2.xy - gv1.xy;\n    t = (v1.x * v2.x + v1.y * v2.y) / (v2.x * v2.x + v2.y * v2.y);\n  }\n\n  vec4 colors[8];\n  colors[0] = vec4(colorSteps[1], colorSteps[2], colorSteps[3], colorSteps[4]);\n  colors[1] = vec4(colorSteps[6], colorSteps[7], colorSteps[8], colorSteps[9]);\n  colors[2] = vec4(colorSteps[11], colorSteps[12], colorSteps[13], colorSteps[14]);\n  colors[3] = vec4(colorSteps[16], colorSteps[17], colorSteps[18], colorSteps[19]);\n  colors[4] = vec4(colorSteps[21], colorSteps[22], colorSteps[23], colorSteps[24]);\n  colors[5] = vec4(colorSteps[26], colorSteps[27], colorSteps[28], colorSteps[29]);\n  colors[6] = vec4(colorSteps[31], colorSteps[32], colorSteps[33], colorSteps[34]);\n  colors[7] = vec4(colorSteps[36], colorSteps[37], colorSteps[38], colorSteps[39]);\n  \n  float steps[8];\n  steps[0] = colorSteps[0];\n  steps[1] = colorSteps[5];\n  steps[2] = colorSteps[10];\n  steps[3] = colorSteps[15];\n  steps[4] = colorSteps[20];\n  steps[5] = colorSteps[25];\n  steps[6] = colorSteps[30];\n  steps[7] = colorSteps[35];\n\n  color = colors[0];\n  for (int i = 1; i < 8; i++) {\n    if (steps[i] < 0.0 || steps[i] > 1.0) {\n      break;\n    }\n    if(steps[i] == steps[i - 1]) {\n      color = colors[i];\n    } else {\n      color = mix(color, colors[i], clamp((t - steps[i - 1]) / (steps[i] - steps[i - 1]), 0.0, 1.0));\n    }\n    if (steps[i] >= t) {\n      break;\n    }\n  }\n}\n#endif\n\nvoid transformColor(inout vec4 color, in float colorMatrix[20]) {\n  float r = color.r, g = color.g, b = color.b, a = color.a;\n  color[0] = colorMatrix[0] * r + colorMatrix[1] * g + colorMatrix[2] * b + colorMatrix[3] * a + colorMatrix[4];\n  color[1] = colorMatrix[5] * r + colorMatrix[6] * g + colorMatrix[7] * b + colorMatrix[8] * a + colorMatrix[9];\n  color[2] = colorMatrix[10] * r + colorMatrix[11] * g + colorMatrix[12] * b + colorMatrix[13] * a + colorMatrix[14];\n  color[3] = colorMatrix[15] * r + colorMatrix[16] * g + colorMatrix[17] * b + colorMatrix[18] * a + colorMatrix[19];\n}\n\n#ifdef CLOUDFILTER\nvoid buildCloudColor(inout float colorCloudMatrix[20]) {\n  colorCloudMatrix[0] = colorCloud0[0];\n  colorCloudMatrix[1] = colorCloud1[0];\n  colorCloudMatrix[2] = colorCloud2[0];\n  colorCloudMatrix[3] = colorCloud3[0];\n  colorCloudMatrix[4] = colorCloud4[0];\n\n  colorCloudMatrix[5] = colorCloud0[1];\n  colorCloudMatrix[6] = colorCloud1[1];\n  colorCloudMatrix[7] = colorCloud2[1];\n  colorCloudMatrix[8] = colorCloud3[1];\n  colorCloudMatrix[9] = colorCloud4[1];\n\n  colorCloudMatrix[10] = colorCloud0[2];\n  colorCloudMatrix[11] = colorCloud1[2];\n  colorCloudMatrix[12] = colorCloud2[2];\n  colorCloudMatrix[13] = colorCloud3[2];\n  colorCloudMatrix[14] = colorCloud4[2];\n\n  colorCloudMatrix[15] = colorCloud0[3];\n  colorCloudMatrix[16] = colorCloud1[3];\n  colorCloudMatrix[17] = colorCloud2[3];\n  colorCloudMatrix[18] = colorCloud3[3];\n  colorCloudMatrix[19] = colorCloud4[3];\n}\n#endif\n\nvoid main() {\n  vec4 color = vColor;\n  float opacity = abs(flagBackground);\n\n#ifdef GRADIENT\n  if(u_gradientType > 0 && flagBackground > 0.0 || u_gradientType == 0 && flagBackground <= 0.0) {\n    gradient(color, vGradientVector1, vGradientVector2, u_colorSteps);\n  }\n#endif\n\n  if(opacity < 1.0) {\n    color.a *= opacity;\n  }\n\n#ifdef TEXTURE\n  if(flagBackground > 0.0) {\n    vec3 texCoord = vTextureCoord;\n\n    if(texCoord.z == 1.0) {\n      texCoord = fract(texCoord);\n    }\n\n    if(texCoord.x <= 1.0 && texCoord.x >= 0.0\n      && texCoord.y <= 1.0 && texCoord.y >= 0.0) {\n      if(vSourceRect.z > 0.0) {\n        texCoord.x = vSourceRect.x + texCoord.x * vSourceRect.z;\n        texCoord.y = 1.0 - (vSourceRect.y + (1.0 - texCoord.y) * vSourceRect.w);\n      }\n      if(frameIndex < 0.0) {\n        vec4 texColor = texture2D(u_texSampler, texCoord.xy);\n        color = mix(color, texColor, texColor.a);\n      } else {\n        int index = int(floor(clamp(0.0, 11.0, frameIndex)));\n        vec4 texColor;\n        if(index == 0) texColor = texture2D(u_texFrame0, texCoord.xy);\n        else if(index == 1) texColor = texture2D(u_texFrame1, texCoord.xy);\n        else if(index == 2) texColor = texture2D(u_texFrame2, texCoord.xy);\n        else if(index == 3) texColor = texture2D(u_texFrame3, texCoord.xy);\n        else if(index == 4) texColor = texture2D(u_texFrame4, texCoord.xy);\n        else if(index == 5) texColor = texture2D(u_texFrame5, texCoord.xy);\n        else if(index == 6) texColor = texture2D(u_texFrame6, texCoord.xy);\n        else if(index == 7) texColor = texture2D(u_texFrame7, texCoord.xy);\n        else if(index == 8) texColor = texture2D(u_texFrame8, texCoord.xy);\n        else if(index == 9) texColor = texture2D(u_texFrame9, texCoord.xy);\n        else if(index == 10) texColor = texture2D(u_texFrame10, texCoord.xy);\n        else texColor = texture2D(u_texFrame11, texCoord.xy);\n        float alpha = texColor.a;\n        if(opacity < 1.0) {\n          texColor.a *= opacity;\n          alpha *= mix(0.465, 1.0, opacity);\n        }\n        // color = mix(color, texColor, texColor.a);\n        color.rgb = mix(color.rgb, texColor.rgb, alpha);\n        // color.rgb = mix(texColor.rgb, color.rgb, color.a);\n        color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n        color.a = texColor.a + (1.0 - texColor.a) * color.a;\n      }\n    }\n  }\n#endif\n\n#ifdef FILTER\n  if(u_filterFlag > 0) {\n    transformColor(color, u_colorMatrix);\n  }\n#endif\n\n#ifdef CLOUDFILTER\n  float colorCloudMatrix[20];\n  buildCloudColor(colorCloudMatrix);\n  transformColor(color, colorCloudMatrix);\n#endif\n\n  gl_FragColor = color;\n}");
 
 /***/ }),
 /* 75 */
@@ -25118,7 +25184,7 @@ class Cloud extends _node__WEBPACK_IMPORTED_MODULE_2__["default"] {
     return true;
   }
 
-  opacity(idx, p) {
+  setOpacity(idx, p) {
     if (this.meshCloud) {
       this.meshCloud.opacity(idx, p);
       this.forceUpdate();
@@ -33018,6 +33084,11 @@ class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
         }
       };
 
+      if (this[_prepareRender] && this[_prepareRender]._type !== 'ticker') {
+        Object(_utils_animation_frame__WEBPACK_IMPORTED_MODULE_2__["cancelAnimationFrame"])(this[_prepareRender]._requestID);
+        delete this[_prepareRender];
+      }
+
       if (!this[_prepareRender]) {
         const prepareRender = new Promise(resolve => {
           _resolve = resolve;
@@ -33025,6 +33096,7 @@ class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
         });
         prepareRender._resolve = _resolve;
         prepareRender._requestID = _requestID;
+        prepareRender._type = 'ticker';
         this[_prepareRender] = prepareRender;
       } else {
         Object(_utils_animation_frame__WEBPACK_IMPORTED_MODULE_2__["requestAnimationFrame"])(_update);

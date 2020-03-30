@@ -1,4 +1,4 @@
-import {Raycast, GPGPU, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler} from 'ogl';
+import {Raycast, GPGPU, Vec2, Vec3, Vec4, Mat3, Mat4, Quat, Euler, RenderTarget as FrameBuffer} from 'ogl';
 import {Scene} from 'spritejs';
 import Layer3d from './node/layer3d';
 import Mesh3d from './node/mesh3d';
@@ -57,4 +57,5 @@ export {
   Euler,
   GPGPU,
   Raycast,
+  FrameBuffer,
 };
