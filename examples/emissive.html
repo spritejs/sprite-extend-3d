@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    // https://zhuanlan.zhihu.com/p/38548428
+    const fragment = `precision highp float;
+      precision highp int;
+
+      varying vec3 vNormal;
+      varying vec3 vPositionNormal;
+      varying vec4 vColor;
+
+      void main() {
+        float bias = 1.0;
+        float power = 1.5;
+        float scale = -1.0;
+        float a = pow(bias + scale * abs(dot(vNormal, vPositionNormal)), power);
+        gl_FragColor = vec4(vColor.xyz, a * vColor.a);
+      }
+    `;
+    const vertex = `
+      precision highp float;
+      precision highp int;
+
+      attribute vec3 position;
+      attribute vec3 normal;
+      attribute vec4 color;
+
+      uniform mat3 normalMatrix;
+      uniform mat4 modelViewMatrix;
+      uniform mat4 projectionMatrix;
+
+      varying vec3 vNormal;
+      varying vec3 vPositionNormal;
+      varying vec4 vColor;
+
+      void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          vPositionNormal = normalize(( modelViewMatrix * vec4(position, 1.0) ).xyz);
+          vColor = color;
+      }
+    `;
+    const {Scene} = spritejs;
+    const {Mesh3d} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [8, 5, 15];
+    layer.camera.lookAt([0, 1.5, 0]);
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    (async function () {
+      const program = layer.createProgram({
+        transparent: true,
+        fragment,
+        vertex,
+      });
+      const model = await layer.loadModel('https://s5.ssl.qhres.com/static/1eb3e9b91a296abd.json');
+      const fox = new Mesh3d(program, {
+        colors: '#0ff',
+      });
+      fox.setGeometry(model);
+      layer.append(fox);
+      layer.setOrbit();
+    }());
+  </script>
+</body>
+</html>
