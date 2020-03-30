@@ -230,8 +230,9 @@
       },
     });
 
+    const target = new FrameBuffer(layer.gl);
+
     layer.tick(() => {
-      const target = new FrameBuffer(layer.gl);
       layer.renderTo(target);
       pass5.uniforms.tLayerMap.value = target.texture;
     });
