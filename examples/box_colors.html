@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Camera, Cube, Plane, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [3, 6, 6];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const texture = layer.createTexture('https://p5.ssl.qhimg.com/t01cddec4a1dc6ccf1b.png');
+    const program = layer.createProgram({
+      ...shaders.TEXTURE_WITH_SHADOW,
+      texture,
+      cullFace: null,
+    });
+
+    const plane = new Plane(program);
+    plane.attributes.pos = [0, -2, 0];
+    plane.attributes.colors = '#ccc';
+    plane.attributes.scale = 3;
+    plane.attributes.rotateX = 90;
+    layer.append(plane);
+
+    const cube = new Cube(program);
+    cube.attributes.pos = [0.5, 1.3, 1.5];
+    cube.attributes.colors = 'orange orange blue blue red red';
+    layer.append(cube);
+    // cube.animate([
+    //   {rotateY: 0},
+    //   {rotateY: -360},
+    // ], {
+    //   duration: 5000,
+    //   iterations: Infinity,
+    // });
+
+    const light = new Camera(layer.gl, {
+      left: -3,
+      right: 3,
+      bottom: -3,
+      top: 3,
+      // fov: 30,
+      near: 1,
+      far: 20,
+    });
+    light.attributes.pos = [3, 10, 5];
+    light.lookAt([0, 0, 0]);
+    const shadow = layer.createShadow({light});
+    shadow.add(plane);
+    shadow.add(cube);
+    layer.setShadow(shadow);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>

@@ -3,6 +3,7 @@ precision highp int;
 
 varying vec3 vNormal;
 varying vec3 vDir;
+varying vec4 vColor;
 
 uniform vec4 directionalLight; //平行光
 
@@ -14,7 +15,13 @@ uniform vec4 pointLightColor; // 点光源颜色
 uniform vec4 ambientColor; // 环境光
 
 void main() {
-  vec4 color = textureCube(tMap, vDir);
+  vec4 color = vColor;
+  vec4 texColor = textureCube(tMap, vDir);
+
+  float alpha = texColor.a;
+  color.rgb = mix(color.rgb, texColor.rgb, alpha);
+  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));
+  color.a = texColor.a + (1.0 - texColor.a) * color.a;
 
   vec3 light = normalize(directionalLight.xyz);
   float shading = dot(vNormal, light) * directionalLight.w;

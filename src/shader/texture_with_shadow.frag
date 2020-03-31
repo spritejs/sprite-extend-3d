@@ -11,6 +11,7 @@ uniform float uShadow;
 varying vec2 vUv;
 
 varying float fCos;
+varying vec4 vColor;
 
 uniform vec4 pointLightColor; // 点光源颜色
 uniform vec4 ambientColor; // 环境光
@@ -22,7 +23,13 @@ float unpackRGBA (vec4 v) {
 }
 
 void main() {
-  vec4 color = texture2D(tMap, vUv);
+  vec4 color = vColor;
+  vec4 texColor = texture2D(tMap, vUv);
+
+  float alpha = texColor.a;
+  color.rgb = mix(color.rgb, texColor.rgb, alpha);
+  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));
+  color.a = texColor.a + (1.0 - texColor.a) * color.a;
 
   vec3 lightPos = vLightNDC.xyz / vLightNDC.w;
   

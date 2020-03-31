@@ -13,6 +13,7 @@ uniform mat3 normalMatrix;
 
 varying vec3 vNormal;
 varying vec2 vUv;
+varying vec4 vColor;
 
 varying float fCos;
 varying vec4 vLightNDC;
@@ -39,6 +40,8 @@ void main() {
   fCos = cos;
 
   vUv = uv;
+  vColor = color;
+
   vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

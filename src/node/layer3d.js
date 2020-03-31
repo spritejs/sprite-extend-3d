@@ -4,6 +4,7 @@ import Shadow from '../helper/shadow';
 import Camera from './camera';
 import Group3d from './group3d';
 import Mesh3d from './mesh3d';
+import {colorAttribute} from '../helper/color-attribute';
 
 const defaultOption = {
   depth: true,
@@ -149,7 +150,7 @@ export default class Layer3D extends Layer {
   }
 
   /* {vertex, fragment, uniforms = {}} */
-  createProgram({attributes, texture, uniforms, ...options} = {}, {attributes: extraAttributes, uniforms: extraUniforms} = {}) {
+  createProgram({attributes, texture, normalMap, uniforms, ...options} = {}, {attributes: extraAttributes, uniforms: extraUniforms} = {}) {
     const gl = this.renderer.gl;
     if(uniforms) {
       options.uniforms = {...uniforms};
@@ -163,6 +164,34 @@ export default class Layer3D extends Layer {
     program.uniforms.ambientColor = {value: this[_ambientColor]};
 
     if(texture) program.uniforms.tMap = {value: texture};
+    if(normalMap) program.uniforms.tNormal = {value: normalMap};
+
+    if(gl.getUniformLocation(program.program, 'uShadow') && !program.uniforms.uShadow) {
+      program.uniforms.uShadow = {value: 0.5};
+    }
+
+    if(gl.getUniformLocation(program.program, 'uResolution') && !program.uniforms.uResolution) {
+      const {width, height} = this.getResolution();
+      program.uniforms.uResolution = {value: [width, height]};
+    }
+
+    if(gl.getUniformLocation(program.program, 'uDPR') && !program.uniforms.uDPR) {
+      const dpr = this.layer ? this.layer.displayRatio : 1;
+      program.uniforms.uDPR = {value: dpr};
+    }
+
+    if(gl.getUniformLocation(program.program, 'uNormalScale') && !program.uniforms.uNormalScale) {
+      program.uniforms.uNormalScale = {value: 1};
+    }
+
+    if(gl.getUniformLocation(program.program, 'uNormalUVScale') && !program.uniforms.uNormalUVScale) {
+      program.uniforms.uNormalUVScale = {value: 1};
+    }
+
+    program.extraAttribute = program.extraAttribute || {};
+    if(program.attributeLocations.has('color') && !program.extraAttribute.color) {
+      program.extraAttribute.color = colorAttribute;
+    }
 
     if(extraUniforms) Object.assign(program.uniforms, extraUniforms);
     return program;
@@ -216,8 +245,10 @@ export default class Layer3D extends Layer {
         texture.image = res;
         this.forceUpdate();
       });
+      texture.loaded = task;
       return texture;
     }
+    texture.loaded = Promise.resolve();
     return texture;
   }
 
@@ -447,33 +478,36 @@ export default class Layer3D extends Layer {
 
   /* override */
   setResolution({width, height}) {
+    const {width: w, height: h} = this.getResolution();
     super.setResolution({width, height});
 
-    const displayRatio = this.displayRatio;
-    const renderer = this.renderer;
+    if(w !== width || h !== height) {
+      const displayRatio = this.displayRatio;
+      const renderer = this.renderer;
 
-    this.renderer.dpr = displayRatio;
+      this.renderer.dpr = displayRatio;
 
-    renderer.width = width / displayRatio;
-    renderer.height = height / displayRatio;
+      renderer.width = width / displayRatio;
+      renderer.height = height / displayRatio;
 
-    const gl = renderer.gl;
-    gl.canvas.width = width;
-    gl.canvas.height = height;
+      const gl = renderer.gl;
+      gl.canvas.width = width;
+      gl.canvas.height = height;
 
-    const camera = this.camera;
-    if(camera && this.options.camera.preserveAspect !== false) {
-      camera.attributes.aspect = width / height;
-    }
-    if(this[_sublayers] && this[_sublayers].length) {
-      this[_sublayers].forEach(({camera}) => {
-        if(camera && this.options.camera.preserveAspect !== false) {
-          camera.attributes.aspect = width / height;
-        }
-      });
-    }
-    if(this[_post]) {
-      this[_post].resize();
+      const camera = this.camera;
+      if(camera && this.options.camera.preserveAspect !== false) {
+        camera.attributes.aspect = width / height;
+      }
+      if(this[_sublayers] && this[_sublayers].length) {
+        this[_sublayers].forEach(({camera}) => {
+          if(camera && this.options.camera.preserveAspect !== false) {
+            camera.attributes.aspect = width / height;
+          }
+        });
+      }
+      if(this[_post]) {
+        this[_post].resize();
+      }
     }
   }
 

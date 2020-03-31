@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="Info">Skydome. Image credit <a href="https://www.flickr.com/photos/charlesashaw/6264765128" target="_blank">charlesashaw</a>.</div>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Mesh3d, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+      // webgl: 1,
+    });
+    const layer = scene.layer3d('fglayer', {
+      directionalLight: [1, 0, 0, 0.8],
+      pointLightColor: 'orange',
+      pointLightPosition: [5, 3, 6],
+      camera: {
+        fov: 45,
+      },
+    });
+
+    layer.camera.attributes.pos = [1.5, 0, 2];
+    layer.camera.lookAt([0, 0, 0]);
+
+    (async function () {
+      const textureDiffuse = layer.createTexture('https://p3.ssl.qhimg.com/t013aaf8eff7df1cc38.jpg');
+      const textureNormal = layer.createTexture('https://p3.ssl.qhimg.com/t01c1cb1f2558cb00e8.jpg');
+
+      await Promise.all([textureNormal.loaded, textureDiffuse.loaded]);
+
+      const program = layer.createProgram({
+        ...shaders.getTextureNormalMap(layer),
+        // ...shaders.getGeometryNormalMap(layer),
+        texture: textureDiffuse,
+        normalMap: textureNormal,
+        uniforms: {
+          uNormalScale: {value: 2},
+          // uNormalUVScale: {value: 1},
+        },
+      });
+
+      const model = layer.loadModel('https://s3.ssl.qhres.com/static/97354b0b0e9e7c93.json');
+      const mesh = new Mesh3d(program, {model});
+      mesh.attr({
+        colors: 'blue',
+      });
+      layer.append(mesh);
+      // layer.setOrbit();
+      layer.tick(() => {
+        mesh.attributes.rotateY += 0.5;
+        mesh.attributes.rotateZ += 0.3;
+        mesh.attributes.rotateX -= 0.1;
+      });
+    }());
+  </script>
+</body>
+</html>
