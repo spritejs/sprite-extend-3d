@@ -559,9 +559,13 @@ declare namespace ext3d {
     export const TEXTURE_NORMAL_MAP_300: Shader;
     export const GEOMETRY_NORMAL_MAP_100: Shader;
     export const GEOMETRY_NORMAL_MAP_300: Shader;
+    export const TEXTURE_NORMAL_MAP_WITH_BUMP_100: Shader;
+    export const TEXTURE_NORMAL_MAP_WITH_BUMP_300: Shader;
+    export const GEOMETRY_NORMAL_MAP_WITH_BUMP_100: Shader;
+    export const GEOMETRY_NORMAL_MAP_WITH_BUMP_300: Shader;
 
-    export function getTextureNormalMap(layer: Layer3d): Shader;
-    export function getGeometryNormalMap(layer: Layer3d): Shader;
+    export function getTextureNormalMap(layer: Layer3d, bump: boolean): Shader;
+    export function getGeometryNormalMap(layer: Layer3d, bump: boolean): Shader;
   }
 
   export class Vec2 extends Array{
