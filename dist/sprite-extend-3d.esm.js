@@ -12699,7 +12699,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_WITH_TEXTURE_AND_SHADOW", function() { return GEOMETRY_WITH_TEXTURE_AND_SHADOW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "POLYLINE", function() { return POLYLINE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DASHLINE", function() { return DASHLINE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXTURE_NORMAL_MAP_100", function() { return TEXTURE_NORMAL_MAP_100; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXTURE_NORMAL_MAP_300", function() { return TEXTURE_NORMAL_MAP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTextureNormalMap", function() { return getTextureNormalMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_100", function() { return GEOMETRY_NORMAL_MAP_100; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_300", function() { return GEOMETRY_NORMAL_MAP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGeometryNormalMap", function() { return getGeometryNormalMap; });
 /* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(74);
 /* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(75);
@@ -12797,35 +12801,39 @@ const DASHLINE = {
   vertex: _dashline_vert__WEBPACK_IMPORTED_MODULE_19__["default"],
   fragment: _dashline_frag__WEBPACK_IMPORTED_MODULE_18__["default"]
 };
+const TEXTURE_NORMAL_MAP_100 = {
+  vertex: _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_21__["default"],
+  fragment: _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_20__["default"]
+};
+const TEXTURE_NORMAL_MAP_300 = {
+  vertex: _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_23__["default"],
+  fragment: _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_22__["default"]
+};
 function getTextureNormalMap(layer) {
   const isWebgl2 = layer.renderer.isWebgl2;
 
   if (isWebgl2) {
-    return {
-      vertex: _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_23__["default"],
-      fragment: _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_22__["default"]
-    };
+    return TEXTURE_NORMAL_MAP_300;
   }
 
-  return {
-    vertex: _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_21__["default"],
-    fragment: _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_20__["default"]
-  };
+  return TEXTURE_NORMAL_MAP_100;
 }
+const GEOMETRY_NORMAL_MAP_100 = {
+  vertex: _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_25__["default"],
+  fragment: _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_24__["default"]
+};
+const GEOMETRY_NORMAL_MAP_300 = {
+  vertex: _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_27__["default"],
+  fragment: _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_26__["default"]
+};
 function getGeometryNormalMap(layer) {
   const isWebgl2 = layer.renderer.isWebgl2;
 
   if (isWebgl2) {
-    return {
-      vertex: _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_27__["default"],
-      fragment: _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_26__["default"]
-    };
+    return GEOMETRY_NORMAL_MAP_300;
   }
 
-  return {
-    vertex: _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_25__["default"],
-    fragment: _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_24__["default"]
-  };
+  return GEOMETRY_NORMAL_MAP_100;
 }
 
 /***/ }),

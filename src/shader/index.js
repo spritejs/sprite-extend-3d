@@ -88,30 +88,38 @@ export const DASHLINE = {
   fragment: dashlineFrag,
 };
 
+export const TEXTURE_NORMAL_MAP_100 = {
+  vertex: textureNormalMapVert100,
+  fragment: textureNormalMapFrag100,
+};
+
+export const TEXTURE_NORMAL_MAP_300 = {
+  vertex: textureNormalMapVert300,
+  fragment: textureNormalMapFrag300,
+};
+
 export function getTextureNormalMap(layer) {
   const isWebgl2 = layer.renderer.isWebgl2;
   if(isWebgl2) {
-    return {
-      vertex: textureNormalMapVert300,
-      fragment: textureNormalMapFrag300,
-    };
+    return TEXTURE_NORMAL_MAP_300;
   }
-  return {
-    vertex: textureNormalMapVert100,
-    fragment: textureNormalMapFrag100,
-  };
+  return TEXTURE_NORMAL_MAP_100;
 }
+
+export const GEOMETRY_NORMAL_MAP_100 = {
+  vertex: geometryNormalMapVert100,
+  fragment: geometryNormalMapFrag100,
+};
+
+export const GEOMETRY_NORMAL_MAP_300 = {
+  vertex: geometryNormalMapVert300,
+  fragment: geometryNormalMapFrag300,
+};
 
 export function getGeometryNormalMap(layer) {
   const isWebgl2 = layer.renderer.isWebgl2;
   if(isWebgl2) {
-    return {
-      vertex: geometryNormalMapVert300,
-      fragment: geometryNormalMapFrag300,
-    };
+    return GEOMETRY_NORMAL_MAP_300;
   }
-  return {
-    vertex: geometryNormalMapVert100,
-    fragment: geometryNormalMapFrag100,
-  };
+  return GEOMETRY_NORMAL_MAP_100;
 }

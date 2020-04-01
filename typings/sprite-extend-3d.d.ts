@@ -551,6 +551,11 @@ declare namespace ext3d {
     export const GEOMETRY_WITH_TEXTURE: Shader;
     export const GEOMETRY_WITH_SHADOW: Shader;
     export const GEOMETRY_WITH_TEXTURE_AND_SHADOW: Shader;
+    export const POLYLINE: Shader;
+    export const DASHLINE: Shader;
+
+    export function getTextureNormalMap(layer: Layer3d): Shader;
+    export function getGeometryNormalMap(layer: Layer3d): Shader;
   }
 
   export class Vec2 extends Array{
