@@ -5,6 +5,10 @@ precision highp int;
 uniform mat4 viewMatrix;
 uniform sampler2D tMap;
 
+#ifdef FLAG_BUMP
+uniform sampler2D tBump;
+#endif
+
 uniform sampler2D tNormal;
 uniform float uNormalScale;
 uniform float uNormalUVScale;
@@ -21,7 +25,7 @@ uniform vec4 ambientColor; // 环境光
 
 out vec4 FragColor;
 
-vec3 getNormal() {
+vec3 getNormal(float depth) {
   vec3 pos_dx = dFdx(vMPos.xyz);
   vec3 pos_dy = dFdy(vMPos.xyz);
   vec2 tex_dx = dFdx(vUv);
@@ -32,7 +36,7 @@ vec3 getNormal() {
   mat3 tbn = mat3(t, b, normalize(vNormal));
 
   vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;
-  n.xy *= uNormalScale;
+  n.xy *= depth * uNormalScale;
   vec3 normal = normalize(tbn * n);
 
   // Get world normal from view normal
@@ -48,7 +52,11 @@ void main() {
   color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));
   color.a = texColor.a + (1.0 - texColor.a) * color.a;
 
-  vec3 normal = getNormal();
+  float depth = 1.0;
+#ifdef FLAG_BUMP
+  depth = texture(tBump, vUv).x;
+#endif
+  vec3 normal = getNormal(depth);
 
   vec3 dir = vLDir;
   float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值

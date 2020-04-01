@@ -9263,9 +9263,10 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       attributes,
       texture,
       normalMap,
+      bumpMap,
       uniforms
     } = _ref,
-        options = _objectWithoutProperties(_ref, ["attributes", "texture", "normalMap", "uniforms"]);
+        options = _objectWithoutProperties(_ref, ["attributes", "texture", "normalMap", "bumpMap", "uniforms"]);
 
     const gl = this.renderer.gl;
 
@@ -9292,6 +9293,9 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     };
     if (normalMap) program.uniforms.tNormal = {
       value: normalMap
+    };
+    if (bumpMap) program.uniforms.tBump = {
+      value: bumpMap
     };
 
     if (gl.getUniformLocation(program.program, 'uShadow') && !program.uniforms.uShadow) {
@@ -12801,10 +12805,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "POLYLINE", function() { return POLYLINE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DASHLINE", function() { return DASHLINE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXTURE_NORMAL_MAP_100", function() { return TEXTURE_NORMAL_MAP_100; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXTURE_NORMAL_MAP_WITH_BUMP_100", function() { return TEXTURE_NORMAL_MAP_WITH_BUMP_100; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXTURE_NORMAL_MAP_300", function() { return TEXTURE_NORMAL_MAP_300; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXTURE_NORMAL_MAP_WITH_BUMP_300", function() { return TEXTURE_NORMAL_MAP_WITH_BUMP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTextureNormalMap", function() { return getTextureNormalMap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_100", function() { return GEOMETRY_NORMAL_MAP_100; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_WITH_BUMP_100", function() { return GEOMETRY_NORMAL_MAP_WITH_BUMP_100; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_300", function() { return GEOMETRY_NORMAL_MAP_300; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_WITH_BUMP_300", function() { return GEOMETRY_NORMAL_MAP_WITH_BUMP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGeometryNormalMap", function() { return getGeometryNormalMap; });
 /* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(74);
 /* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(75);
@@ -12906,35 +12914,51 @@ const TEXTURE_NORMAL_MAP_100 = {
   vertex: _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_21__["default"],
   fragment: _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_20__["default"]
 };
+const TEXTURE_NORMAL_MAP_WITH_BUMP_100 = {
+  vertex: _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_21__["default"],
+  fragment: _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_20__["default"].replace(/(#ifdef FLAG_BUMP)/, '#define FLAG_BUMP\n$1')
+};
 const TEXTURE_NORMAL_MAP_300 = {
   vertex: _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_23__["default"],
   fragment: _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_22__["default"]
 };
-function getTextureNormalMap(layer) {
+const TEXTURE_NORMAL_MAP_WITH_BUMP_300 = {
+  vertex: _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_23__["default"],
+  fragment: _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_22__["default"].replace(/(#ifdef FLAG_BUMP)/, '#define FLAG_BUMP\n$1')
+};
+function getTextureNormalMap(layer, bump = false) {
   const isWebgl2 = layer.renderer.isWebgl2;
 
   if (isWebgl2) {
-    return TEXTURE_NORMAL_MAP_300;
+    return bump ? TEXTURE_NORMAL_MAP_WITH_BUMP_300 : TEXTURE_NORMAL_MAP_300;
   }
 
-  return TEXTURE_NORMAL_MAP_100;
+  return bump ? TEXTURE_NORMAL_MAP_WITH_BUMP_100 : TEXTURE_NORMAL_MAP_100;
 }
 const GEOMETRY_NORMAL_MAP_100 = {
   vertex: _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_25__["default"],
   fragment: _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_24__["default"]
 };
+const GEOMETRY_NORMAL_MAP_WITH_BUMP_100 = {
+  vertex: _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_25__["default"],
+  fragment: _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_24__["default"].replace(/(#ifdef FLAG_BUMP)/, '#define FLAG_BUMP\n$1')
+};
 const GEOMETRY_NORMAL_MAP_300 = {
   vertex: _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_27__["default"],
   fragment: _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_26__["default"]
 };
-function getGeometryNormalMap(layer) {
+const GEOMETRY_NORMAL_MAP_WITH_BUMP_300 = {
+  vertex: _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_27__["default"],
+  fragment: _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_26__["default"].replace(/(#ifdef FLAG_BUMP)/, '#define FLAG_BUMP\n$1')
+};
+function getGeometryNormalMap(layer, bump = false) {
   const isWebgl2 = layer.renderer.isWebgl2;
 
   if (isWebgl2) {
-    return GEOMETRY_NORMAL_MAP_300;
+    return bump ? GEOMETRY_NORMAL_MAP_WITH_BUMP_300 : GEOMETRY_NORMAL_MAP_300;
   }
 
-  return GEOMETRY_NORMAL_MAP_100;
+  return bump ? GEOMETRY_NORMAL_MAP_WITH_BUMP_100 : GEOMETRY_NORMAL_MAP_100;
 }
 
 /***/ }),
@@ -13103,7 +13127,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec3 vLDir;\n\nvec3 getNormal() {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 normal = getNormal();\n  float cos = max(dot(vLDir, normal), 0.0);// 计算入射角余弦值\n  \n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec3 vLDir;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  float cos = max(dot(vLDir, normal), 0.0);// 计算入射角余弦值\n  \n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
 /* 95 */
@@ -13119,7 +13143,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vLDir;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nout vec4 FragColor;\n\nvec3 getNormal() {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 normal = getNormal();\n\n  vec3 dir = vLDir;\n  float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  FragColor.rgb = color.rgb + shading;\n  FragColor.a = color.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vLDir;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n\n  vec3 dir = vLDir;\n  float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  FragColor.rgb = color.rgb + shading;\n  FragColor.a = color.a;\n}");
 
 /***/ }),
 /* 97 */
@@ -13135,7 +13159,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec4 vColor;\nvarying vec3 vLDir;\n\nvec3 getNormal() {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  vec3 normal = getNormal();\n  \n  vec3 dir = vLDir;\n  float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nvarying vec4 vColor;\nvarying vec3 vLDir;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  \n  vec3 dir = vLDir;\n  float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  gl_FragColor.rgb = color.rgb + shading;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
 /* 99 */
@@ -13151,7 +13175,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vLDir;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nout vec4 FragColor;\n\nvec3 getNormal() {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  vec3 normal = getNormal();\n\n  vec3 dir = vLDir;\n  float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  FragColor.rgb = color.rgb + shading;\n  FragColor.a = color.a;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vLDir;\n\nuniform vec4 directionalLight; //平行光\nuniform vec4 pointLightColor; // 点光源颜色\nuniform vec4 ambientColor; // 环境光\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n\n  vec3 dir = vLDir;\n  float cos = max(dot(dir, normal), 0.0);// 计算入射角余弦值\n\n  vec3 light = normalize(directionalLight.xyz);\n  float shading = dot(normal, light) * directionalLight.w;\n  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色\n  vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色\n  color = vec4(diffuse + ambient, color.a);\n  \n  FragColor.rgb = color.rgb + shading;\n  FragColor.a = color.a;\n}");
 
 /***/ }),
 /* 101 */

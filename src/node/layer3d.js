@@ -150,7 +150,7 @@ export default class Layer3D extends Layer {
   }
 
   /* {vertex, fragment, uniforms = {}} */
-  createProgram({attributes, texture, normalMap, uniforms, ...options} = {}, {attributes: extraAttributes, uniforms: extraUniforms} = {}) {
+  createProgram({attributes, texture, normalMap, bumpMap, uniforms, ...options} = {}, {attributes: extraAttributes, uniforms: extraUniforms} = {}) {
     const gl = this.renderer.gl;
     if(uniforms) {
       options.uniforms = {...uniforms};
@@ -165,6 +165,7 @@ export default class Layer3D extends Layer {
 
     if(texture) program.uniforms.tMap = {value: texture};
     if(normalMap) program.uniforms.tNormal = {value: normalMap};
+    if(bumpMap) program.uniforms.tBump = {value: bumpMap};
 
     if(gl.getUniformLocation(program.program, 'uShadow') && !program.uniforms.uShadow) {
       program.uniforms.uShadow = {value: 0.5};

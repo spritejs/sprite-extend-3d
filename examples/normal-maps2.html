@@ -49,16 +49,18 @@
     (async function () {
       const textureDiffuse = layer.createTexture('https://p3.ssl.qhimg.com/t013aaf8eff7df1cc38.jpg');
       const textureNormal = layer.createTexture('https://p3.ssl.qhimg.com/t01c1cb1f2558cb00e8.jpg');
+      const bumpMap = layer.createTexture('https://p5.ssl.qhimg.com/t010d7a80708ba28e83.png');
 
-      await Promise.all([textureNormal.loaded, textureDiffuse.loaded]);
+      await Promise.all([textureNormal.loaded, textureDiffuse.loaded, bumpMap.loaded]);
 
       const program = layer.createProgram({
         // ...shaders.getTextureNormalMap(layer),
-        ...shaders.getGeometryNormalMap(layer),
+        ...shaders.getGeometryNormalMap(layer, true), // with bump
         // texture: textureDiffuse,
         normalMap: textureNormal,
+        bumpMap,
         uniforms: {
-          uNormalScale: {value: 2},
+          uNormalScale: {value: 5},
           // uNormalUVScale: {value: 1},
         },
       });
