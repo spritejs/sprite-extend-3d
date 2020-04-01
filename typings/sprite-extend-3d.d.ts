@@ -553,6 +553,10 @@ declare namespace ext3d {
     export const GEOMETRY_WITH_TEXTURE_AND_SHADOW: Shader;
     export const POLYLINE: Shader;
     export const DASHLINE: Shader;
+    export const TEXTURE_NORMAL_MAP_100: Shader;
+    export const TEXTURE_NORMAL_MAP_300: Shader;
+    export const GEOMETRY_NORMAL_MAP_100: Shader;
+    export const GEOMETRY_NORMAL_MAP_300: Shader;
 
     export function getTextureNormalMap(layer: Layer3d): Shader;
     export function getGeometryNormalMap(layer: Layer3d): Shader;
