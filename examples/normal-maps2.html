@@ -34,8 +34,9 @@
       // webgl: 1,
     });
     const layer = scene.layer3d('fglayer', {
-      directionalLight: [1, 0, 0, 0.8],
-      pointLightColor: 'orange',
+      // directionalLight: [1, 0, 0, 0.8],
+      ambientColor: [0.5, 0.5, 0.5, 0],
+      pointLightColor: 'white',
       pointLightPosition: [5, 3, 6],
       camera: {
         fov: 45,
@@ -52,9 +53,9 @@
       await Promise.all([textureNormal.loaded, textureDiffuse.loaded]);
 
       const program = layer.createProgram({
-        ...shaders.getTextureNormalMap(layer),
-        // ...shaders.getGeometryNormalMap(layer),
-        texture: textureDiffuse,
+        // ...shaders.getTextureNormalMap(layer),
+        ...shaders.getGeometryNormalMap(layer),
+        // texture: textureDiffuse,
         normalMap: textureNormal,
         uniforms: {
           uNormalScale: {value: 2},
@@ -65,7 +66,7 @@
       const model = layer.loadModel('https://s3.ssl.qhres.com/static/97354b0b0e9e7c93.json');
       const mesh = new Mesh3d(program, {model});
       mesh.attr({
-        colors: 'blue',
+        colors: 'gray',
       });
       layer.append(mesh);
       // layer.setOrbit();

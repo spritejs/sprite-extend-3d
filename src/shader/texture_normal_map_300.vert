@@ -15,8 +15,8 @@ uniform mat4 projectionMatrix;
 out vec2 vUv;
 out vec3 vNormal;
 out vec3 vMPos;
-out float fCos;
 out vec4 vColor;
+out vec3 vLDir;
 
 uniform vec3 pointLightPosition; //点光源位置
 
@@ -27,8 +27,7 @@ void main() {
   vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
 
   vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化
-  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值
-  fCos = cos;
+  vLDir = dir;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

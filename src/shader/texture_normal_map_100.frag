@@ -19,7 +19,7 @@ uniform vec4 directionalLight; //平行光
 uniform vec4 pointLightColor; // 点光源颜色
 uniform vec4 ambientColor; // 环境光
 
-varying float fCos;
+varying vec3 vLDir;
 
 vec3 getNormal() {
   vec3 pos_dx = dFdx(vMPos.xyz);
@@ -49,10 +49,11 @@ void main() {
   color.a = texColor.a + (1.0 - texColor.a) * color.a;
 
   vec3 normal = getNormal();
+  float cos = max(dot(vLDir, normal), 0.0);// 计算入射角余弦值
   
   vec3 light = normalize(directionalLight.xyz);
   float shading = dot(normal, light) * directionalLight.w;
-  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * fCos;// 计算点光源漫反射颜色
+  vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色
   vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色
   color = vec4(diffuse + ambient, color.a);
   
