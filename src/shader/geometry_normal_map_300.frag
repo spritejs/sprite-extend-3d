@@ -3,7 +3,6 @@ precision highp float;
 precision highp int;
 
 uniform mat4 viewMatrix;
-uniform float uTime;
 
 uniform sampler2D tNormal;
 uniform float uNormalScale;
