@@ -11388,6 +11388,107 @@ ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"].prototype.transpose = function (ord
 };
 
 class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
+  static extract({
+    gl,
+    attributes,
+    preserveBuffers
+  }) {
+    if (attributes.index) {
+      const idx = attributes.index.data;
+      const model = {};
+      Object.entries(attributes).forEach(([key, value]) => {
+        const data = value.data;
+
+        if (key !== 'index') {
+          model[key] = new data.constructor(value.size * idx.length);
+
+          for (let i = 0; i < idx.length; i++) {
+            for (let j = 0; j < value.size; j++) {
+              model[key][i * value.size + j] = data[idx[i] * value.size + j];
+            }
+          }
+        }
+      });
+      return new Geometry(gl, model, preserveBuffers);
+    }
+
+    const model = {};
+    Object.entries(attributes).forEach(([key, value]) => {
+      const data = value.data;
+      model[key] = new data.constructor(data);
+    });
+    return new Geometry(gl, model, preserveBuffers);
+  }
+
+  static createTB(geometry) {
+    geometry = Geometry.extract(geometry);
+    const {
+      position,
+      uv
+    } = geometry.attributes;
+    if (!uv) throw new Error('NO uv.');
+
+    function getTBNTriangle(p1, p2, p3, uv1, uv2, uv3) {
+      const edge1 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]().sub(p2, p1);
+      const edge2 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]().sub(p3, p1);
+      const deltaUV1 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec2"]().sub(uv2, uv1);
+      const deltaUV2 = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec2"]().sub(uv3, uv1);
+      const tang = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+      const bitang = new ogl__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+      const f = 1.0 / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+      tang.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+      tang.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+      tang.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+      tang.normalize();
+      bitang.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+      bitang.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+      bitang.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+      bitang.normalize();
+      return {
+        tang,
+        bitang
+      };
+    }
+
+    const size = position.size;
+    if (size < 3) throw new Error('Error dimension.');
+    const len = position.data.length / size;
+    const tang = new Float32Array(len * 3);
+    const bitang = new Float32Array(len * 3);
+
+    for (let i = 0; i < len; i += 3) {
+      const i1 = i;
+      const i2 = i + 1;
+      const i3 = i + 2;
+      const p1 = [position.data[i1 * size], position.data[i1 * size + 1], position.data[i1 * size + 2]];
+      const p2 = [position.data[i2 * size], position.data[i2 * size + 1], position.data[i2 * size + 2]];
+      const p3 = [position.data[i3 * size], position.data[i3 * size + 1], position.data[i3 * size + 2]];
+      const u1 = [uv.data[i1 * 2], uv.data[i1 * 2 + 1]];
+      const u2 = [uv.data[i2 * 2], uv.data[i2 * 2 + 1]];
+      const u3 = [uv.data[i3 * 2], uv.data[i3 * 2 + 1]];
+      const {
+        tang: t,
+        bitang: b
+      } = getTBNTriangle(p1, p2, p3, u1, u2, u3);
+      tang.set(t, i * 3);
+      tang.set(t, (i + 1) * 3);
+      tang.set(t, (i + 2) * 3);
+      bitang.set(b, i * 3);
+      bitang.set(b, (i + 1) * 3);
+      bitang.set(b, (i + 2) * 3);
+    }
+
+    geometry.addAttribute('tang', {
+      data: tang,
+      size: 3
+    });
+    geometry.addAttribute('bitang', {
+      data: bitang,
+      size: 3
+    });
+    return geometry;
+  }
+
   constructor(gl, model, preserveBuffers = true) {
     const {
       position,

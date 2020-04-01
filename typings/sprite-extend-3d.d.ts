@@ -186,6 +186,8 @@ declare namespace ext3d {
   }
 
   export class Geometry extends BaseGeometry {
+    static extract(geometry: any): Geometry;
+    static createTB(geometry: any): Geometry;
     constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, model: any, preserveBuffers?: boolean);
     preserveBuffers: boolean;
   }
