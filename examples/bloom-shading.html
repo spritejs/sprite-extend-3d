@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 800px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Sphere, Vec3, FrameBuffer, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      width: 800,
+      height: 800,
+      mode: 'stickyHeight',
+    });
+
+    const vertex = `
+      precision highp float;
+      precision highp int;
+
+      attribute vec3 position;
+      attribute vec3 normal;
+      attribute vec4 color;
+
+      uniform mat4 modelViewMatrix;
+      uniform mat4 projectionMatrix;
+      uniform mat3 normalMatrix;
+      uniform vec3 cameraPosition;
+
+      varying vec3 vNormal;
+      varying vec4 vColor;
+      varying vec3 vEye;
+
+      uniform vec3 pointLightPosition; //点光源位置
+      uniform vec4 pointLightColor; // 点光源颜色
+      uniform vec4 ambientColor; // 环境光
+
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        vEye = normalize(normalMatrix * (cameraPosition - position));
+
+        vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化
+        float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值
+        vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色
+        vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色
+
+        vColor = vec4(diffuse + ambient, color.a);
+        // vColor = color;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
+
+    const fragment = `
+      precision highp float;
+      precision highp int;
+
+      varying vec3 vNormal;
+      varying vec3 vEye;
+      varying vec4 vColor;
+      varying float r;
+
+      uniform vec4 directionalLight; //平行光 xyz - 向量位置, w - 强度
+      uniform vec2 uResolution;
+
+      #define PI 3.14
+
+      void main() {
+        float light = dot(vNormal, normalize(directionalLight.xyz));
+        float d = dot(vNormal, vEye);
+        vec3 color = vColor.rgb + light * directionalLight.w;
+        vec3 shading = color;
+
+        d = smoothstep(0.0, 0.25, d) - smoothstep(0.25, 0.3, d);
+        
+        vec2 st = gl_FragCoord.xy / uResolution - vec2(0.5);
+        if(st.x < 0.0 && st.y > 0.0) {
+          shading *= d * sin(PI * st.y / length(st));
+        } else {
+          shading *= 0.0;
+        }
+
+        gl_FragColor.rgb = shading + 0.03 * color;
+        gl_FragColor.a = vColor.a;
+      }    
+    `;
+
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        pos: [0, 0, 3],
+      },
+      post: true,
+    });
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    const program = layer.createProgram({
+      transparent: true,
+      vertex,
+      fragment,
+    });
+
+    const sphere = new Sphere(program, {
+      widthSegments: 100,
+      heightSegments: 50,
+      colors: 'cyan',
+    });
+    layer.append(sphere);
+    layer.setOrbit();
+  </script>
+</body>
+</html>
