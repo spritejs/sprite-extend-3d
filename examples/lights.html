@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Cube, Sphere, Polyline3d, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+    });
+    const layer = scene.layer3d('fglayer', {
+      camera: {
+        fov: 35,
+      },
+      // directionalLight: [1, 0, 0, 0.5],
+      pointLightColor: 'red',
+      pointLightPosition: [3, 0, 0],
+    });
+    layer.gl.clearColor(0, 0, 0, 1);
+    layer.camera.attributes.pos = [0, 0, 7];
+    layer.camera.lookAt([0, 0, 0]);
+
+
+    const lineProgram = layer.createProgram({
+      ...shaders.POLYLINE,
+      uniforms: {
+        uThickness: {value: 3},
+      },
+    });
+    const line1 = new Polyline3d(lineProgram, {
+      points: [[-3, 0, 0], [3, 0, 0]],
+      colors: 'red',
+    });
+    const line2 = new Polyline3d(lineProgram, {
+      points: [[0, -3, 0], [0, 3, 0]],
+      colors: 'blue',
+    });
+    const line3 = new Polyline3d(lineProgram, {
+      points: [[0, 0, -3], [0, 0, 3]],
+      colors: 'green',
+    });
+    layer.append(line1, line2, line3);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+    });
+    const cube = new Sphere(program);
+    layer.append(cube);
+    layer.setOrbit();
+  </script>
+</body>
+</html>

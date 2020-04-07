@@ -11,11 +11,15 @@ uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 uniform mat3 normalMatrix;
 
+uniform mat4 viewMatrix;
+uniform vec4 directionalLight; //平行光 xyz - 向量位置, w - 强度
+
 varying vec3 vNormal;
 varying vec2 vUv;
 varying vec4 vColor;
 
 varying float fCos;
+varying float fShading;
 varying vec4 vLightNDC;
 
 uniform vec3 pointLightPosition; //点光源位置
@@ -34,14 +38,18 @@ const mat4 depthScaleMatrix = mat4(
 void main() {
   vNormal = normalize(normalMatrix * normal);
 
-  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化
-  float cos = max(dot(dir, vNormal), 0.0);// 计算入射角余弦值
-  
-  fCos = cos;
+  vec4 invLight = viewMatrix * vec4(directionalLight.xyz, 0.0);
+  float light = dot(vNormal, normalize(invLight.xyz));
+  fShading = light * directionalLight.w;
+
+  vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  // 计算点光源入射光线反方向并归一化
+  vec3 invDir = normalize((viewMatrix * vec4(pointLightPosition, 1.0)).xyz - mv.xyz);
+  fCos = max(dot(invDir, vNormal), 0.0);// 计算入射角余弦值
 
   vUv = uv;
   vColor = color;
 
   vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  gl_Position = projectionMatrix * mv;
 }

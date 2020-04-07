@@ -4,8 +4,6 @@ precision highp int;
 varying vec3 vNormal;
 varying vec4 vColor;
 
-uniform vec4 directionalLight; //平行光
-
 uniform sampler2D tMap;
 uniform sampler2D tShadow;
 uniform float uShadow;
@@ -14,6 +12,7 @@ varying vec2 vUv;
 varying vec4 vLightNDC;
 
 varying float fCos;
+varying float fShading;
 
 uniform vec4 pointLightColor; // 点光源颜色
 uniform vec4 ambientColor; // 环境光
@@ -35,9 +34,6 @@ void main() {
   // If the occluded depth is smaller, we must be in uShadow
   float uShadow = mix(uShadow, 1.0, step(depth, occluder));
 
-  vec3 light = normalize(directionalLight.xyz);
-  float shading = dot(vNormal, light) * directionalLight.w;
-
   float alpha = texColor.a;
   color.rgb = mix(texColor.rgb, color.rgb, 1.0 - alpha);
   color.a = texColor.a + (1.0 - texColor.a) * color.a;
@@ -47,6 +43,6 @@ void main() {
 
   color = vec4(diffuse + ambient, color.a);
 
-  gl_FragColor.rgb = color.rgb * uShadow + shading;
+  gl_FragColor.rgb = color.rgb * uShadow + fShading;
   gl_FragColor.a = color.a;
 }
