@@ -9753,7 +9753,8 @@ function createText(text, {
   font,
   fillColor,
   strokeColor,
-  strokeWidth
+  strokeWidth,
+  ratio = 1
 }) {
   const key = [text, font, String(fillColor), String(strokeColor), String(strokeWidth)].join('###');
   let textCanvas = cacheMap[key];
@@ -9777,14 +9778,13 @@ function createText(text, {
   const canvas = textContext.canvas;
   const w = Math.ceil(width);
   const h = Math.ceil(height);
-  const ratio = 2;
-  canvas.width = w * ratio;
-  canvas.height = h * ratio;
+  canvas.width = Math.round(w * ratio);
+  canvas.height = Math.round(h * ratio);
   textContext.save();
   textContext.font = fontEx(fontInfo, ratio);
   textContext.textAlign = 'center';
   textContext.textBaseline = 'middle';
-  const top = canvas.height * 0.5 + fontInfo.pxHeight * 0.1;
+  const top = canvas.height * 0.5 + fontInfo.pxHeight * 0.05 * ratio;
   const left = canvas.width * 0.5;
 
   if (fillColor) {
@@ -13957,7 +13957,7 @@ class Mesh2D {
         }
 
         mesh.textureCoord = mesh.positions.map(([x, y, z]) => {
-          if (z > 0) {
+          if (1 / z > 0) {
             [x, y] = transformPoint([x, y], m, w, h, true);
             [x, y] = [x / w, y / h];
 
@@ -13983,7 +13983,7 @@ class Mesh2D {
         }
 
         mesh.textureCoord = mesh.positions.map(([x, y, z]) => {
-          if (z > 0) {
+          if (1 / z > 0) {
             // fillTag
             if (options.rotated) {
               [x, y] = transformPoint([x, y], m, w, h, true);
@@ -20157,8 +20157,8 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 function parseValue(v) {
   if (typeof v === 'string') {
     v = v.trim();
-    if (/%$/.test(v)) return parseFloat(v) / 100;
-    if (/^\d+/.test(v)) return Object(_utils_attribute_value__WEBPACK_IMPORTED_MODULE_3__["sizeToPixel"])(v); // const c = rgba(v);
+    if (/^[0-9.]+%$/.test(v)) return parseFloat(v) / 100;
+    if (/^([\d.]+)(px|pt|pc|in|cm|mm|em|ex|rem|q|vw|vh|vmax|vmin)$/.test(v)) return Object(_utils_attribute_value__WEBPACK_IMPORTED_MODULE_3__["sizeToPixel"])(v); // const c = rgba(v);
     // return c.length > 0 ? c : v;
   }
 
@@ -20168,6 +20168,10 @@ function parseValue(v) {
 function colorEffect(from, to, p, s, e) {
   if (typeof from === 'string') from = color_rgba__WEBPACK_IMPORTED_MODULE_1___default()(from);
   if (typeof to === 'string') to = color_rgba__WEBPACK_IMPORTED_MODULE_1___default()(to);
+  return sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].default(from, to, p, s, e);
+}
+
+function stringEffect(from, to, p, s, e) {
   return sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].default(from, to, p, s, e);
 }
 
@@ -20193,18 +20197,19 @@ sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].fillColor = colorEffect;
 sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].strokeColor = colorEffect;
 sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].bgcolor = colorEffect;
 sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].borderColor = colorEffect;
+sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"].text = stringEffect;
 class Animation extends sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Animator"] {
   constructor(sprite, frames, timing) {
     const initAttrs = sprite.attr();
     Object.entries(initAttrs).forEach(([key, value]) => {
-      initAttrs[key] = parseValue(value);
+      initAttrs[key] = sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"][key] ? value : parseValue(value);
     });
     frames = frames.map((_ref) => {
       let frame = _extends({}, _ref);
 
       const ret = {};
       Object.entries(frame).forEach(([key, value]) => {
-        ret[key] = parseValue(value);
+        ret[key] = sprite_animator__WEBPACK_IMPORTED_MODULE_0__["Effects"][key] ? value : parseValue(value);
       });
       return ret;
     });
@@ -21176,7 +21181,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 /* 99 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.9' };
+var core = module.exports = { version: '2.6.11' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -23820,6 +23825,11 @@ var _class = function () {
       return this[_timing];
     }
   }, {
+    key: 'effects',
+    get: function get() {
+      return this[_effects];
+    }
+  }, {
     key: 'baseTimeline',
     set: function set(timeline) {
       this[_timing].timeline = timeline;
@@ -24695,7 +24705,7 @@ function getCurrentFrame(timing, keyframes, effects, p) {
 
   if (!effect) {
     // timing.effect 会覆盖掉 Effects 和 animator.applyEffects 中定义的 effects
-    effects = (0, _assign2.default)({}, effects, _effect2.default);
+    effects = (0, _assign2.default)({}, _effect2.default, effects);
   }
 
   var ret = {};
@@ -26419,6 +26429,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+const _textureTask = Symbol('textureTask');
+
 class Sprite extends _block__WEBPACK_IMPORTED_MODULE_1__["default"] {
   constructor(attrs = {}) {
     if (typeof attrs === 'string') attrs = {
@@ -26457,6 +26470,10 @@ class Sprite extends _block__WEBPACK_IMPORTED_MODULE_1__["default"] {
 
     return [w, h];
   }
+
+  get textureImageReady() {
+    return this[_textureTask] || Promise.resolve();
+  }
   /* override */
 
 
@@ -26477,7 +26494,7 @@ class Sprite extends _block__WEBPACK_IMPORTED_MODULE_1__["default"] {
     super.onPropertyChange(key, newValue, oldValue);
 
     if (key === 'texture') {
-      Object(_utils_texture__WEBPACK_IMPORTED_MODULE_0__["applyTexture"])(this, newValue, true); // this.setTexture(newValue);
+      this[_textureTask] = Object(_utils_texture__WEBPACK_IMPORTED_MODULE_0__["applyTexture"])(this, newValue, true); // this.setTexture(newValue);
     }
 
     if (key === 'textureRect') {
@@ -27906,12 +27923,10 @@ const declareAlias = Symbol.for('spritejs_declareAlias');
 
 function getPath(attr) {
   const {
-    x,
-    y,
     width,
     height
   } = attr;
-  return `M${x} ${y}L${x + width} ${y}L${x + width} ${y + height}L${x} ${y + height}Z`;
+  return `M${0} ${0}L${width} ${0}L${width} ${height}L${0} ${height}Z`;
 }
 
 class Rect extends _path__WEBPACK_IMPORTED_MODULE_0__["default"] {
@@ -29240,6 +29255,18 @@ class Label extends _block__WEBPACK_IMPORTED_MODULE_2__["default"] {
   set text(value) {
     this.attributes.text = value;
   }
+
+  get textContent() {
+    return this.attributes.text;
+  }
+
+  set textContent(value) {
+    this.attributes.text = value;
+  }
+
+  get textImageReady() {
+    return this[_textImageTask] || Promise.resolve();
+  }
   /* override */
 
 
@@ -29342,12 +29369,14 @@ class Label extends _block__WEBPACK_IMPORTED_MODULE_2__["default"] {
           strokeColor,
           strokeWidth
         } = this.attributes;
+        const ratio = this.layer ? this.layer.displayRatio : 1;
         this[_textImage] = _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["ENV"].createText(text, {
           font,
           fillColor,
           strokeColor,
           strokeWidth,
-          parseFont: _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["parseFont"]
+          parseFont: _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["parseFont"],
+          ratio
         });
         this.updateContours();
         this.forceUpdate();

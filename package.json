@@ -39,6 +39,6 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "ogl": "github:oframe/ogl",
-    "spritejs": "^3.4.16"
+    "spritejs": "^3.4.21"
   }
 }
