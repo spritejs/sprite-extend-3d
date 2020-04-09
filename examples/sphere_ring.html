@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const vertex = /* glsl */ `
+      precision highp float;
+      precision highp int;
+
+      attribute vec3 position;
+      attribute vec3 normal;
+      attribute vec4 color;
+      attribute vec2 uv;
+
+      uniform mat4 modelViewMatrix;
+      uniform mat4 projectionMatrix;
+      uniform mat3 normalMatrix;
+
+      uniform mat4 viewMatrix;
+      uniform vec4 directionalLight; //平行光 xyz - 向量位置, w - 强度
+
+      varying vec3 vNormal;
+      varying vec4 vColor;
+      varying vec2 vUv;
+
+      uniform vec3 pointLightPosition; //点光源位置
+      uniform vec4 pointLightColor; // 点光源颜色
+      uniform vec4 ambientColor; // 环境光
+
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+
+        vec4 invLight = viewMatrix * vec4(directionalLight.xyz, 0.0);
+        float light = dot(vNormal, normalize(invLight.xyz));
+        float shading = light * directionalLight.w;
+
+        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        // 计算点光源入射光线反方向并归一化
+        vec3 invDir = normalize((viewMatrix * vec4(pointLightPosition, 1.0)).xyz - mv.xyz);
+        float cos = max(dot(invDir, vNormal), 0.0);// 计算入射角余弦值
+
+        // vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化
+        // float cos = max(dot(dir, vNormal), 0.0);
+
+        vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色
+        vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色
+
+        vColor = vec4(diffuse + ambient, color.a) + shading;
+        vUv = uv;
+
+        gl_Position = projectionMatrix * mv;
+      }
+    `;
+
+    const fragment = /* glsl */ `
+      precision highp float;
+      precision highp int;
+
+      varying vec4 vColor;
+      varying vec2 vUv;
+
+      uniform float uTime;
+
+      void main() {
+        float u = 0.7 * fract(1.0 * uTime);
+        float d = fract(vUv.y * 10.0);
+        d = step(u, d) - step(u + 0.3, d);
+        gl_FragColor = vColor * d;
+      }
+    `;
+
+    const {Scene} = spritejs;
+    const {Sphere, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      pointLightColor: 'red',
+      pointLightPosition: [3, 0, 0],
+      camera: {
+        fov: 35,
+      },
+    });
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    layer.camera.attributes.pos = [3, 3, 7];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      transparent: true,
+      vertex,
+      fragment,
+      uniforms: {
+        uTime: {value: 0},
+      },
+      cullFace: null,
+    });
+
+    // layer.bindTime(program);
+
+    const s = new Sphere(program, {
+      transparent: true,
+      radius: 0.6,
+      zIndex: 100,
+    });
+
+    const program2 = layer.createProgram({
+      transparent: true,
+      ...shaders.NORMAL,
+    });
+
+    const s2 = new Sphere(program2);
+    layer.append(s2, s);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>
