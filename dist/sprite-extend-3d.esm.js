@@ -431,7 +431,7 @@ class Geometry {
     attr.normalized = attr.normalized || false;
     attr.stride = attr.stride || 0;
     attr.offset = attr.offset || 0;
-    attr.count = attr.count || attr.data.length / attr.size;
+    attr.count = attr.count || (attr.stride ? attr.data.byteLength / attr.stride : attr.data.length / attr.size);
     attr.divisor = attr.instanced || 0;
     attr.needsUpdate = false;
 
