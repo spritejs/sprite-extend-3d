@@ -348,7 +348,7 @@ declare namespace ext3d {
      * @param options 
      */
     renderTarget(target: RenderTarget, options?: Record<string, any>): void;
-    renderTo(target: FrameBuffer, options = {}): void; 
+    renderTo(target: FrameBuffer, options?: Record<string, any>): void; 
     /**
      * setLights(program, {directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],
