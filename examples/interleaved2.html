@@ -17,7 +17,7 @@
   <div id="container"></div>
   <script>
 const {Scene} = spritejs;
-const {Mesh3d, shaders} = spritejs.ext3d;
+const {Mesh3d, Cube, shaders} = spritejs.ext3d;
 const container = document.getElementById('container');
 const scene = new Scene({
   container,
@@ -96,6 +96,13 @@ const model = {
     // count: 12,
   },
 };
+
+const cubeProgram = layer.createProgram({
+  ...shaders.NORMAL,
+});
+
+const cube = new Cube(cubeProgram);
+layer.append(cube);
 
 const sprite = new Mesh3d(program, {
   model,
