@@ -144,6 +144,7 @@ export default class Layer3D extends Layer {
   }
 
   bindTime(program, opts = {}) {
+    this.unbindTime(program);
     program.timeline = this.timeline.fork(opts);
     this[_utime].push(program);
     this.forceUpdate();

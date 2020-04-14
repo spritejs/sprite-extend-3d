@@ -9350,6 +9350,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
   }
 
   bindTime(program, opts = {}) {
+    this.unbindTime(program);
     program.timeline = this.timeline.fork(opts);
 
     this[_utime].push(program);

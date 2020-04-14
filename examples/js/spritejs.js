@@ -9754,12 +9754,22 @@ function createText(text, {
   fillColor,
   strokeColor,
   strokeWidth,
-  ratio = 1
+  ratio = 1,
+  textCanvas,
+  cachable = false
 }) {
-  const key = [text, font, String(fillColor), String(strokeColor), String(strokeWidth)].join('###');
-  let textCanvas = cacheMap[key];
-  if (textCanvas) return textCanvas;
-  textCanvas = createCanvas(1, 1);
+  let key;
+
+  if (cachable) {
+    key = [text, font, String(fillColor), String(strokeColor), String(strokeWidth)].join('###');
+    const cachedCanvas = cacheMap[key];
+    if (cachedCanvas) return cachedCanvas;
+  }
+
+  if (!textCanvas) {
+    textCanvas = createCanvas(1, 1);
+  }
+
   const textContext = textCanvas.getContext('2d');
   textContext.save();
   textContext.font = font;
@@ -9841,11 +9851,16 @@ function createText(text, {
   }
 
   textContext.restore();
-  cacheMap[key] = {
+  const ret = {
     image: textCanvas,
     rect: [0, 0, w, h]
   };
-  return cacheMap[key];
+
+  if (cachable) {
+    cacheMap[key] = ret;
+  }
+
+  return ret;
 } // Fixed: use offscreen canvas as texture will fail in early chrome.
 
 
@@ -10243,7 +10258,7 @@ function drawMesh2D(mesh, context, enableFilter = true, cloudFill = null, cloudS
       }
 
       if (fill) {
-        context.fill();
+        context.fill(mesh.fillRule);
       }
 
       if (drawTexture) {
@@ -13661,6 +13676,14 @@ class Mesh2D {
     return [0, 0];
   }
 
+  get fillRule() {
+    if (this[_fill]) {
+      return this[_fill].rule;
+    }
+
+    return 'nonzero';
+  }
+
   get lineWidth() {
     if (this[_stroke]) {
       return this[_stroke].thickness;
@@ -13783,7 +13806,7 @@ class Mesh2D {
       if (contours && contours.length) {
         if (this[_fill]) {
           try {
-            const mesh = _triangulate_contours__WEBPACK_IMPORTED_MODULE_9___default()(contours);
+            const mesh = _triangulate_contours__WEBPACK_IMPORTED_MODULE_9___default()(contours, this[_fill]);
             mesh.positions = mesh.positions.map(p => {
               p[1] = this[_bound][1][1] - p[1];
               p.push(this[_opacity]);
@@ -14090,16 +14113,12 @@ class Mesh2D {
   }
 
   setFill({
-    delaunay = true,
-    clean = true,
-    randomization = 0,
+    rule = 'nonzero',
     color = [0, 0, 0, 0]
   } = {}) {
     this[_mesh] = null;
     this[_fill] = {
-      delaunay,
-      clean,
-      randomization
+      rule
     };
     if (typeof color === 'string') color = Object(_utils_parse_color__WEBPACK_IMPORTED_MODULE_11__["default"])(color);
     this[_fillColor] = color;
@@ -14904,11 +14923,12 @@ module.exports = function (contours, opt) {
     return c.reduce(function (a, b) {
       return a.concat(b);
     });
-  }); // Tesselate
+  });
+  const windingRule = opt.rule === 'evenodd' ? Tess2.WINDING_ODD : Tess2.WINDING_NONZERO; // Tesselate
 
   var res = Tess2.tesselate(xtend({
     contours: contours,
-    windingRule: Tess2.WINDING_ODD,
+    windingRule,
     elementType: Tess2.POLYGONS,
     polySize: 3,
     vertexSize: 2
@@ -25427,7 +25447,7 @@ function createTexture(image, renderer) {
   return texture;
 }
 function deleteTexture(image, renderer) {
-  if (renderer[_textureMap].has(image)) {
+  if (renderer[_textureMap] && renderer[_textureMap].has(image)) {
     const texture = renderer[_textureMap].get(image);
 
     renderer.deleteTexture(texture);
@@ -26182,13 +26202,15 @@ function applyMeshGradient(mesh, type, color) {
 }
 
 function setFillColor(mesh, {
-  color: fillColor
+  color: fillColor,
+  rule = 'nonzero'
 }) {
   applyMeshGradient(mesh, 'fill', fillColor);
 
   if (!fillColor.vector) {
     mesh.setFill({
-      color: fillColor
+      color: fillColor,
+      rule
     });
   }
 
@@ -26647,10 +26669,12 @@ class Path extends _node__WEBPACK_IMPORTED_MODULE_2__["default"] {
         mesh = new _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["Mesh2D"](this.path, this.getResolution());
         mesh.path = path;
         const fillColor = this.attributes.fillColor;
+        const fillRule = this.attributes.fillRule;
 
         if (fillColor) {
           Object(_utils_color__WEBPACK_IMPORTED_MODULE_4__["setFillColor"])(mesh, {
-            color: fillColor
+            color: fillColor,
+            rule: fillRule
           });
         }
 
@@ -26781,9 +26805,14 @@ class Path extends _node__WEBPACK_IMPORTED_MODULE_2__["default"] {
     // }
 
 
-    if (this[_mesh] && key === 'fillColor') {
+    if (this[_mesh] && (key === 'fillColor' || key === 'fillRule')) {
+      const {
+        fillColor,
+        fillRule
+      } = this.attributes;
       Object(_utils_color__WEBPACK_IMPORTED_MODULE_4__["setFillColor"])(this[_mesh], {
-        color: newValue
+        color: fillColor,
+        rule: fillRule
       });
     }
 
@@ -27736,6 +27765,7 @@ class Path extends _node__WEBPACK_IMPORTED_MODULE_0__["default"] {
       d: '',
       normalize: false,
       fillColor: undefined,
+      fillRule: 'nonzero',
       strokeColor: undefined,
       lineWidth: 1,
       lineJoin: 'miter',
@@ -27774,6 +27804,15 @@ class Path extends _node__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
   set fillColor(value) {
     this[setAttribute]('fillColor', Object(_utils_color__WEBPACK_IMPORTED_MODULE_1__["parseColor"])(value));
+  }
+
+  get fillRule() {
+    return this[getAttribute]('fillRule');
+  }
+
+  set fillRule(value) {
+    if (value != null && value !== 'nonzero' && value !== 'evenodd') throw new TypeError('Invalid fill rule.');
+    this[setAttribute]('fillRule', value);
   }
 
   get strokeColor() {
@@ -29219,6 +29258,8 @@ const _textureContext = Symbol('textureContext');
 
 const _updateTextureRect = Symbol('updateTextureRect');
 
+const _textCanvas = Symbol('textCanvas');
+
 class Label extends _block__WEBPACK_IMPORTED_MODULE_2__["default"] {
   constructor(attrs = {}) {
     if (typeof attrs === 'string') attrs = {
@@ -29280,7 +29321,9 @@ class Label extends _block__WEBPACK_IMPORTED_MODULE_2__["default"] {
       if (textImage) {
         let texture = mesh.texture;
 
-        if (!texture || this[_textureContext] && this[_textureContext] !== this.renderer || texture.image !== textImage.image) {
+        if (!texture || this[_textureContext] && this[_textureContext] !== this.renderer || textImage.needsUpdate) {
+          textImage.needsUpdate = false;
+          Object(_utils_texture__WEBPACK_IMPORTED_MODULE_1__["deleteTexture"])(textImage.image, this.renderer);
           texture = Object(_utils_texture__WEBPACK_IMPORTED_MODULE_1__["createTexture"])(textImage.image, this.renderer);
           this[_updateTextureRect] = true;
         } else {
@@ -29370,14 +29413,17 @@ class Label extends _block__WEBPACK_IMPORTED_MODULE_2__["default"] {
           strokeWidth
         } = this.attributes;
         const ratio = this.layer ? this.layer.displayRatio : 1;
+        this[_textCanvas] = this[_textCanvas] || _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["ENV"].createCanvas(1, 1);
         this[_textImage] = _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["ENV"].createText(text, {
           font,
           fillColor,
           strokeColor,
           strokeWidth,
           parseFont: _mesh_js_core__WEBPACK_IMPORTED_MODULE_0__["parseFont"],
-          ratio
+          ratio,
+          textCanvas: this[_textCanvas]
         });
+        this[_textImage].needsUpdate = true;
         this.updateContours();
         this.forceUpdate();
         return this[_textImage];
@@ -33826,13 +33872,20 @@ function delegateEvents(scene) {
 
             if (layer.options.handleEvent !== false) {
               const ret = layer.dispatchPointerEvent(evt);
-              if (ret && evt.target !== layer) break;
+              if (ret && evt.target !== layer) break;else evt.cancelBubble = false; // prepare passing to next layer
             }
           }
 
           if (evt.target === layers[0]) {
             // trigger event on top layer
-            evt.target = layers[layers.length - 1];
+            for (let i = layers.length - 1; i >= 0; i--) {
+              const layer = layers[i];
+
+              if (layer.options.handleEvent !== false) {
+                evt.target = layer;
+                break;
+              }
+            }
           }
         }
 
@@ -33961,7 +34014,7 @@ class Scene extends _group__WEBPACK_IMPORTED_MODULE_5__["default"] {
     }
 
     this.options = options;
-    options.displayRatio = options.displayRatio || 1.0;
+    options.displayRatio = options.displayRatio || (typeof window && window.devicePixelRatio ? window.devicePixelRatio : 1.0);
     options.mode = options.mode || 'scale';
     options.left = 0;
     options.top = 0;

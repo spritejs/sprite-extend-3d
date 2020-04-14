@@ -1,6 +1,6 @@
 {
   "name": "sprite-extend-3d",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
   "module": "dist/sprite-extend-3d.esm.js",
@@ -39,6 +39,6 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "ogl": "github:akira-cn/ogl",
-    "spritejs": "^3.4.24"
+    "spritejs": "^3.4.26"
   }
 }
