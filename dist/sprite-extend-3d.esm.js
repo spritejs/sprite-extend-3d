@@ -9885,6 +9885,27 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     }, opts));
   }
 
+  updateLights({
+    directionalLight = this[_directionalLight],
+    pointLightPosition = this[_pointLightPosition],
+    pointLightColor = this[_pointLightColor],
+    ambientColor = this[_ambientColor]
+  } = {}) {
+    this[_directionalLight] = directionalLight;
+    this[_pointLightPosition] = pointLightPosition;
+    this[_pointLightColor] = new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](pointLightColor);
+    this[_ambientColor] = new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](ambientColor);
+    const gl = this.renderer.gl;
+    gl.clearColor(...this[_ambientColor]);
+    this.traverse(({
+      program
+    }) => {
+      if (program) {
+        this.setLights(program);
+      }
+    });
+  }
+
   setLights(program, {
     directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],

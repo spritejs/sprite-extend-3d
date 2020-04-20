@@ -404,6 +404,23 @@ export default class Layer3D extends Layer {
     return this.renderer.render({scene: root.body, camera: camera.body, target, ...opts});
   }
 
+  updateLights({directionalLight = this[_directionalLight],
+    pointLightPosition = this[_pointLightPosition],
+    pointLightColor = this[_pointLightColor],
+    ambientColor = this[_ambientColor]} = {}) {
+    this[_directionalLight] = directionalLight;
+    this[_pointLightPosition] = pointLightPosition;
+    this[_pointLightColor] = new Color(pointLightColor);
+    this[_ambientColor] = new Color(ambientColor);
+    const gl = this.renderer.gl;
+    gl.clearColor(...this[_ambientColor]);
+    this.traverse(({program}) => {
+      if(program) {
+        this.setLights(program);
+      }
+    });
+  }
+
   setLights(program, {directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],
     pointLightColor = this[_pointLightColor],
