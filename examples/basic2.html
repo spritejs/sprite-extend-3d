@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Cylinder, Sphere, Cube, shaders} = spritejs.ext3d;
+    const {Torus, Sphere, Cube, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -49,10 +49,10 @@
       cullFace: null,
     });
 
-    const cylinder = new Cylinder(program);
-    cylinder.attributes.pos = [0, 1.3, 0];
-    layer.append(cylinder);
-    cylinder.animate([
+    const torus = new Torus(program);
+    torus.attributes.pos = [0, 1.3, 0];
+    layer.append(torus);
+    torus.animate([
       {rotateY: 0},
       {rotateY: -360},
     ], {

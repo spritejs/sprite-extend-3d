@@ -4,6 +4,7 @@ import Layer3d from './node/layer3d';
 import Mesh3d from './node/mesh3d';
 import Skin from './node/skin';
 import Sphere from './node/sphere';
+import Torus from './node/torus';
 import Camera from './node/camera';
 import Cube from './node/cube';
 import Curve from './helper/curve';
@@ -34,6 +35,7 @@ Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
 export {
   Layer3d,
   Sphere,
+  Torus,
   Plane,
   Polyline3d,
   Camera,
