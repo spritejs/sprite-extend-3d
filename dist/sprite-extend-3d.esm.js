@@ -9895,8 +9895,6 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     this[_pointLightPosition] = pointLightPosition;
     this[_pointLightColor] = new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](pointLightColor);
     this[_ambientColor] = new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](ambientColor);
-    const gl = this.renderer.gl;
-    gl.clearColor(...this[_ambientColor]);
     this.traverse(({
       program
     }) => {

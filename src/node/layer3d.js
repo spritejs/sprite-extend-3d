@@ -412,8 +412,6 @@ export default class Layer3D extends Layer {
     this[_pointLightPosition] = pointLightPosition;
     this[_pointLightColor] = new Color(pointLightColor);
     this[_ambientColor] = new Color(ambientColor);
-    const gl = this.renderer.gl;
-    gl.clearColor(...this[_ambientColor]);
     this.traverse(({program}) => {
       if(program) {
         this.setLights(program);
