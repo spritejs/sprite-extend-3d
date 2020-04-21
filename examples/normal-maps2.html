@@ -31,13 +31,14 @@
     const scene = new Scene({
       container,
       displayRatio: 2,
-      webgl: 1,
+      // webgl: 1,
     });
     const layer = scene.layer3d('fglayer', {
-      // directionalLight: [1, 0, 0, 0.8],
+      directionalLight: [1, 0, 0],
+      directionalLightColor: [1, 0, 0, 1],
       // ambientColor: [0.5, 0.5, 0.5, 0],
-      pointLightColor: [1, 1, 1, 0.5],
-      pointLightPosition: [5, 3, 6],
+      // pointLightColor: [1, 0, 0, 0.5],
+      // pointLightPosition: [5, 3, 6],
       camera: {
         fov: 45,
       },

@@ -21,6 +21,7 @@ const _directionalLightColor = Symbol('directionLightColor');
 const _pointLightPosition = Symbol('pointLightPosition');
 const _pointLightColor = Symbol('pointLightColor');
 const _ambientColor = Symbol('ambientColor');
+const _pointLightDecay = Symbol('pointLightDecay');
 
 const _targets = Symbol('targets');
 const _post = Symbol('post');
@@ -71,7 +72,12 @@ export default class Layer3D extends Layer {
     this[_directionalLightColor] = parseColor(options.directionalLightColor) || [0, 0, 0, 0];
     this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
     this[_pointLightColor] = parseColor(options.pointLightColor) || [0, 0, 0, 0];
-    this[_ambientColor] = parseColor(options.ambientColor) || [1, 1, 1, 1];
+    this[_ambientColor] = parseColor(options.ambientColor) || [1, 1, 1, 0.5];
+    if(typeof options.pointLightDecay === 'number') {
+      options.pointLightDecay = [options.pointLightDecay, 0, 1];
+    }
+    this[_pointLightDecay] = options.pointLightDecay || [0, 0, 1];
+
     this[_renderOptions] = {
       update: true,
       sort: true,
@@ -178,6 +184,7 @@ export default class Layer3D extends Layer {
     program.uniforms.pointLightPosition = {value: this[_pointLightPosition]};
     program.uniforms.pointLightColor = {value: this[_pointLightColor]};
     program.uniforms.ambientColor = {value: this[_ambientColor]};
+    program.uniforms.pointLightDecay = {value: this[_pointLightDecay]};
 
     if(texture) program.uniforms.tMap = {value: texture};
     if(normalMap) program.uniforms.tNormal = {value: normalMap};
@@ -423,12 +430,18 @@ export default class Layer3D extends Layer {
     directionalLightColor = this[_directionalLightColor],
     pointLightPosition = this[_pointLightPosition],
     pointLightColor = this[_pointLightColor],
+    pointLightDecay = this[_pointLightDecay],
     ambientColor = this[_ambientColor]} = {}) {
     this[_directionalLight] = directionalLight;
     this[_directionalLightColor] = parseColor(directionalLightColor);
     this[_pointLightPosition] = pointLightPosition;
     this[_pointLightColor] = parseColor(pointLightColor);
     this[_ambientColor] = parseColor(ambientColor);
+    if(typeof pointLightDecay === 'number') {
+      this[_pointLightDecay][0] = pointLightDecay;
+    } else {
+      this[_pointLightDecay] = pointLightDecay;
+    }
     this.traverse(({program}) => {
       if(program) {
         this.setLights(program);
@@ -440,11 +453,13 @@ export default class Layer3D extends Layer {
     directionalLightColor = this[_directionalLightColor],
     pointLightPosition = this[_pointLightPosition],
     pointLightColor = this[_pointLightColor],
+    pointLightDecay = this[_pointLightDecay],
     ambientColor = this[_ambientColor]} = {}) {
     program.uniforms.directionalLight.value = directionalLight;
     program.uniforms.directionalLightColor.value = parseColor(directionalLightColor);
     program.uniforms.pointLightPosition.value = pointLightPosition;
     program.uniforms.pointLightColor.value = parseColor(pointLightColor);
+    program.uniforms.pointLightDecay.value = pointLightDecay;
     program.uniforms.ambientColor.value = parseColor(ambientColor);
     this.forceUpdate();
   }

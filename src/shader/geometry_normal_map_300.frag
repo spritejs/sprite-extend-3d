@@ -24,6 +24,7 @@ uniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置
 uniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度
 uniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置
 uniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色
+uniform vec3 pointLightDecay; // 点光源衰减系数
 uniform vec4 ambientColor; // 环境光
 
 vec3 getDiffuse(in vec3 normal) {
@@ -38,8 +39,11 @@ vec3 getDiffuse(in vec3 normal) {
   // 多个点光源
   vec3 pl = vec3(0., 0., 0.);
   for(int i = 0; i < PL_NUMBER; i++) {
-    vec3 dir = normalize(pointLightPosition[i] - vPos);// 计算点光源入射光线反方向并归一化
+    vec3 invPoint = pointLightPosition[i] - vPos;
+    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化
     float cos = max(dot(dir, normal), 0.0);
+    float dis = length(invPoint);
+    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));
     pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;
   }
 
@@ -75,7 +79,7 @@ void main() {
 #endif
   vec3 normal = getNormal(depth);
   vec3 diffuse = getDiffuse(normal);
-  vec3 ambient = ambientColor.rgb * color.rgb * ambientColor.a;// 计算环境光反射颜色
+  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色
 
-  FragColor = vec4(diffuse + ambient, color.a);
+  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);
 }
