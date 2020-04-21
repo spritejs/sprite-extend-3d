@@ -130,6 +130,8 @@
     });
 
     layer.camera.attributes.pos = [3, 2, 4];
+    const gl = layer.gl;
+    gl.clearColor(1, 1, 1, 0);
 
     function addBarycentric(node, geometry) {
       const position = geometry.attributes.position.data;
