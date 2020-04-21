@@ -31,12 +31,12 @@
     const scene = new Scene({
       container,
       displayRatio: 2,
-      // webgl: 1,
+      webgl: 1,
     });
     const layer = scene.layer3d('fglayer', {
       // directionalLight: [1, 0, 0, 0.8],
-      ambientColor: [0.5, 0.5, 0.5, 0],
-      pointLightColor: 'white',
+      // ambientColor: [0.5, 0.5, 0.5, 0],
+      pointLightColor: [1, 1, 1, 0.5],
       pointLightPosition: [5, 3, 6],
       camera: {
         fov: 45,
@@ -54,9 +54,9 @@
       await Promise.all([textureNormal.loaded, textureDiffuse.loaded, bumpMap.loaded]);
 
       const program = layer.createProgram({
-        // ...shaders.getTextureNormalMap(layer),
-        ...shaders.getGeometryNormalMap(layer, true), // with bump
-        // texture: textureDiffuse,
+        ...shaders.getTextureNormalMap(layer, true),
+        // ...shaders.getGeometryNormalMap(layer, true), // with bump
+        texture: textureDiffuse,
         normalMap: textureNormal,
         bumpMap,
         uniforms: {

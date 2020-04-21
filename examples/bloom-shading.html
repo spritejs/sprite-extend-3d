@@ -81,15 +81,16 @@
       varying vec4 vColor;
       varying float r;
 
-      uniform vec4 directionalLight; //平行光 xyz - 向量位置, w - 强度
+      uniform vec3 directionalLight; //平行光 xyz - 向量位置
+      uniform vec4 directionalLightColor;
       uniform vec2 uResolution;
 
       #define PI 3.14
 
       void main() {
-        float light = dot(vNormal, normalize(directionalLight.xyz));
+        float light = dot(vNormal, normalize(directionalLight));
         float d = dot(vNormal, vEye);
-        vec3 color = vColor.rgb + light * directionalLight.w;
+        vec3 color = vColor.rgb + light * directionalLightColor.a;
         vec3 shading = color;
 
         d = smoothstep(0.0, 0.25, d) - smoothstep(0.25, 0.3, d);

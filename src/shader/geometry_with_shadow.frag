@@ -4,19 +4,20 @@ precision highp int;
 varying vec3 vNormal;
 varying vec4 vColor;
 
-uniform vec4 directionalLight;
-
 uniform sampler2D tShadow;
 uniform float uShadow;
 
 varying vec4 vLightNDC;
+varying vec3 vDiffuse;
+
+uniform vec4 ambientColor; // 环境光
 
 float unpackRGBA (vec4 v) {
     return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));
 }
 
 void main() {
-  float l = dot(vNormal, normalize(directionalLight.xyz));
+  vec4 color = vColor;
 
   vec3 lightPos = vLightNDC.xyz / vLightNDC.w;
   
@@ -28,6 +29,10 @@ void main() {
   // If the occluded depth is smaller, we must be in uShadow
   float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));
 
-  gl_FragColor.rgb = vColor.rgb * uShadowDept + l * directionalLight.w;
-  gl_FragColor.a = vColor.a;
+  vec3 ambient = ambientColor.rgb * color.rgb * ambientColor.a;// 计算环境光反射颜色
+
+  color = vec4(vDiffuse + ambient, color.a);
+
+  gl_FragColor.rgb = color.rgb * uShadowDept;
+  gl_FragColor.a = color.a;
 }

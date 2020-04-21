@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Torus, Sphere, Cube, shaders} = spritejs.ext3d;
+    const {Torus, Cylinder, Sphere, Cube, shaders} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -34,8 +34,13 @@
       // height: 600,
       displayRatio: 2,
       // mode: 'stickyHeight',
+      // webgl: 1,
     });
     const layer = scene.layer3d('fglayer', {
+      directionalLight: [[1, 0, 0], [-1, 0, 0]],
+      directionalLightColor: [[1, 0, 0, 0.5], [1, 1, 0, 0.5]],
+      pointLightColor: ['blue', 'green'],
+      pointLightPosition: [[5, 3, 6], [5, -3, 6]],
       camera: {
         fov: 35,
       },
@@ -49,10 +54,21 @@
       cullFace: null,
     });
 
-    const torus = new Torus(program);
-    torus.attributes.pos = [0, 1.3, 0];
-    layer.append(torus);
-    torus.animate([
+    // const torus = new Torus(program);
+    // torus.attributes.pos = [0, 1.3, 0];
+    // layer.append(torus);
+    // torus.animate([
+    //   {rotateY: 0},
+    //   {rotateY: -360},
+    // ], {
+    //   duration: 10000,
+    //   iterations: Infinity,
+    // });
+
+    const cylinder = new Cylinder(program);
+    cylinder.attributes.pos = [0, 1.3, 0];
+    layer.append(cylinder);
+    cylinder.animate([
       {rotateY: 0},
       {rotateY: -360},
     ], {

@@ -15,21 +15,15 @@ uniform mat4 projectionMatrix;
 out vec2 vUv;
 out vec3 vNormal;
 out vec3 vMPos;
-out float fCos;
 out vec4 vColor;
-out vec3 vLDir;
-
-uniform vec3 pointLightPosition; //点光源位置
+out vec3 vPos;
 
 void main() {
   vUv = uv;
   vNormal = normalize(normalMatrix * normal);
   vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
-
-  vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化
-  vLDir = dir;
-
   vColor = color;
+  vPos = position;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

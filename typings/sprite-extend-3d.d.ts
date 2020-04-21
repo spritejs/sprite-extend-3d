@@ -358,6 +358,7 @@ declare namespace ext3d {
      * @param options 
      */
     setLights(program: Program, options?: Record<string, any>): void;
+    updateLights(options?: Record<string, any>): void;
     /**
      * setOrbit
      * @param options {target, element}
@@ -546,13 +547,14 @@ declare namespace ext3d {
     }
 
     export const NORMAL: Shader;
+    export const GEOMETRY: Shader;
     export const NORMAL_GEOMETRY: Shader;
+    export const TEXTURE: Shader;
     export const NORMAL_TEXTURE: Shader;
     export const TEXTURE_CUBE: Shader;
     export const TEXTURE_WITH_SHADOW: Shader;
     export const GEOMETRY_WITH_TEXTURE: Shader;
     export const GEOMETRY_WITH_SHADOW: Shader;
-    export const GEOMETRY_WITH_TEXTURE_AND_SHADOW: Shader;
     export const POLYLINE: Shader;
     export const DASHLINE: Shader;
     export const TEXTURE_NORMAL_MAP_100: Shader;

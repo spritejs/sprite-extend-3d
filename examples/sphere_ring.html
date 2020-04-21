@@ -39,7 +39,8 @@
       uniform mat3 normalMatrix;
 
       uniform mat4 viewMatrix;
-      uniform vec4 directionalLight; //平行光 xyz - 向量位置, w - 强度
+      uniform vec3 directionalLight; //平行光 xyz - 向量位置, w - 强度
+      uniform vec4 directionalLightColor;
 
       varying vec3 vNormal;
       varying vec4 vColor;
@@ -54,7 +55,7 @@
 
         vec4 invLight = viewMatrix * vec4(directionalLight.xyz, 0.0);
         float light = dot(vNormal, normalize(invLight.xyz));
-        float shading = light * directionalLight.w;
+        float shading = light * directionalLightColor.a;
 
         vec4 mv = modelViewMatrix * vec4(position, 1.0);
         // 计算点光源入射光线反方向并归一化
