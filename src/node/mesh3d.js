@@ -3,6 +3,7 @@ import {Program, Mesh, Geometry as _Geometry} from 'ogl';
 import Geometry from '../helper/geometry';
 import Group3d from './group3d';
 import Mesh3dAttr from '../attribute/mesh3d';
+import {parseColor} from '../helper/parse-color';
 
 const changedAttrs = Symbol.for('spritejs_changedAttrs');
 
@@ -104,6 +105,32 @@ export default class Mesh3d extends Group3d {
 
   get program() {
     return this[_program];
+  }
+
+  get uniforms() {
+    if(typeof Proxy === 'function') {
+      const program = this[_program];
+      const that = this;
+      if(program) {
+        return new Proxy(program.uniforms, {
+          get(obj, prop) {
+            if(prop in obj) {
+              return obj[prop].value;
+            }
+          },
+          set(obj, prop, value) {
+            if(prop in obj) {
+              obj[prop].value = parseColor(value);
+            } else {
+              obj[prop] = {value: parseColor(value)};
+            }
+            that.forceUpdate();
+          },
+        });
+      }
+      throw new Error('no program specified');
+    }
+    return null;
   }
 
   _createMesh({geometry, mode, program}) {

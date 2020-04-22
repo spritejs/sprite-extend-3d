@@ -120,49 +120,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mesh3d", function() { return _node_mesh3d__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _node_skin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(61);
+/* harmony import */ var _node_skin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(62);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Skin", function() { return _node_skin__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _node_sphere__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(62);
+/* harmony import */ var _node_sphere__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(63);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Sphere", function() { return _node_sphere__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony import */ var _node_torus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(64);
+/* harmony import */ var _node_torus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(65);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Torus", function() { return _node_torus__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
 /* harmony import */ var _node_camera__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(52);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return _node_camera__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(66);
+/* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(67);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cube", function() { return _node_cube__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(68);
+/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(69);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return _helper_curve__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(69);
+/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(70);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return _node_plane__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(71);
+/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(72);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Polyline3d", function() { return _node_polyline3d__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(73);
+/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(74);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cylinder", function() { return _node_cylinder__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
 /* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(53);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group3d", function() { return _node_group3d__WEBPACK_IMPORTED_MODULE_13__["default"]; });
 
-/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(75);
+/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(76);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return _node_render_target__WEBPACK_IMPORTED_MODULE_14__["default"]; });
 
 /* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(51);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return _helper_shadow__WEBPACK_IMPORTED_MODULE_15__["default"]; });
 
-/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(76);
+/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(77);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__["default"]; });
 
 /* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(58);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return _helper_geometry__WEBPACK_IMPORTED_MODULE_17__["default"]; });
 
-/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(77);
+/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(78);
 /* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "shaders", function() { return _shader__WEBPACK_IMPORTED_MODULE_18__; });
 
 
@@ -9317,7 +9317,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _camera__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
 /* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(53);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(57);
-/* harmony import */ var _helper_color_attribute__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(60);
+/* harmony import */ var _helper_color_attribute__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(61);
+/* harmony import */ var _helper_parse_color__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(60);
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
@@ -9327,6 +9328,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -9374,20 +9376,6 @@ const _sublayers = Symbol('sublayers');
 
 const _orbit = Symbol('orbit');
 
-function parseColor(colors) {
-  if (Array.isArray(colors)) {
-    return colors.map(c => {
-      if (typeof c === 'string') {
-        return new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](c);
-      }
-
-      return c;
-    });
-  }
-
-  return typeof colors === 'string' ? new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](colors) : colors;
-}
-
 class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
   constructor(options = {}) {
     if (options.contextType === '2d') {
@@ -9415,10 +9403,10 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     this[_utime] = [];
     this[_targets] = [];
     this[_directionalLight] = options.directionalLight || [1, 0, 0];
-    this[_directionalLightColor] = parseColor(options.directionalLightColor) || [0, 0, 0, 0];
+    this[_directionalLightColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(options.directionalLightColor) || [0, 0, 0, 0];
     this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
-    this[_pointLightColor] = parseColor(options.pointLightColor) || [0, 0, 0, 0];
-    this[_ambientColor] = parseColor(options.ambientColor) || [1, 1, 1, 0.5];
+    this[_pointLightColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(options.pointLightColor) || [0, 0, 0, 0];
+    this[_ambientColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(options.ambientColor) || [1, 1, 1, 0.5];
 
     if (typeof options.pointLightDecay === 'number') {
       options.pointLightDecay = [options.pointLightDecay, 0, 1];
@@ -9924,10 +9912,10 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     ambientColor = this[_ambientColor]
   } = {}) {
     this[_directionalLight] = directionalLight;
-    this[_directionalLightColor] = parseColor(directionalLightColor);
+    this[_directionalLightColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(directionalLightColor);
     this[_pointLightPosition] = pointLightPosition;
-    this[_pointLightColor] = parseColor(pointLightColor);
-    this[_ambientColor] = parseColor(ambientColor);
+    this[_pointLightColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(pointLightColor);
+    this[_ambientColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(ambientColor);
 
     if (typeof pointLightDecay === 'number') {
       this[_pointLightDecay][0] = pointLightDecay;
@@ -9953,11 +9941,11 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     ambientColor = this[_ambientColor]
   } = {}) {
     program.uniforms.directionalLight.value = directionalLight;
-    program.uniforms.directionalLightColor.value = parseColor(directionalLightColor);
+    program.uniforms.directionalLightColor.value = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(directionalLightColor);
     program.uniforms.pointLightPosition.value = pointLightPosition;
-    program.uniforms.pointLightColor.value = parseColor(pointLightColor);
+    program.uniforms.pointLightColor.value = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(pointLightColor);
     program.uniforms.pointLightDecay.value = pointLightDecay;
-    program.uniforms.ambientColor.value = parseColor(ambientColor);
+    program.uniforms.ambientColor.value = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_7__["parseColor"])(ambientColor);
     this.forceUpdate();
   }
 
@@ -11218,6 +11206,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(58);
 /* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(53);
 /* harmony import */ var _attribute_mesh3d__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(59);
+/* harmony import */ var _helper_parse_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(60);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -11227,6 +11216,7 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -11346,6 +11336,40 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
 
   get program() {
     return this[_program];
+  }
+
+  get uniforms() {
+    if (typeof Proxy === 'function') {
+      const program = this[_program];
+      const that = this;
+
+      if (program) {
+        return new Proxy(program.uniforms, {
+          get(obj, prop) {
+            if (prop in obj) {
+              return obj[prop].value;
+            }
+          },
+
+          set(obj, prop, value) {
+            if (prop in obj) {
+              obj[prop].value = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_5__["parseColor"])(value);
+            } else {
+              obj[prop] = {
+                value: Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_5__["parseColor"])(value)
+              };
+            }
+
+            that.forceUpdate();
+          }
+
+        });
+      }
+
+      throw new Error('no program specified');
+    }
+
+    return null;
   }
 
   _createMesh({
@@ -11953,6 +11977,30 @@ class Mesh3dAttr extends _node3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseColor", function() { return parseColor; });
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
+
+function parseColor(colors) {
+  if (Array.isArray(colors)) {
+    return colors.map(c => {
+      if (typeof c === 'string') {
+        return new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](c);
+      }
+
+      return c;
+    });
+  }
+
+  return typeof colors === 'string' ? new spritejs__WEBPACK_IMPORTED_MODULE_0__["Color"](colors) : colors;
+}
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "colorAttribute", function() { return colorAttribute; });
 function colorAttribute(node, geometry) {
   const updateColor = geometry.attributes.color;
@@ -11981,7 +12029,7 @@ function colorAttribute(node, geometry) {
 }
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12119,7 +12167,7 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Skin, 'skin');
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12128,7 +12176,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(63);
+/* harmony import */ var _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(64);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -12180,7 +12228,7 @@ _defineProperty(Sphere, "Attr", _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__["
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Sphere, 'sphere');
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12265,7 +12313,7 @@ class SphereAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12274,7 +12322,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_torus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
+/* harmony import */ var _attribute_torus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(66);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -12322,7 +12370,7 @@ _defineProperty(Torus, "Attr", _attribute_torus__WEBPACK_IMPORTED_MODULE_2__["de
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Torus, 'torus');
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12388,7 +12436,7 @@ class TorusAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12398,7 +12446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(57);
-/* harmony import */ var _attribute_cube__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(67);
+/* harmony import */ var _attribute_cube__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -12447,7 +12495,7 @@ _defineProperty(Cube, "Attr", _attribute_cube__WEBPACK_IMPORTED_MODULE_3__["defa
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Cube, 'cube');
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12538,7 +12586,7 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12566,7 +12614,7 @@ class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
 }
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12575,7 +12623,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(70);
+/* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(71);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -12621,7 +12669,7 @@ _defineProperty(Plane, "Attr", _attribute_plane__WEBPACK_IMPORTED_MODULE_2__["de
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Plane, 'plane');
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12678,7 +12726,7 @@ class PlaneAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12687,7 +12735,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
-/* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(72);
+/* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -12840,7 +12888,7 @@ _defineProperty(Polyline3d, "Attr", _attribute_polyline3d__WEBPACK_IMPORTED_MODU
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Polyline3d, 'polyline3d');
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12891,7 +12939,7 @@ class PolylineAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12900,7 +12948,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(74);
+/* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(75);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -12954,7 +13002,7 @@ _defineProperty(Cylinder, "Attr", _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Cylinder, 'cylinder');
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13059,7 +13107,7 @@ class CylinderAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13196,7 +13244,7 @@ class RenderTarget extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(RenderTarget, 'rendertarget');
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13226,7 +13274,7 @@ class TextureLoader {
 }
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13252,30 +13300,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_300", function() { return GEOMETRY_NORMAL_MAP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_WITH_BUMP_300", function() { return GEOMETRY_NORMAL_MAP_WITH_BUMP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGeometryNormalMap", function() { return getGeometryNormalMap; });
-/* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(78);
-/* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(79);
-/* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(80);
-/* harmony import */ var _geometry_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(81);
-/* harmony import */ var _texture_frag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(82);
-/* harmony import */ var _texture_vert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(83);
-/* harmony import */ var _texture_cube_frag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(84);
-/* harmony import */ var _texture_cube_vert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(85);
-/* harmony import */ var _texture_with_shadow_frag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(86);
-/* harmony import */ var _texture_with_shadow_vert__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(87);
-/* harmony import */ var _geometry_with_shadow_frag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(88);
-/* harmony import */ var _geometry_with_shadow_vert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(89);
-/* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(90);
-/* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(91);
-/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(92);
-/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(93);
-/* harmony import */ var _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(94);
-/* harmony import */ var _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(95);
-/* harmony import */ var _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(96);
-/* harmony import */ var _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(97);
-/* harmony import */ var _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(98);
-/* harmony import */ var _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(99);
-/* harmony import */ var _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(100);
-/* harmony import */ var _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(101);
+/* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(79);
+/* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(80);
+/* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(81);
+/* harmony import */ var _geometry_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82);
+/* harmony import */ var _texture_frag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(83);
+/* harmony import */ var _texture_vert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(84);
+/* harmony import */ var _texture_cube_frag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(85);
+/* harmony import */ var _texture_cube_vert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(86);
+/* harmony import */ var _texture_with_shadow_frag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(87);
+/* harmony import */ var _texture_with_shadow_vert__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(88);
+/* harmony import */ var _geometry_with_shadow_frag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(89);
+/* harmony import */ var _geometry_with_shadow_vert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(90);
+/* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(91);
+/* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(92);
+/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(93);
+/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(94);
+/* harmony import */ var _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(95);
+/* harmony import */ var _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(96);
+/* harmony import */ var _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(97);
+/* harmony import */ var _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(98);
+/* harmony import */ var _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(99);
+/* harmony import */ var _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(100);
+/* harmony import */ var _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(101);
+/* harmony import */ var _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(102);
 
 
 
@@ -13387,7 +13435,7 @@ function getGeometryNormalMap(layer, bump = false) {
 }
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13395,7 +13443,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nvoid main() {\n    gl_FragColor.rgb = normalize(vNormal);\n    gl_FragColor.a = 1.0;\n}");
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13403,7 +13451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec3 vNormal;\n\nvoid main() {\n    vNormal = normalize(normalMatrix * normal);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13411,7 +13459,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec4 mv, in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - mv.xyz;\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    \n    pl += pointLightColor[i].a * cos * decay * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vNormal;\n\nvoid main() {\n  vec4 color = vColor;\n  // ambientColor.a 是强度\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  // 漫反射\n  vec3 diffuse = getDiffuse(vPos, vNormal);\n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13419,7 +13467,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);;\n  vColor = color;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13427,7 +13475,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform sampler2D tMap;\nvarying vec2 vUv;\nvarying vec4 vPos;\n\nvarying vec3 vDiffuse;\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec4 mv, in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - mv.xyz;\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    \n    pl += pointLightColor[i].a * cos * decay * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 diffuse = getDiffuse(vPos, vNormal);\n\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13435,7 +13483,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying vec4 vPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13443,7 +13491,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\nvarying vec4 vColor;\n\nuniform samplerCube tMap;\n\nvarying vec4 vPos;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec4 mv, in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - mv.xyz;\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    \n    pl += pointLightColor[i].a * cos * decay * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = textureCube(tMap, vDir);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 diffuse = getDiffuse(vPos, vNormal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13451,7 +13499,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\nvarying vec4 vColor;\nvarying vec4 vPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vDir = normalize(position);\n  vColor = color;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13459,7 +13507,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float uShadow;\nvarying vec2 vUv;\n\nvarying float fCos;\nvarying float fShading;\nvarying vec4 vColor;\nvarying vec3 vDiffuse;\n\nuniform vec4 ambientColor; // 环境光\n\nvarying vec4 vLightNDC; // 阴影\nvarying vec4 vPos;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\n\nvec3 getDiffuse(in vec4 mv, in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - mv.xyz;\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    \n    pl += pointLightColor[i].a * cos * decay * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 diffuse = getDiffuse(vPos, vNormal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  color = vec4((diffuse + ambient) * color.rgb, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadowDept;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13467,7 +13515,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13475,7 +13523,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform sampler2D tShadow;\nuniform float uShadow;\nuniform mat4 viewMatrix;\n\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec4 mv, in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - mv.xyz;\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    \n    pl += pointLightColor[i].a * cos * decay * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  vec3 diffuse = getDiffuse(vPos, vNormal);\n  color = vec4((diffuse + ambient) * color.rgb, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadowDept;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13483,7 +13531,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13491,7 +13539,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nvarying vec4 vColor;\n\nvoid main() {\n    gl_FragColor = vColor;\n}");
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13499,7 +13547,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute float side;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec4 vColor;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    gl_Position = getPosition();\n    vColor = color;\n}");
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13507,7 +13555,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nuniform float uTotalLength;\nuniform float uDashLength;\nuniform float uDashOffset;\n\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying float fSeg;\n\nvoid main() {\n    float f = fract((uDashOffset + fSeg) / (2.0 * uDashLength));\n    f = 1.0 - step(0.5, f);\n    gl_FragColor = vColor * f;\n}");
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13515,7 +13563,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute vec2 uv;\nattribute float side;\nattribute vec4 color;\nattribute float seg;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying float fSeg;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    vUv = uv;\n    gl_Position = getPosition();\n    vColor = color;\n    fSeg = seg;\n}");
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13523,20 +13571,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  \n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 95 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
-
-/***/ }),
 /* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
 /* 97 */
@@ -13544,7 +13584,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec3 vMPos;\nout vec4 vColor;\nout vec3 vPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
 /* 98 */
@@ -13552,7 +13592,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  \n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec3 vMPos;\nout vec4 vColor;\nout vec3 vPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
 /* 99 */
@@ -13560,7 +13600,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  \n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
 /* 100 */
@@ -13568,10 +13608,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec3 vPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
 /* 101 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec3 vMPos;\nin vec4 vColor;\nin vec3 vPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay; // 点光源衰减系数\nuniform vec4 ambientColor; // 环境光\n\nvec3 getDiffuse(in vec3 normal) {\n  // 多个平行光\n  vec3 dl = vec3(0., 0., 0.);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    vec4 invDirectional = vec4(directionalLight[j], 0.0);\n    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);\n    dl += directionalLightColor[j].a * _dl * directionalLightColor[j].rgb;\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0., 0., 0.);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    vec3 invPoint = pointLightPosition[i] - vPos;\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));\n    pl += pointLightColor[i].a * cos * pointLightColor[i].rgb;\n  }\n\n  return dl + pl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vMPos.xyz);\n  vec3 pos_dy = dFdy(vMPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 diffuse = getDiffuse(normal);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
+
+/***/ }),
+/* 102 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

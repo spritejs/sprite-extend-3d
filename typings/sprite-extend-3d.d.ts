@@ -387,6 +387,10 @@ declare namespace ext3d {
     get meshes(): Array<Mesh3d>;
     get model(): any;
     get program(): Program;
+    /**
+     * The proxy of program.uniforms.
+     */
+    get uniforms(): any;
     addEventListener(type: string, listener: Function, options?: Record<string, any>): this;
     cloneNode(deep?: boolean): Mesh3d;
     dispose(): void;

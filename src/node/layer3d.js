@@ -1,10 +1,11 @@
-import {Layer, registerNode, ENV, Block, Color} from 'spritejs';
+import {Layer, registerNode, ENV, Block} from 'spritejs';
 import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Post, GLTFLoader, Mesh} from 'ogl';
 import Shadow from '../helper/shadow';
 import Camera from './camera';
 import Group3d from './group3d';
 import Mesh3d from './mesh3d';
 import {colorAttribute} from '../helper/color-attribute';
+import {parseColor} from '../helper/parse-color';
 
 const defaultOption = {
   depth: true,
@@ -32,18 +33,6 @@ const _root = Symbol('root');
 const _camera = Symbol('camera');
 const _sublayers = Symbol('sublayers');
 const _orbit = Symbol('orbit');
-
-function parseColor(colors) {
-  if(Array.isArray(colors)) {
-    return colors.map((c) => {
-      if(typeof c === 'string') {
-        return new Color(c);
-      }
-      return c;
-    });
-  }
-  return typeof colors === 'string' ? new Color(colors) : colors;
-}
 
 export default class Layer3D extends Layer {
   constructor(options = {}) {
