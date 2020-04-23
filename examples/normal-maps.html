@@ -170,7 +170,7 @@
             vec3 light = normalize(vec3(sin(uTime), 1.0, cos(uTime)));
             float shading = dot(normal, light) * 0.5;
             
-            FragColor.rgb = tex + shading;
+            FragColor.rgb = tex + vec3(shading, 0, 0);
             FragColor.a = 1.0;
         }
     `;
@@ -211,7 +211,7 @@
     const model = layer.loadModel('https://s3.ssl.qhres.com/static/97354b0b0e9e7c93.json');
     const mesh = new Mesh3d(program, {model});
     layer.append(mesh);
-    layer.bindTime(program, {playbackRate: 0.5});
+    // layer.bindTime(program, {playbackRate: 0.5});
     layer.setOrbit();
   </script>
 </body>

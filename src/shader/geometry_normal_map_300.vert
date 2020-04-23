@@ -17,7 +17,7 @@ out vec2 vUv;
 out vec3 vNormal;
 out vec3 vMPos;
 out vec4 vColor;
-out vec3 vPos;
+out vec4 vPos;
 out vec3 vCameraPos;
 
 void main() {
@@ -25,7 +25,7 @@ void main() {
   vNormal = normalize(normalMatrix * normal);
   vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
   vColor = color;
-  vPos = position;
+  vPos = modelViewMatrix * vec4(position, 1.0);
   vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);

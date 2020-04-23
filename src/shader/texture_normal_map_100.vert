@@ -16,7 +16,7 @@ varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vMPos;
 varying vec4 vColor;
-varying vec3 vPos;
+varying vec4 vPos;
 varying vec3 vCameraPos;
 
 void main() {
@@ -24,7 +24,7 @@ void main() {
   vNormal = normalize(normalMatrix * normal);
   vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
   vColor = color;
-  vPos = position;
+  vPos = modelViewMatrix * vec4(position, 1.0);
   vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);

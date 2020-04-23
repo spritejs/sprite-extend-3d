@@ -35,16 +35,17 @@
     });
     const layer = scene.layer3d('fglayer', {
       directionalLight: [1, 0, 0],
-      directionalLightColor: [1, 0, 0, 1],
+      directionalLightColor: [1, 1, 1, 1],
+      ambientColor: [1, 1, 1, 0.5],
       // ambientColor: [0.5, 0.5, 0.5, 0],
-      // pointLightColor: [1, 0, 0, 0.5],
+      // pointLightColor: [1, 0, 0, 1],
       // pointLightPosition: [5, 3, 6],
       camera: {
         fov: 45,
       },
     });
 
-    layer.camera.attributes.pos = [1.5, 0, 2];
+    layer.camera.attributes.pos = [0, 0, 4];
     layer.camera.lookAt([0, 0, 0]);
 
     (async function () {
@@ -55,14 +56,15 @@
       await Promise.all([textureNormal.loaded, textureDiffuse.loaded, bumpMap.loaded]);
 
       const program = layer.createProgram({
-        ...shaders.getTextureNormalMap(layer, true),
-        // ...shaders.getGeometryNormalMap(layer, true), // with bump
+        ...shaders.getTextureNormalMap(layer, false),
+        // ...shaders.getGeometryNormalMap(layer, false),
         texture: textureDiffuse,
         normalMap: textureNormal,
+        cullFace: null,
         bumpMap,
         uniforms: {
-          uNormalScale: {value: 5},
-          specularIntensity: {value: 10},
+          uNormalScale: {value: 2},
+          // specularIntensity: {value: 10},
           // uNormalUVScale: {value: 1},
         },
       });
