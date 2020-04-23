@@ -51,6 +51,9 @@
     const program = layer.createProgram({
       ...shaders.NORMAL_GEOMETRY,
       cullFace: null,
+      uniforms: {
+        specularIntensity: {value: 0.5},
+      },
     });
 
     const texture = layer.createTexture('https://p3.ssl.qhimg.com/t01d6c6c93fdddf1e42.jpg');

@@ -53,6 +53,9 @@
     const program = layer.createProgram({
       ...shaders.NORMAL_GEOMETRY,
       cullFace: null,
+      uniforms: {
+        specularIntensity: {value: 0.5},
+      },
     });
 
     // const torus = new Torus(program);

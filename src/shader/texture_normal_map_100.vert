@@ -10,12 +10,14 @@ uniform mat3 normalMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
+uniform vec3 cameraPosition;
 
 varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vMPos;
 varying vec4 vColor;
 varying vec3 vPos;
+varying vec3 vCameraPos;
 
 void main() {
   vUv = uv;
@@ -23,6 +25,7 @@ void main() {
   vMPos = (modelMatrix * vec4(position, 1.0)).xyz;
   vColor = color;
   vPos = position;
+  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
