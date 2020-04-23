@@ -23,7 +23,7 @@ uniform vec4 ambientColor; // 环境光
 uniform float specularFocus; // 镜面反射聚焦度
 uniform float specularIntensity; // 镜面反射强度
 
-vec3 getDiffuse(in vec4 mv, in vec3 normal, in vec3 eye) {
+vec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {
   // 多个平行光
   vec3 dl = vec3(0., 0., 0.);
   for(int j = 0; j < DL_NUMBER; j++) {
@@ -37,7 +37,7 @@ vec3 getDiffuse(in vec4 mv, in vec3 normal, in vec3 eye) {
   // 多个点光源
   vec3 pl = vec3(0., 0., 0.);
   for(int i = 0; i < PL_NUMBER; i++) {
-    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - mv.xyz;
+    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;
     vec3 halfLE = normalize(invPoint + eye);
     float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);
 
@@ -71,7 +71,7 @@ void main() {
   vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色
 
   vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);
-  vec3 diffuse = getDiffuse(vPos, vNormal, eyeDirection);
+  vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);
 
   color = vec4((diffuse + ambient) * color.rgb, color.a);
 

@@ -73,12 +73,12 @@
         colors: 'gray',
       });
       layer.append(mesh);
-      // layer.setOrbit();
-      layer.tick(() => {
-        mesh.attributes.rotateY += 0.5;
-        mesh.attributes.rotateZ += 0.3;
-        mesh.attributes.rotateX -= 0.1;
-      });
+      layer.setOrbit();
+      // layer.tick(() => {
+      //   mesh.attributes.rotateY += 0.5;
+      //   mesh.attributes.rotateZ += 0.3;
+      //   mesh.attributes.rotateX -= 0.1;
+      // });
     }());
   </script>
 </body>

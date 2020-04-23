@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Torus, Cylinder, Sphere, Cube, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+      // webgl: 1,
+    });
+    const layer = scene.layer3d('fglayer', {
+      directionalLight: [[1, 0, 0]],
+      directionalLightColor: [[1, 0, 0, 0.5]],
+      // pointLightColor: ['blue'],
+      // pointLightPosition: [[5, 3, 6]],
+      // pointLightDecay: 0.01,
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [5, 3, 6];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+      uniforms: {
+        specularIntensity: {value: 0.5},
+      },
+    });
+
+    const sphere = new Sphere(program);
+    sphere.attr({
+      // phiLength: Math.PI,
+    });
+    layer.append(sphere);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>
