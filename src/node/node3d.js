@@ -176,7 +176,7 @@ export default class Node3d extends Node {
       if(key === 'scaleX' || key === 'scaleY' || key === 'scaleZ') {
         body.scale[key.toLowerCase().slice(-1)] = newValue;
       }
-      if(key === 'raycast') {
+      if(key === 'raycast' && body.geometry) {
         body.geometry.raycast = newValue;
       }
       if(key === 'display') {

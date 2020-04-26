@@ -11,7 +11,6 @@ varying vec2 vUv;
 varying float fCos;
 varying float fShading;
 varying vec4 vColor;
-varying vec3 vDiffuse;
 varying vec3 vCameraPos;
 
 uniform vec4 ambientColor; // 环境光

@@ -12,7 +12,7 @@ export default class Camera extends Group3d {
   static Attr = CameraAttr;
 
   constructor(gl, {fov = 45, near = 0.1, far = 100, aspect = 1, left, right, bottom, top, ...attrs} = {}) {
-    super({fov, near, far, aspect, left, right, bottom, top});
+    super(attrs);
     this.groupBody = this.body;
     this.setBody(new _Camera(gl, {fov, near, far, aspect, left, right, bottom, top}), false);
     this.attributes[setAttribute]('mode', this.body.type);

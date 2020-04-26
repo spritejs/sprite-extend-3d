@@ -9,7 +9,6 @@ varying vec2 vUv;
 varying vec4 vPos;
 varying vec3 vCameraPos;
 
-varying vec3 vDiffuse;
 uniform mat4 viewMatrix;
 
 #define DL_NUMBER 8

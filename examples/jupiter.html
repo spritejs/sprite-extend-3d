@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const fragment = `
+      precision highp float;
+      precision highp int;
+
+      varying vec3 vNormal;
+      varying vec4 vColor;
+
+      uniform sampler2D tMap;
+      varying vec2 vUv;
+      varying vec4 vPos;
+      varying vec3 vCameraPos;
+
+      varying vec3 vDiffuse;
+      uniform mat4 viewMatrix;
+
+      #define DL_NUMBER 8
+      #define PL_NUMBER 16
+      uniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置
+      uniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度
+      uniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置
+      uniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色
+      uniform vec3 pointLightDecay; // 点光源衰减系数
+      uniform vec4 ambientColor; // 环境光
+      uniform float specularFocus; // 镜面反射聚焦度
+      uniform float specularIntensity; // 镜面反射强度
+
+      vec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {
+        // 多个平行光
+        vec3 dl = vec3(0., 0., 0.);
+        for(int j = 0; j < DL_NUMBER; j++) {
+          vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);
+          vec3 halfLE = normalize(invDirectional.xyz + eye);
+          float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);
+          float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);
+          dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);
+        }
+
+        // 多个点光源
+        vec3 pl = vec3(0., 0., 0.);
+        for(int i = 0; i < PL_NUMBER; i++) {
+          vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;
+          vec3 halfLE = normalize(invPoint + eye);
+          float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);
+
+          float cos = max(dot(normalize(invPoint), normal), 0.0);
+          float dis = length(invPoint);
+          float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));
+          
+          pl += pointLightColor[i].a * cos * (decay * pointLightColor[i].rgb + specular);
+        }
+
+        return dl + pl;
+      }
+
+      vec2 transform(vec2 v0, mat3 matrix) {
+        return vec2(matrix * vec3(v0, 1.0));
+      }
+
+      vec2 rotate(vec2 v0, vec2 origin, float ang) {
+        float sinA = sin(ang);
+        float cosA = cos(ang);
+        mat3 m = mat3(cosA, -sinA, 0, sinA, cosA, 0, 0, 0, 1);
+        return transform(v0 - origin, m) + origin;
+      }
+
+      uniform float uTime;
+      void main() {
+        vec4 color = vColor;
+        vec2 uv = vUv;
+        // if(uv.y > 0.48 && uv.y < 0.625) {
+        //   vec2 st = uv * 50.0;
+        //   // uv.x = vUv.x + 0.01 * (2.0 - abs(floor(uv.y))) * uTime;
+        //   uv = rotate(fract(st), vec2(0.5), uTime);
+        // }
+
+        vec4 texColor = texture2D(tMap, uv);
+
+        float alpha = texColor.a;
+        color.rgb = mix(color.rgb, texColor.rgb, alpha);
+        color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));
+        color.a = texColor.a + (1.0 - texColor.a) * color.a;
+
+        vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);
+        vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);
+
+        vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色
+        gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);
+      }
+    `;
+
+    const {Scene} = spritejs;
+    const {Sphere, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+      // webgl: 1,
+    });
+    const layer = scene.layer3d('fglayer', {
+      alpha: false,
+      directionalLight: [[1, 0, 0]],
+      directionalLightColor: [[1, 0, 0, 0.5]],
+      // pointLightColor: ['blue'],
+      // pointLightPosition: [[5, 3, 6]],
+      // pointLightDecay: 0.01,
+      camera: {
+        fov: 35,
+      },
+    });
+
+    layer.camera.attributes.pos = [0, 0, 3];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const texture = layer.createTexture({
+      image: 'https://p3.ssl.qhimg.com/t01cb952f0cd5a70487.jpg',
+      wrapS: layer.gl.REPEAT,
+    });
+
+    const program = layer.createProgram({
+      vertex: shaders.TEXTURE.vertex,
+      fragment,
+      cullFace: null,
+      texture,
+      uniforms: {
+        specularIntensity: {value: 0.5},
+        uTime: {value: 0},
+      },
+    });
+
+    const sphere = new Sphere(program);
+    sphere.attr({
+      // phiLength: Math.PI,
+      widthSegments: 120,
+      heightSegments: 60,
+    });
+    layer.append(sphere);
+
+    layer.bindTime(program);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>

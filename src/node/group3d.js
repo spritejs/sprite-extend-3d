@@ -8,7 +8,7 @@ const _children = Symbol('children');
 export default class Group3d extends Node3d {
   constructor(attrs = {}) {
     super(attrs);
-    this.setBody(new Transform(), false);
+    this.setBody(new Transform());
     this[_children] = [];
     this[_zOrder] = 0;
   }
