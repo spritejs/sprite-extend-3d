@@ -70,11 +70,11 @@
       f1=f1*f1*(3.0-2.0*f1);
       f2=f2*f2*(3.0-2.0*f2);
       vec4 n1 = vec4(0,1.0,157.0,158.0);
-      vec4 n2 = vec4(113.0,114.0,270.0,271.0);	
+      vec4 n2 = vec4(113.0,114.0,270.0,271.0);
       vec4 vs1 = mix(hash4(p1), hash4(n1.yyyy+p1), f1);
       vec4 vs2 = mix(hash4(n1.zzzz+p1), hash4(n1.wwww+p1), f1);
       vec4 vs3 = mix(hash4(p2), hash4(n1.yyyy+p2), f1);
-      vec4 vs4 = mix(hash4(n1.zzzz+p2), hash4(n1.wwww+p2), f1);	
+      vec4 vs4 = mix(hash4(n1.zzzz+p2), hash4(n1.wwww+p2), f1);
       vs1 = mix(vs1, vs2, f2);
       vs3 = mix(vs3, vs4, f2);
       vs2 = mix(hash4(n2.xxxx+p1), hash4(n2.yyyy+p1), f1);
