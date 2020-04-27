@@ -1,6 +1,9 @@
 import normalFrag from './normal.frag';
 import normalVert from './normal.vert';
 
+import baseGeometryFrag from './base_geometry.frag';
+import baseGeometryVert from './base_geometry.vert';
+
 import geometryFrag from './geometry.frag';
 import geometryVert from './geometry.vert';
 
@@ -35,6 +38,11 @@ import geometryNormalMapVert300 from './geometry_normal_map_300.vert';
 export const NORMAL = {
   vertex: normalVert,
   fragment: normalFrag,
+};
+
+export const BASE_GEOMETRY = {
+  vertex: baseGeometryVert,
+  fragment: baseGeometryFrag,
 };
 
 export const GEOMETRY = {

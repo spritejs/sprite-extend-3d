@@ -39,6 +39,6 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "ogl": "github:akira-cn/ogl",
-    "spritejs": "^3.6.2"
+    "spritejs": "^3.7.0"
   }
 }

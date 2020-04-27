@@ -552,6 +552,7 @@ declare namespace ext3d {
 
     export const NORMAL: Shader;
     export const GEOMETRY: Shader;
+    export const BASE_GEOMETRY: Shader;
     export const NORMAL_GEOMETRY: Shader;
     export const TEXTURE: Shader;
     export const NORMAL_TEXTURE: Shader;

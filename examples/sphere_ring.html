@@ -38,10 +38,6 @@
       uniform mat4 projectionMatrix;
       uniform mat3 normalMatrix;
 
-      uniform mat4 viewMatrix;
-      uniform vec3 directionalLight; //平行光 xyz - 向量位置, w - 强度
-      uniform vec4 directionalLightColor;
-
       varying vec3 vNormal;
       varying vec4 vColor;
       varying vec2 vUv;
@@ -52,25 +48,9 @@
 
       void main() {
         vNormal = normalize(normalMatrix * normal);
-
-        vec4 invLight = viewMatrix * vec4(directionalLight.xyz, 0.0);
-        float light = dot(vNormal, normalize(invLight.xyz));
-        float shading = light * directionalLightColor.a;
-
         vec4 mv = modelViewMatrix * vec4(position, 1.0);
-        // 计算点光源入射光线反方向并归一化
-        vec3 invDir = normalize((viewMatrix * vec4(pointLightPosition, 1.0)).xyz - mv.xyz);
-        float cos = max(dot(invDir, vNormal), 0.0);// 计算入射角余弦值
-
-        // vec3 dir = normalize(pointLightPosition - position);// 计算点光源入射光线反方向并归一化
-        // float cos = max(dot(dir, vNormal), 0.0);
-
-        vec3 diffuse = pointLightColor.rgb * color.rgb * pointLightColor.a * cos;// 计算点光源漫反射颜色
-        vec3 ambient = ambientColor.rgb * color.rgb;// 计算环境光反射颜色
-
-        vColor = vec4(diffuse + ambient, color.a) + shading;
+        vColor = color;
         vUv = uv;
-
         gl_Position = projectionMatrix * mv;
       }
     `;
@@ -100,6 +80,7 @@
       displayRatio: 2,
     });
     const layer = scene.layer3d('fglayer', {
+      alpha: false,
       pointLightColor: 'red',
       pointLightPosition: [3, 0, 0],
       camera: {
@@ -124,17 +105,20 @@
     // layer.bindTime(program);
 
     const s = new Sphere(program, {
-      transparent: true,
       radius: 0.6,
       zIndex: 100,
+      colors: 'rgba(255, 255, 255, 0.3)',
     });
 
     const program2 = layer.createProgram({
-      transparent: true,
-      ...shaders.NORMAL,
+      transparent: false,
+      ...shaders.BASE_GEOMETRY,
+      // ...shaders.NORMAL_GEOMETRY,
     });
 
-    const s2 = new Sphere(program2);
+    const s2 = new Sphere(program2, {
+      colors: 'white',
+    });
     layer.append(s2, s);
 
     layer.setOrbit();
