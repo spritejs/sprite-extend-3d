@@ -8391,8 +8391,8 @@ class Renderer {
 
             if ((!previousMesh || !previousMesh.filterCanvas || previousMesh.filter !== currentFilter) && (!nextMesh || !nextMesh.filterCanvas || nextMesh.filter !== currentFilter)) {
               if (hasGlobalTransform) {
-                filterContext.save();
-                filterContext.transform(...this.globalTransformMatrix);
+                filterContext.save(); // filterContext.transform(...this.globalTransformMatrix);
+
                 Object(_utils_canvas__WEBPACK_IMPORTED_MODULE_4__["drawMesh2D"])(originalMesh, filterContext, false);
                 filterContext.restore();
                 Object(_utils_canvas__WEBPACK_IMPORTED_MODULE_4__["applyFilter"])(filterContext, currentFilter);
@@ -8405,8 +8405,7 @@ class Renderer {
               drawFilterContext(renderer, filterContext, width, height);
             } else {
               if (hasGlobalTransform) {
-                filterContext.save();
-                filterContext.transform(...this.globalTransformMatrix);
+                filterContext.save(); // filterContext.transform(...this.globalTransformMatrix);
               }
 
               Object(_utils_canvas__WEBPACK_IMPORTED_MODULE_4__["drawMesh2D"])(originalMesh, filterContext, false);
@@ -10188,6 +10187,14 @@ function drawMesh2D(mesh, context, enableFilter = true, cloudFill = null, cloudS
   let stroke = false;
   let fill = false;
   context.globalAlpha = mesh.getOpacity();
+
+  if (mesh._updateMatrix) {
+    const acc = mesh.transformScale / mesh.contours.scale;
+
+    if (acc > 1.5) {
+      mesh.accurate(mesh.transformScale);
+    }
+  }
 
   if (mesh.lineWidth) {
     let gradient = mesh.gradient && mesh.gradient.stroke;
@@ -12171,7 +12178,7 @@ class Figure2D {
     if (options.path) this[_path] = parse_svg_path__WEBPACK_IMPORTED_MODULE_0___default()(options.path);else this[_path] = [];
     this[_contours] = null;
     this[_simplify] = options.simplify || 0;
-    this[_scale] = options.scale || 1;
+    this[_scale] = options.scale || 2;
   }
 
   get contours() {
@@ -14147,7 +14154,7 @@ class Mesh2D {
 
     if (path) {
       const simplify = this.contours.simplify;
-      const contours = accurate(this.contours.path, scale, simplify);
+      const contours = accurate(this.contours.path, 2 * scale, simplify);
       this[_mesh] = null;
       this[_contours] = contours;
     }
@@ -19121,6 +19128,21 @@ class Node {
     return m;
   }
 
+  get worldScaling() {
+    const m = this.renderMatrix;
+    return [Math.hypot(m[0], m[1]), Math.hypot(m[2], m[3])];
+  }
+
+  get worldRotation() {
+    const m = this.renderMatrix;
+    return Math.atan2(m[1], m[3]);
+  }
+
+  get worldPosition() {
+    const m = this.renderMatrix;
+    return [m[4], m[5]];
+  }
+
   get uniforms() {
     return this[_uniforms];
   }
@@ -19442,6 +19464,13 @@ class Node {
     const children = this.parent.children;
     const idx = children.indexOf(this);
     return children[idx + distance];
+  }
+
+  getWorldPosition(offsetX, offsetY) {
+    const m = this.renderMatrix;
+    const x = offsetX * m[0] + offsetY * m[2] + m[4];
+    const y = offsetX * m[1] + offsetY * m[3] + m[5];
+    return [x, y];
   }
 
   getOffsetPosition(x, y) {
@@ -32994,6 +33023,8 @@ const _pass = Symbol('pass');
 
 const _fbo = Symbol('fbo');
 
+const _tickers = Symbol('tickers');
+
 class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
   constructor(options = {}) {
     super();
@@ -33352,7 +33383,7 @@ class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
    */
 
 
-  tick(handler, _ref = {}) {
+  tick(handler = null, _ref = {}) {
     let {
       duration = Infinity
     } = _ref,
@@ -33361,21 +33392,48 @@ class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
     // this._prepareRenderFinished();
     const t = this.timeline.fork(timelineOptions);
     const layer = this;
+    this[_tickers] = this[_tickers] || [];
+
+    this[_tickers].push({
+      handler,
+      duration
+    });
 
     const update = () => {
       let _resolve = null;
       let _requestID = null;
 
       const _update = () => {
-        const p = Math.min(1.0, t.currentTime / duration);
-        const ret = handler ? handler(t.currentTime, p) : null;
+        // const ret = handler ? handler(t.currentTime, p) : null;
+        const ret = this[_tickers].map(({
+          handler,
+          duration
+        }) => {
+          const p = Math.min(1.0, t.currentTime / duration);
+          const value = handler ? handler(t.currentTime, p) : null;
+          return {
+            value,
+            p
+          };
+        });
 
         if (layer[_autoRender] && !layer[_tickRender]) {
           layer[_tickRender] = Promise.resolve().then(() => {
             layer.render();
             delete layer[_tickRender];
 
-            if (ret !== false && p < 1.0) {
+            for (let i = ret.length - 1; i >= 0; i--) {
+              const {
+                value,
+                p
+              } = ret[i];
+
+              if (value === false || p >= 1.0) {
+                this[_tickers].splice(i, 1);
+              }
+            }
+
+            if (this[_tickers].length > 0) {
               update();
             }
           });
@@ -33396,8 +33454,6 @@ class Layer extends _group__WEBPACK_IMPORTED_MODULE_3__["default"] {
         prepareRender._requestID = _requestID;
         prepareRender._type = 'ticker';
         this[_prepareRender] = prepareRender;
-      } else {
-        Object(_utils_animation_frame__WEBPACK_IMPORTED_MODULE_2__["requestAnimationFrame"])(_update);
       }
     };
 
@@ -34080,7 +34136,7 @@ function delegateEvents(scene) {
 
         if (evt.type === 'touchmove' || evt.type === 'touchend') {
           const capturedTarget = touchEventCapturedTargets[id];
-          if (capturedTarget) capturedTarget.dispatchEvent(event);
+          if (capturedTarget) capturedTarget.dispatchEvent(evt);
           if (evt.type === 'touchend') delete touchEventCapturedTargets[id];
         } else {
           for (let i = layers.length - 1; i >= 0; i--) {

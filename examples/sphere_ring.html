@@ -112,12 +112,12 @@
 
     const program2 = layer.createProgram({
       transparent: false,
-      ...shaders.BASE_GEOMETRY,
-      // ...shaders.NORMAL_GEOMETRY,
+      // ...shaders.BASE_GEOMETRY,
+      ...shaders.NORMAL_GEOMETRY,
     });
 
     const s2 = new Sphere(program2, {
-      colors: 'white',
+      // colors: 'white',
     });
     layer.append(s2, s);
 

@@ -58,6 +58,14 @@
     });
     layer.append(label);
     layer.setOrbit();
+
+    layer.tick(() => {
+      console.log(111);
+    });
+
+    layer.tick(() => {
+      console.log(222);
+    });
   </script>
 </body>
 </html>
