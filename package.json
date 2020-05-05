@@ -1,6 +1,6 @@
 {
   "name": "sprite-extend-3d",
-  "version": "0.12.6",
+  "version": "0.12.7",
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
   "module": "dist/sprite-extend-3d.esm.js",

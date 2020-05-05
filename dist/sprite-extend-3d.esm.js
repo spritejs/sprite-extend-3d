@@ -10223,7 +10223,16 @@ class Camera extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
     } = _ref,
         attrs = _objectWithoutProperties(_ref, ["fov", "near", "far", "aspect", "left", "right", "bottom", "top"]);
 
-    super(attrs);
+    super({
+      fov,
+      near,
+      far,
+      aspect,
+      left,
+      right,
+      bottom,
+      top
+    });
     this.groupBody = this.body;
     this.setBody(new ogl__WEBPACK_IMPORTED_MODULE_1__["Camera"](gl, {
       fov,
@@ -10299,7 +10308,7 @@ class Camera extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
     super.onPropertyChange(key, newValue, oldValue);
     const body = this.body;
 
-    if (body) {
+    if (body && body.perspective) {
       const mode = this.attributes.mode;
 
       if (mode === 'perspective' && (key === 'near' || key === 'far' || key === 'fov' || key === 'aspect')) {

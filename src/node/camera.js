@@ -12,7 +12,7 @@ export default class Camera extends Group3d {
   static Attr = CameraAttr;
 
   constructor(gl, {fov = 45, near = 0.1, far = 100, aspect = 1, left, right, bottom, top, ...attrs} = {}) {
-    super(attrs);
+    super({fov, near, far, aspect, left, right, bottom, top});
     this.groupBody = this.body;
     this.setBody(new _Camera(gl, {fov, near, far, aspect, left, right, bottom, top}), false);
     this.attributes[setAttribute]('mode', this.body.type);
@@ -72,7 +72,7 @@ export default class Camera extends Group3d {
   onPropertyChange(key, newValue, oldValue) {
     super.onPropertyChange(key, newValue, oldValue);
     const body = this.body;
-    if(body) {
+    if(body && body.perspective) {
       const mode = this.attributes.mode;
       if(mode === 'perspective' && (key === 'near' || key === 'far' || key === 'fov' || key === 'aspect')) {
         const value = key === 'fov' ? newValue * (Math.PI / 180) : newValue;
