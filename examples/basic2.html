@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script>
     const {Scene} = spritejs;
-    const {Torus, Cylinder, Sphere, Cube, shaders} = spritejs.ext3d;
+    const {Torus, Cylinder, Sphere, Cube, shaders, Light} = spritejs.ext3d;
     const container = document.getElementById('container');
     const scene = new Scene({
       container,
@@ -58,6 +58,16 @@
         fov: 35,
       },
     });
+
+    const light = new Light({
+      position: [3, 0, 0],
+      color: 'red',
+      direction: [-1, 0, 0],
+      angle: 0.15,
+      blur: 0,
+      decay: 0.5,
+    });
+    layer.addLight(light);
 
     layer.camera.attributes.pos = [0, 0, 12];
     layer.camera.lookAt([0, 0, 0]);

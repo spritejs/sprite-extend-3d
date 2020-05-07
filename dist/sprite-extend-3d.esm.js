@@ -10057,23 +10057,26 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       spotLightDecay = spotLightDecay ? [...spotLightDecay] : [];
       spotLightDirection = spotLightDirection ? [...spotLightDirection] : [];
       spotLightPosition = spotLightPosition ? [...spotLightPosition] : [];
-      extraLights.forEach(light => {
+
+      for (let i = extraLights.length - 1; i >= 0; i--) {
+        const light = extraLights[i];
+
         if (light.type === _helper_light__WEBPACK_IMPORTED_MODULE_2__["default"].DIRECTIONAL_LIGHT) {
           const {
             direction,
             color
           } = light;
-          directionalLight.push(direction);
-          directionalLightColor.push(color);
+          directionalLight.unshift(direction);
+          directionalLightColor.unshift(color);
         } else if (light.type === _helper_light__WEBPACK_IMPORTED_MODULE_2__["default"].POINT_LIGHT) {
           const {
             position,
             color,
             decay
           } = light;
-          pointLightPosition.push(position);
-          pointLightColor.push(color);
-          pointLightDecay.push(decay);
+          pointLightPosition.unshift(position);
+          pointLightColor.unshift(color);
+          pointLightDecay.unshift(decay);
         } else if (light.type === _helper_light__WEBPACK_IMPORTED_MODULE_2__["default"].SPOT_LIGHT) {
           const {
             position,
@@ -10083,14 +10086,14 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
             angle,
             blur
           } = light;
-          spotLightAngle.push(angle);
-          spotLightBlur.push(blur);
-          spotLightColor.push(color);
-          spotLightDecay.push(decay);
-          spotLightDirection.push(direction);
-          spotLightPosition.push(position);
+          spotLightAngle.unshift(angle);
+          spotLightBlur.unshift(blur);
+          spotLightColor.unshift(color);
+          spotLightDecay.unshift(decay);
+          spotLightDirection.unshift(direction);
+          spotLightPosition.unshift(position);
         }
-      });
+      }
     }
 
     if (ambientColor) program.uniforms.ambientColor.value = ambientColor;else program.uniforms.ambientColor.value = [1, 1, 1, 1];

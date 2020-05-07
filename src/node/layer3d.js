@@ -541,26 +541,27 @@ export default class Layer3D extends Layer {
       spotLightDirection = spotLightDirection ? [...spotLightDirection] : [];
       spotLightPosition = spotLightPosition ? [...spotLightPosition] : [];
 
-      extraLights.forEach((light) => {
+      for(let i = extraLights.length - 1; i >= 0; i--) {
+        const light = extraLights[i];
         if(light.type === Light.DIRECTIONAL_LIGHT) {
           const {direction, color} = light;
-          directionalLight.push(direction);
-          directionalLightColor.push(color);
+          directionalLight.unshift(direction);
+          directionalLightColor.unshift(color);
         } else if(light.type === Light.POINT_LIGHT) {
           const {position, color, decay} = light;
-          pointLightPosition.push(position);
-          pointLightColor.push(color);
-          pointLightDecay.push(decay);
+          pointLightPosition.unshift(position);
+          pointLightColor.unshift(color);
+          pointLightDecay.unshift(decay);
         } else if(light.type === Light.SPOT_LIGHT) {
           const {position, color, decay, direction, angle, blur} = light;
-          spotLightAngle.push(angle);
-          spotLightBlur.push(blur);
-          spotLightColor.push(color);
-          spotLightDecay.push(decay);
-          spotLightDirection.push(direction);
-          spotLightPosition.push(position);
+          spotLightAngle.unshift(angle);
+          spotLightBlur.unshift(blur);
+          spotLightColor.unshift(color);
+          spotLightDecay.unshift(decay);
+          spotLightDirection.unshift(direction);
+          spotLightPosition.unshift(position);
         }
-      });
+      }
     }
 
     if(ambientColor) program.uniforms.ambientColor.value = ambientColor;
