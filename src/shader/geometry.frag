@@ -12,12 +12,12 @@ uniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度
 
 uniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置
 uniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色
-uniform vec3 pointLightDecay; // 点光源衰减系数
+uniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数
 
 uniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置
 uniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色
 uniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向
-uniform vec3 spotLightDecay;  // 聚光灯衰减系数
+uniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数
 uniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度
 uniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数
 
@@ -31,9 +31,10 @@ vec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {
   for(int j = 0; j < DL_NUMBER; j++) {
     if(directionalLightColor[j].a <= 0.0) continue;
     vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);
-    vec3 halfLE = normalize(invDirectional.xyz + eye);
+    vec3 dir = -invDirectional.xyz;
+    vec3 halfLE = normalize(dir + eye);
     float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);
-    float _dl = max(dot(normal, normalize(invDirectional.xyz)), 0.0);
+    float _dl = max(dot(normal, normalize(dir)), 0.0);
     dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);
   }
 
@@ -47,7 +48,7 @@ vec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {
 
     float cos = max(dot(normalize(invPoint), normal), 0.0);
     float dis = length(invPoint);
-    float decay = (1.0 / (pointLightDecay.x * pow(dis, 2.0) + pointLightDecay.y * dis + pointLightDecay.z));
+    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));
     
     pl += pointLightColor[i].a * cos * decay * (pointLightColor[i].rgb + specular);
   }
@@ -69,7 +70,7 @@ vec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {
 
     float cos = max(dot(normalInv, normal), 0.0);
     float dis = length(invPoint);
-    float decay = (1.0 / (spotLightDecay.x * pow(dis, 2.0) + spotLightDecay.y * dis + spotLightDecay.z));
+    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));
     decay *= r;
     
     sl += spotLightColor[i].a * cos * decay * (spotLightColor[i].rgb + specular);

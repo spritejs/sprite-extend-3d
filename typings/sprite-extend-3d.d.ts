@@ -296,6 +296,24 @@ declare namespace ext3d {
     update(textureUnit: number): void;
   }
 
+  type lightOptions = {
+    angle?: number; 
+    direction?: number;
+    position?: Array<number>;
+    blur?: number;
+    color?: Array<number>;
+    decay?: Array<number>;
+  }
+
+  export class Light {
+    static DIRECTIONAL_LIGHT: number;
+    static POINT_LIGHT: number;
+    static SPOT_LIGHT: number;
+    // constructor({angle, direction, position, blur = 0, color = [1, 1, 1, 1], decay = [0, 0, 1]} = {})
+    constructor(options: lightOptions);
+    get type(): number;
+  }
+
   export class Layer3d extends Layer {
     constructor(options?: Record<string, any>);
     get body(): Transform;
@@ -349,6 +367,8 @@ declare namespace ext3d {
      */
     renderTarget(target: RenderTarget, options?: Record<string, any>): void;
     renderTo(target: FrameBuffer, options?: Record<string, any>): void; 
+    addLight(...lights: Array<Light>): void;
+    removeLight(...lights: Array<Light>): void;
     /**
      * setLights(program, {directionalLight = this[_directionalLight],
     pointLightPosition = this[_pointLightPosition],

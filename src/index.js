@@ -16,6 +16,7 @@ import RenderTarget from './node/render-target';
 import Shadow from './helper/shadow';
 import TextureLoader from './helper/texture-loader';
 import Geometry from './helper/geometry';
+import Light from './helper/light';
 import * as shaders from './shader';
 
 Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
@@ -46,6 +47,7 @@ export {
   Group3d,
   RenderTarget,
   Shadow,
+  Light,
   TextureLoader,
   Geometry,
   Curve,

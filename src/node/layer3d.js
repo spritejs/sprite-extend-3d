@@ -1,5 +1,6 @@
 import {Layer, registerNode, ENV, Block} from 'spritejs';
 import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Post, GLTFLoader, Mesh} from 'ogl';
+import Light from '../helper/light';
 import Shadow from '../helper/shadow';
 import Camera from './camera';
 import Group3d from './group3d';
@@ -65,26 +66,8 @@ export default class Layer3D extends Layer {
 
     this[_utime] = [];
     this[_targets] = [];
-    this[_directionalLight] = options.directionalLight || [1, 0, 0];
-    this[_directionalLightColor] = parseColor(options.directionalLightColor) || [0, 0, 0, 0];
-    this[_pointLightPosition] = options.pointLightPosition || [0, 0, 0];
-    this[_pointLightColor] = parseColor(options.pointLightColor) || [0, 0, 0, 0];
-    if(typeof options.pointLightDecay === 'number') {
-      options.pointLightDecay = [options.pointLightDecay, 0, 1];
-    }
-    this[_pointLightDecay] = options.pointLightDecay || [0, 0, 1];
 
-    this[_ambientColor] = parseColor(options.ambientColor) || [1, 1, 1, 1];
-
-    this[_spotLightPosition] = options.spotLightPosition || [0, 0, 0];
-    this[_spotLightColor] = parseColor(options.spotLightColor) || [0, 0, 0, 0];
-    if(typeof options.spotLightDecay === 'number') {
-      options.spotLightDecay = [options.spotLightDecay, 0, 1];
-    }
-    this[_spotLightDecay] = options.spotLightDecay || [0, 0, 1];
-    this[_spotLightDirection] = options.spotLightDirection || [1, 0, 0];
-    this[_spotLightAngle] = options.spotLightAngle || Math.PI / 3;
-    this[_spotLightBlur] = options.spotLightBlur || 0;
+    this.updateLights(options, false);
 
     this[_renderOptions] = {
       update: true,
@@ -187,18 +170,19 @@ export default class Layer3D extends Layer {
     const program = new Program(gl, options);
     if(extraAttributes) program.extraAttribute = Object.assign({}, attributes, extraAttributes);
 
-    program.uniforms.directionalLight = {};
-    program.uniforms.directionalLightColor = {};
-    program.uniforms.pointLightPosition = {};
-    program.uniforms.pointLightColor = {};
-    program.uniforms.pointLightDecay = {};
     program.uniforms.ambientColor = {};
-    program.uniforms.spotLightPosition = {};
-    program.uniforms.spotLightDirection = {};
-    program.uniforms.spotLightColor = {};
-    program.uniforms.spotLightDecay = {};
-    program.uniforms.spotLightAngle = {};
-    program.uniforms.spotLightBlur = {};
+    program.uniforms.directionalLight = {value: new Float32Array(24)};
+    program.uniforms.directionalLightColor = {value: new Float32Array(32)};
+    program.uniforms.pointLightPosition = {value: new Float32Array(48)};
+    program.uniforms.pointLightColor = {value: new Float32Array(64)};
+    program.uniforms.pointLightDecay = {value: new Float32Array(48)};
+    program.uniforms.spotLightPosition = {value: new Float32Array(48)};
+    program.uniforms.spotLightDirection = {value: new Float32Array(48)};
+    program.uniforms.spotLightColor = {value: new Float32Array(64)};
+    program.uniforms.spotLightDecay = {value: new Float32Array(48)};
+    program.uniforms.spotLightAngle = {value: new Float32Array(16)};
+    program.uniforms.spotLightBlur = {value: new Float32Array(16)};
+
     this.setLights(program);
 
     if(texture) program.uniforms.tMap = {value: texture};
@@ -449,6 +433,26 @@ export default class Layer3D extends Layer {
     return this.renderer.render({scene: root.body, camera: camera.body, target, ...opts});
   }
 
+  addLight(...lights) {
+    lights.forEach((light) => {
+      this.lights = this.lights || [];
+      this.lights.push(light);
+    });
+    this.updateLights();
+  }
+
+  removeLight(...lights) {
+    if(this.lights) {
+      lights.forEach((light) => {
+        const idx = this.lights.indexOf(light);
+        if(idx >= 0) {
+          this.lights.splice(idx, 1);
+        }
+      });
+      this.updateLights();
+    }
+  }
+
   updateLights({directionalLight = this[_directionalLight],
     directionalLightColor = this[_directionalLightColor],
     pointLightPosition = this[_pointLightPosition],
@@ -461,34 +465,44 @@ export default class Layer3D extends Layer {
     spotLightDecay = this[_spotLightDecay],
     spotLightDirection = this[_spotLightDirection],
     spotLightPosition = this[_spotLightPosition],
-  } = {}) {
-    this[_directionalLight] = directionalLight;
-    this[_directionalLightColor] = parseColor(directionalLightColor);
-    this[_pointLightPosition] = pointLightPosition;
-    this[_pointLightColor] = parseColor(pointLightColor);
-    if(typeof pointLightDecay === 'number') {
-      this[_pointLightDecay] = [pointLightDecay, 0, 1];
-    } else {
-      this[_pointLightDecay] = pointLightDecay;
+  } = {}, updateProgram = true) {
+    function wrap(arr) {
+      if(arr && arr[0] != null && !Array.isArray(arr[0])) {
+        return [arr];
+      }
+      return arr;
     }
     this[_ambientColor] = parseColor(ambientColor);
-    this[_spotLightAngle] = spotLightAngle;
-    this[_spotLightBlur] = spotLightBlur;
-    this[_spotLightColor] = parseColor(spotLightColor);
-    this[_spotLightDirection] = spotLightDirection;
-    this[_spotLightPosition] = spotLightPosition;
-    if(typeof spotLightDecay === 'number') {
-      this[_spotLightDecay] = [spotLightDecay, 0, 1];
+
+    this[_directionalLight] = wrap(directionalLight);
+    this[_directionalLightColor] = wrap(parseColor(directionalLightColor));
+    this[_pointLightPosition] = wrap(pointLightPosition);
+    this[_pointLightColor] = wrap(parseColor(pointLightColor));
+    if(typeof pointLightDecay === 'number') {
+      this[_pointLightDecay] = [[pointLightDecay, 0, 1]];
     } else {
-      this[_spotLightDecay] = spotLightDecay;
+      this[_pointLightDecay] = wrap(pointLightDecay);
     }
-    this.traverse(({program}) => {
-      if(program) {
-        this.setLights(program);
-      }
-    });
+    this[_spotLightAngle] = typeof spotLightAngle === 'number' ? [spotLightAngle] : spotLightAngle;
+    this[_spotLightBlur] = typeof spotLightBlur === 'number' ? [spotLightBlur] : spotLightBlur;
+    this[_spotLightColor] = wrap(parseColor(spotLightColor));
+    this[_spotLightDirection] = wrap(spotLightDirection);
+    this[_spotLightPosition] = wrap(spotLightPosition);
+    if(typeof spotLightDecay === 'number') {
+      this[_spotLightDecay] = [[spotLightDecay, 0, 1]];
+    } else {
+      this[_spotLightDecay] = wrap(spotLightDecay);
+    }
+    if(updateProgram) {
+      this.traverse(({program}) => {
+        if(program) {
+          this.setLights(program);
+        }
+      });
+    }
   }
 
+  // eslint-disable-next-line complexity
   setLights(program, {directionalLight = this[_directionalLight],
     directionalLightColor = this[_directionalLightColor],
     pointLightPosition = this[_pointLightPosition],
@@ -502,18 +516,101 @@ export default class Layer3D extends Layer {
     spotLightDirection = this[_spotLightDirection],
     spotLightPosition = this[_spotLightPosition],
   } = {}) {
-    program.uniforms.directionalLight.value = directionalLight;
-    program.uniforms.directionalLightColor.value = directionalLightColor;
-    program.uniforms.pointLightPosition.value = pointLightPosition;
-    program.uniforms.pointLightColor.value = pointLightColor;
-    program.uniforms.pointLightDecay.value = pointLightDecay;
-    program.uniforms.ambientColor.value = ambientColor;
-    program.uniforms.spotLightAngle.value = spotLightAngle;
-    program.uniforms.spotLightBlur.value = spotLightBlur;
-    program.uniforms.spotLightColor.value = spotLightColor;
-    program.uniforms.spotLightDecay.value = spotLightDecay;
-    program.uniforms.spotLightDirection.value = spotLightDirection;
-    program.uniforms.spotLightPosition.value = spotLightPosition;
+    function setValue({value: arr}, lightArr) {
+      let i = 0;
+      lightArr.forEach((light) => {
+        if(Array.isArray(light)) arr.set(light, i);
+        else arr[i] = light;
+        i += light.length ? light.length : 1;
+      });
+    }
+
+    const extraLights = this.lights;
+    if(extraLights) {
+      directionalLight = directionalLight ? [...directionalLight] : [];
+      directionalLightColor = directionalLightColor ? [...directionalLightColor] : [];
+
+      pointLightPosition = pointLightPosition ? [...pointLightPosition] : [];
+      pointLightColor = pointLightColor ? [...pointLightColor] : [];
+      pointLightDecay = pointLightDecay ? [...pointLightDecay] : [];
+
+      spotLightAngle = spotLightAngle ? [...spotLightAngle] : [];
+      spotLightBlur = spotLightBlur ? [...spotLightBlur] : [];
+      spotLightColor = spotLightColor ? [...spotLightColor] : [];
+      spotLightDecay = spotLightDecay ? [...spotLightDecay] : [];
+      spotLightDirection = spotLightDirection ? [...spotLightDirection] : [];
+      spotLightPosition = spotLightPosition ? [...spotLightPosition] : [];
+
+      extraLights.forEach((light) => {
+        if(light.type === Light.DIRECTIONAL_LIGHT) {
+          const {direction, color} = light;
+          directionalLight.push(direction);
+          directionalLightColor.push(color);
+        } else if(light.type === Light.POINT_LIGHT) {
+          const {position, color, decay} = light;
+          pointLightPosition.push(position);
+          pointLightColor.push(color);
+          pointLightDecay.push(decay);
+        } else if(light.type === Light.SPOT_LIGHT) {
+          const {position, color, decay, direction, angle, blur} = light;
+          spotLightAngle.push(angle);
+          spotLightBlur.push(blur);
+          spotLightColor.push(color);
+          spotLightDecay.push(decay);
+          spotLightDirection.push(direction);
+          spotLightPosition.push(position);
+        }
+      });
+    }
+
+    if(ambientColor) program.uniforms.ambientColor.value = ambientColor;
+    else program.uniforms.ambientColor.value = [1, 1, 1, 1];
+
+    program.uniforms.directionalLight.value.fill(0);
+    program.uniforms.directionalLightColor.value.fill(0);
+    program.uniforms.pointLightPosition.value.fill(0);
+    program.uniforms.pointLightColor.value.fill(0);
+    program.uniforms.pointLightDecay.value.fill(0);
+    program.uniforms.spotLightPosition.value.fill(0);
+    program.uniforms.spotLightDirection.value.fill(0);
+    program.uniforms.spotLightColor.value.fill(0);
+    program.uniforms.spotLightDecay.value.fill(0);
+    program.uniforms.spotLightAngle.value.fill(0);
+    program.uniforms.spotLightBlur.value.fill(0);
+
+    if(directionalLight && directionalLight.length) {
+      setValue(program.uniforms.directionalLight, directionalLight);
+    }
+    if(directionalLightColor && directionalLightColor.length) {
+      setValue(program.uniforms.directionalLightColor, directionalLightColor);
+    }
+    if(pointLightPosition && pointLightPosition.length) {
+      setValue(program.uniforms.pointLightPosition, pointLightPosition);
+    }
+    if(pointLightColor && pointLightColor.length) {
+      setValue(program.uniforms.pointLightColor, pointLightColor);
+    }
+    if(pointLightDecay && pointLightDecay.length) {
+      setValue(program.uniforms.pointLightDecay, pointLightDecay);
+    }
+    if(spotLightAngle && spotLightAngle.length) {
+      setValue(program.uniforms.spotLightAngle, spotLightAngle);
+    }
+    if(spotLightBlur && spotLightBlur.length) {
+      setValue(program.uniforms.spotLightBlur, spotLightBlur);
+    }
+    if(spotLightColor && spotLightColor.length) {
+      setValue(program.uniforms.spotLightColor, spotLightColor);
+    }
+    if(spotLightDecay && spotLightDecay.length) {
+      setValue(program.uniforms.spotLightDecay, spotLightDecay);
+    }
+    if(spotLightDirection && spotLightDirection.length) {
+      setValue(program.uniforms.spotLightDirection, spotLightDirection);
+    }
+    if(spotLightPosition && spotLightPosition.length) {
+      setValue(program.uniforms.spotLightPosition, spotLightPosition);
+    }
     this.forceUpdate();
   }
 
