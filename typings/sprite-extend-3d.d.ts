@@ -327,6 +327,8 @@ declare namespace ext3d {
     get sublayers(): Array<Group3d>;
     get autoClear(): boolean;
     set autoClear(value: boolean);
+    get ambientColor(): Array<number>;
+    set ambientColor(color: any);
     bindTarget(target: RenderTarget, options?: Record<string, any>): void;
     bindTime(program: Program, options?: Record<string, any>): void;
     /**

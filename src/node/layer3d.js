@@ -97,6 +97,20 @@ export default class Layer3D extends Layer {
     this[_orbit] = false;
   }
 
+  get ambientColor() {
+    return this[_ambientColor] || [1, 1, 1, 1];
+  }
+
+  set ambientColor(color) {
+    this[_ambientColor] = parseColor(color);
+    this.traverse(({program}) => {
+      if(program) {
+        program.uniforms.ambientColor.value = this[_ambientColor];
+      }
+    });
+    this.forceUpdate();
+  }
+
   get body() {
     return this[_root] ? this[_root].body : null;
   }

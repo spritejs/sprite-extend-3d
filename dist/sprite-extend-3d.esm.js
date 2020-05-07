@@ -9452,6 +9452,22 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     this[_orbit] = false;
   }
 
+  get ambientColor() {
+    return this[_ambientColor] || [1, 1, 1, 1];
+  }
+
+  set ambientColor(color) {
+    this[_ambientColor] = Object(_helper_parse_color__WEBPACK_IMPORTED_MODULE_8__["parseColor"])(color);
+    this.traverse(({
+      program
+    }) => {
+      if (program) {
+        program.uniforms.ambientColor.value = this[_ambientColor];
+      }
+    });
+    this.forceUpdate();
+  }
+
   get body() {
     return this[_root] ? this[_root].body : null;
   }
