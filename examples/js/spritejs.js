@@ -9383,7 +9383,13 @@ class Renderer {
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
     }
 
-    if (clearBuffer) gl.clear(gl.COLOR_BUFFER_BIT);
+    const depth = this.options.depth;
+
+    if (depth) {
+      gl.enable(gl.DEPTH_TEST);
+    }
+
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | (depth ? this.gl.DEPTH_BUFFER_BIT : 0) | (this.options.stencil ? this.gl.STENCIL_BUFFER_BIT : 0));
     const lastFrameID = this._renderFrameID;
 
     this._draw();
@@ -12177,8 +12183,8 @@ class Figure2D {
     };
     if (options.path) this[_path] = parse_svg_path__WEBPACK_IMPORTED_MODULE_0___default()(options.path);else this[_path] = [];
     this[_contours] = null;
-    this[_simplify] = options.simplify || 0;
-    this[_scale] = options.scale || 2;
+    this[_simplify] = options.simplify != null ? options.simplify : 0.05;
+    this[_scale] = options.scale != null ? options.scale : 2;
   }
 
   get contours() {
@@ -14652,9 +14658,10 @@ Stroke.prototype.build = function (points, closed = false) {
     const last = points[i - 1];
     const cur = points[i];
     const next = i < points.length - 1 ? points[i + 1] : null;
+    const nextnext = i < points.length - 2 ? points[i + 2] : null;
     const thickness = this.mapThickness(cur, i, points);
 
-    this._seg(complex, count, last, cur, next, thickness / 2, closed, closeNext);
+    this._seg(complex, count, last, cur, next, nextnext, thickness / 2, closed, closeNext);
 
     count = complex.positions.length - 2;
   }
@@ -14667,7 +14674,7 @@ Stroke.prototype.build = function (points, closed = false) {
   return complex;
 };
 
-Stroke.prototype._seg = function (complex, index, last, cur, next, halfThick, closed, closeNext, cap = this.cap) {
+Stroke.prototype._seg = function (complex, index, last, cur, next, nextnext, halfThick, closed, closeNext, cap = this.cap) {
   // eslint-disable-line complexity
   const cells = complex.cells;
   const positions = complex.positions;
@@ -14762,6 +14769,9 @@ Stroke.prototype._seg = function (complex, index, last, cur, next, halfThick, cl
       }
     }
 
+    let len = Infinity;
+    if (next && !nextnext) len = Math.hypot(next[0] - cur[0], next[1] - cur[1]);
+
     if (bevel) {
       // next two points in our first segment
       _vecutil__WEBPACK_IMPORTED_MODULE_1__["scaleAndAdd"](tmp, cur, this._normal, -halfThick * flip);
@@ -14770,8 +14780,13 @@ Stroke.prototype._seg = function (complex, index, last, cur, next, halfThick, cl
       // positions.push(vec.clone(tmp));
 
       cells.push(this._lastFlip !== -flip ? [index, index + 2, index + 3] : [index + 2, index + 1, index + 3]);
-      _vecutil__WEBPACK_IMPORTED_MODULE_1__["scaleAndAdd"](tmp, cur, miter, miterLen * flip);
-      positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](tmp));
+
+      if (len < miterLen) {
+        positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](next));
+      } else {
+        _vecutil__WEBPACK_IMPORTED_MODULE_1__["scaleAndAdd"](tmp, cur, miter, miterLen * flip);
+        positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](tmp));
+      }
 
       if (!joinRound) {
         cells.push(this._lastFlip !== -flip ? [index, index + 3, index + 4] : [index + 3, index + 1, index + 4]);
@@ -14797,7 +14812,7 @@ Stroke.prototype._seg = function (complex, index, last, cur, next, halfThick, cl
           for (let i = 0; i < this.roundSegments; i++) {
             _vecutil__WEBPACK_IMPORTED_MODULE_1__["rotate"](p1, p1, [0, 0], flip * delta); // console.log(p1, p2, vec.cross([], p1, p2)[2]);
 
-            if (Math.sign(_vecutil__WEBPACK_IMPORTED_MODULE_1__["cross"](tmp, p1, p2)[2]) !== flip) {
+            if (i > 0 && Math.sign(_vecutil__WEBPACK_IMPORTED_MODULE_1__["cross"](tmp, p1, p2)[2]) !== flip) {
               _vecutil__WEBPACK_IMPORTED_MODULE_1__["add"](tmp, p2, o);
               positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](tmp));
 
@@ -14834,7 +14849,21 @@ Stroke.prototype._seg = function (complex, index, last, cur, next, halfThick, cl
     } else {
       // miter
       // next two points for our miter join
-      extrusions(complex, cur, miter, miterLen);
+      // extrusions(complex, cur, miter, miterLen);
+      if (flip === -1 && len < miterLen) {
+        positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](next));
+      } else {
+        _vecutil__WEBPACK_IMPORTED_MODULE_1__["scaleAndAdd"](tmp, cur, miter, -miterLen);
+        positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](tmp));
+      }
+
+      if (flip === 1 && len < miterLen) {
+        positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](next));
+      } else {
+        _vecutil__WEBPACK_IMPORTED_MODULE_1__["scaleAndAdd"](tmp, cur, miter, miterLen);
+        positions.push(_vecutil__WEBPACK_IMPORTED_MODULE_1__["clone"](tmp));
+      }
+
       cells.push(this._lastFlip === 1 ? [index, index + 2, index + 3] : [index + 2, index + 1, index + 3]);
       flip = -1; // the miter is now the normal for our next join
 
@@ -19916,7 +19945,8 @@ class Node {
     this[declareAlias]('class', 'pos');
     this[_changedAttrs] = new Set();
     this[_offsetFigure] = new _mesh_js_core__WEBPACK_IMPORTED_MODULE_1__["Figure2D"]({
-      scale: 5
+      scale: 5,
+      simplify: 0
     });
   }
 
