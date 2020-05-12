@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Sphere, shaders} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      displayRatio: 2,
+    });
+    const layer = scene.layer3d('fglayer', {
+      alpha: false,
+      pointLightColor: 'red',
+      pointLightPosition: [3, 0, 0],
+      camera: {
+        fov: 35,
+      },
+    });
+    layer.gl.clearColor(0, 0, 0, 1);
+
+    layer.camera.attributes.pos = [3, 3, 7];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      transparent: true,
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+    });
+
+    // layer.bindTime(program);
+
+    const program2 = layer.createProgram({
+      transparent: true,
+      ...shaders.NORMAL_GEOMETRY,
+      cullFace: null,
+    });
+
+    const s = new Sphere(program, {
+      // radius: 0.4,
+      scale: 0.5,
+      // zIndex: 100,
+      colors: 'rgba(0, 255, 255, 0.1)',
+    });
+
+
+    const s2 = new Sphere(program2, {
+      // radius: 0.6,
+      // zIndex: 100,
+      colors: 'rgba(255, 0, 255, 0.1)',
+    });
+
+    layer.append(s, s2);
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>

@@ -115,6 +115,8 @@ export default class Node3d extends Node {
       } else {
         throw new Error('Node3d with camera should only use as sublayers');
       }
+      this[_body]._id = this[_body].id;
+      this[_body].id = -zOrder;
     }
   }
 
@@ -142,6 +144,7 @@ export default class Node3d extends Node {
       if(parentBody && parentBody.children && parentBody.children.length <= 0) {
         parentBody.setParent(null);
       }
+      this[_body].id = this[_body]._id;
     }
   }
 

@@ -10989,6 +10989,9 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
       } else {
         throw new Error('Node3d with camera should only use as sublayers');
       }
+
+      this[_body]._id = this[_body].id;
+      this[_body].id = -zOrder;
     }
   }
 
@@ -11023,6 +11026,8 @@ class Node3d extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"] {
       if (parentBody && parentBody.children && parentBody.children.length <= 0) {
         parentBody.setParent(null);
       }
+
+      this[_body].id = this[_body]._id;
     }
   }
 
