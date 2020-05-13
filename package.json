@@ -39,6 +39,6 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "ogl": "0.0.43",
-    "spritejs": "^3.7.9"
+    "spritejs": "^3.7.12"
   }
 }

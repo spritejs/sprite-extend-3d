@@ -11,6 +11,7 @@ import Curve from './helper/curve';
 import Plane from './node/plane';
 import Polyline3d from './node/polyline3d';
 import Cylinder from './node/cylinder';
+import Path3d from './node/path3d';
 import Group3d from './node/group3d';
 import RenderTarget from './node/render-target';
 import Shadow from './helper/shadow';
@@ -42,6 +43,7 @@ export {
   Camera,
   Cube,
   Cylinder,
+  Path3d,
   Mesh3d,
   Skin,
   Group3d,

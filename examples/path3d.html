@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="http://unpkg.com/spritejs/dist/spritejs.js"></script> -->
+  <script src="/js/spritejs.js"></script>
+  <script src="/js/sprite-extend-3d.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    #container {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const {Scene} = spritejs;
+    const {Path3d, Sphere, shaders, Light, Vec2} = spritejs.ext3d;
+    const container = document.getElementById('container');
+    const scene = new Scene({
+      container,
+      // width: 600,
+      // height: 600,
+      displayRatio: 2,
+      // mode: 'stickyHeight',
+      // webgl: 1,
+    });
+    const layer = scene.layer3d('fglayer', {
+      spotLightColor: 'blue',
+      spotLightPosition: [-2, 0, 0],
+      spotLightDirection: [1, 0, 0],
+      spotLightAngle: Math.PI / 6,
+      pointLightDecay: 0.01,
+      camera: {
+        fov: 35,
+      },
+    });
+
+    const light = new Light({
+      position: [3, 0, 0],
+      color: 'red',
+      direction: [-1, 0, 0],
+      angle: 0.15,
+      blur: 0,
+      decay: 0.5,
+    });
+    layer.addLight(light);
+
+    layer.camera.attributes.pos = [0, 0, 12];
+    layer.camera.lookAt([0, 0, 0]);
+
+    const program = layer.createProgram({
+      ...shaders.NORMAL_GEOMETRY,
+      // cullFace: null,
+      uniforms: {
+        specularIntensity: {value: 0.5},
+      },
+    });
+
+    // const sphere = new Sphere(program);
+    // sphere.attr({
+    //   phiLength: Math.PI,
+    // });
+    // layer.append(sphere);
+
+    const points = [new Vec2(0, 0.5)];
+    for(let i = 1; i <= 4; i++) {
+      const theta = i * Math.PI * 0.4;
+      const sin = Math.sin(theta);
+      const cos = Math.cos(theta);
+
+      const m = [
+        cos, -sin, 0,
+        sin, cos, 0,
+        0, 0, 1,
+      ];
+      const p = points[0].clone().applyMatrix3(m);
+      points.push(p);
+    }
+    const p = [points[0], points[2], points[4], points[1], points[3]];
+    // console.log(points);
+    const d = `M${p.join('L')}Z`;
+
+    const path = new Path3d(program, {
+      fillRule: 'evenodd',
+      d,
+    });
+    layer.append(path);
+
+    layer.setRaycast();
+
+    layer.setOrbit();
+  </script>
+</body>
+</html>
