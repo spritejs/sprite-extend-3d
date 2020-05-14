@@ -113,7 +113,7 @@ export default class Path3d extends Mesh3d {
   }
 
   fromPoints(points) {
-    const d = `M${points.join('L')}Z`;
+    const d = `M${points.join('L')}Z`.replace(/,/g, ' ');
     this.attr('d', d);
   }
 
@@ -122,7 +122,10 @@ export default class Path3d extends Mesh3d {
     const gl = this.program.gl;
     const {d, type, fillRule, lineWidth, lineJoin, lineCap, roundSegments, miterLimit, depth, capFront, capBack} = this.attributes;
     const path = new Path(d);
-    if(type === 'stroke') path.attr('strokeColor', 'rgba(0, 0, 0, 0)');
+    if(type === 'stroke') {
+      path.attr('strokeColor', 'rgba(0, 0, 0, 0)');
+      throw new Error('Not supported yet.');
+    }
     path.attr({
       fillColor: '#fff',
       d,
@@ -152,10 +155,24 @@ export default class Path3d extends Mesh3d {
             offset = position.length / 3;
           }
         });
+      } else if(type === 'stroke') {
+        const points = mesh.meshData.position0.filter(([x, y, z]) => 1 / z < 0);
+        setData({points, position, index, normal, uv, offset, depth});
+        const len = points.length;
+        if(len > 1) {
+          offset = position.length / 3;
+        }
       }
+
       if(capFront || capBack) {
-        const points = mesh.meshData.position0;
-        const cells = mesh.meshData.cells;
+        let points = mesh.meshData.position0;
+        let cells = mesh.meshData.cells;
+        if(type === 'stroke') {
+          const totalLen = points.length;
+          points = points.filter(([x, y, z]) => 1 / z < 0);
+          const diff = totalLen - points.length;
+          cells = cells.map(([x, y, z]) => [x - diff, z - diff, y - diff]).filter(([x]) => x >= 0);
+        }
         const _uv = generateUV(mesh.boundingBox, points);
         if(capFront) {
           for(let i = 0; i < points.length; i++) {

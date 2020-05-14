@@ -88,14 +88,17 @@
       const p = points[0].clone().applyMatrix3(m);
       points.push(p);
     }
-    const p = [points[0], points[2], points[4], points[1], points[3]];
+    // const p = [points[0], points[2], points[4], points[1], points[3]];
     // const d = `M${p.join('L')}Z`;
 
     const path = new Path3d(program, {
       fillRule: 'evenodd',
-      // d,
+      // type: 'stroke',
+      lineWidth: 0.1,
+      // d: 'M0 0L0 0.5',
     });
-    path.fromPoints(p);
+    // path.fromPoints(p);
+    path.fromPoints(points);
 
     layer.append(path);
 
