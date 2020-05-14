@@ -565,6 +565,12 @@ declare namespace ext3d {
     remesh(): void;
   }
 
+  export class Path3d extends Mesh3d {
+    onPropertyChange(key: string, newValue: any, oldValue: any): void;
+    remesh(): void;
+    fromPoints(points: Array<any>): void;
+  }
+
   namespace shaders {
     interface Shader {
       vertex: string;
