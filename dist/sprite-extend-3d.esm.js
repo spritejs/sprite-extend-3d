@@ -398,9 +398,7 @@ __webpack_require__.r(__webpack_exports__);
 // }
 // TODO: fit in transform feedback
 // TODO: when would I disableVertexAttribArray ?
-// TODO: add fallback for non vao support (ie)
 // TODO: use offset/stride if exists
-// TODO: check size of position (eg triangle with Vec2)
 
 const tempVec3 = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
 let ID = 1;
@@ -501,7 +499,10 @@ class Geometry {
 
   bindAttributes(program) {
     // Link all attributes to program using gl.vertexAttribPointer
-    program.attributeLocations.forEach((location, name) => {
+    program.attributeLocations.forEach((location, {
+      name,
+      type
+    }) => {
       // If geometry missing a required shader attribute
       if (!this.attributes[name]) {
         console.warn(`active attribute ${name} not being supplied`);
@@ -510,12 +511,26 @@ class Geometry {
 
       const attr = this.attributes[name];
       this.gl.bindBuffer(attr.target, attr.buffer);
-      this.glState.boundBuffer = attr.buffer;
-      this.gl.vertexAttribPointer(location, attr.size, attr.type, attr.normalized, attr.stride, attr.offset);
-      this.gl.enableVertexAttribArray(location); // For instanced attributes, divisor needs to be set.
-      // For firefox, need to set back to 0 if non-instanced drawn after instanced. Else won't render
+      this.glState.boundBuffer = attr.buffer; // For matrix attributes, buffer needs to be defined per column
 
-      this.gl.renderer.vertexAttribDivisor(location, attr.divisor);
+      let numLoc = 1;
+      if (type === 35674) numLoc = 2; // mat2
+
+      if (type === 35675) numLoc = 3; // mat3
+
+      if (type === 35676) numLoc = 4; // mat4
+
+      const size = attr.size / numLoc;
+      const stride = numLoc === 1 ? 0 : numLoc * numLoc * numLoc;
+      const offset = numLoc === 1 ? 0 : numLoc * numLoc;
+
+      for (let i = 0; i < numLoc; i++) {
+        this.gl.vertexAttribPointer(location + i, size, attr.type, attr.normalized, attr.stride + stride, attr.offset + i * offset);
+        this.gl.enableVertexAttribArray(location + i); // For instanced attributes, divisor needs to be set.
+        // For firefox, need to set back to 0 if non-instanced drawn after instanced. Else won't render
+
+        this.gl.renderer.vertexAttribDivisor(location + i, attr.divisor);
+      }
     }); // Bind indices if geometry indexed
 
     if (this.attributes.index) this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.attributes.index.buffer);
@@ -532,7 +547,9 @@ class Geometry {
     } // Check if any attributes need updating
 
 
-    program.attributeLocations.forEach((location, name) => {
+    program.attributeLocations.forEach((location, {
+      name
+    }) => {
       const attr = this.attributes[name];
       if (attr.needsUpdate) this.updateAttribute(attr);
     });
@@ -748,6 +765,11 @@ class Vec3 extends Array {
     return this;
   }
 
+  scaleRotateMatrix4(mat4) {
+    _functions_Vec3Func_js__WEBPACK_IMPORTED_MODULE_0__["scaleRotateMat4"](this, this, mat4);
+    return this;
+  }
+
   applyQuaternion(q) {
     _functions_Vec3Func_js__WEBPACK_IMPORTED_MODULE_0__["transformQuat"](this, this, q);
     return this;
@@ -816,6 +838,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cross", function() { return cross; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lerp", function() { return lerp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformMat4", function() { return transformMat4; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scaleRotateMat4", function() { return scaleRotateMat4; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformMat3", function() { return transformMat3; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformQuat", function() { return transformQuat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "angle", function() { return angle; });
@@ -1105,6 +1128,22 @@ function transformMat4(out, a, m) {
   return out;
 }
 /**
+ * Same as above but doesn't apply translation.
+ * Useful for rays.
+ */
+
+function scaleRotateMat4(out, a, m) {
+  let x = a[0],
+      y = a[1],
+      z = a[2];
+  let w = m[3] * x + m[7] * y + m[11] * z + m[15];
+  w = w || 1.0;
+  out[0] = (m[0] * x + m[4] * y + m[8] * z) / w;
+  out[1] = (m[1] * x + m[5] * y + m[9] * z) / w;
+  out[2] = (m[2] * x + m[6] * y + m[10] * z) / w;
+  return out;
+}
+/**
  * Transforms the vec3 with a mat3.
  *
  * @param {vec3} out the receiving vector
@@ -1302,7 +1341,7 @@ class Program {
       const attribute = gl.getActiveAttrib(this.program, aIndex);
       const location = gl.getAttribLocation(this.program, attribute.name);
       locations[location] = attribute.name;
-      this.attributeLocations.set(attribute.name, location);
+      this.attributeLocations.set(attribute, location);
     }
 
     this.attributeOrder = locations.join('');
@@ -1403,7 +1442,7 @@ function setUniform(gl, type, location, value) {
   const setValue = gl.renderer.state.uniformLocations.get(location); // Avoid redundant uniform commands
 
   if (value.length) {
-    if (setValue === undefined) {
+    if (setValue === undefined || setValue.length !== value.length) {
       // clone array to store as cache
       gl.renderer.state.uniformLocations.set(location, value.slice(0));
     } else {
@@ -3060,6 +3099,46 @@ class Mat4 extends Array {
 
   determinant() {
     return _functions_Mat4Func_js__WEBPACK_IMPORTED_MODULE_0__["determinant"](this);
+  }
+
+  fromArray(a, o = 0) {
+    this[0] = a[o];
+    this[1] = a[o + 1];
+    this[2] = a[o + 2];
+    this[3] = a[o + 3];
+    this[4] = a[o + 4];
+    this[5] = a[o + 5];
+    this[6] = a[o + 6];
+    this[7] = a[o + 7];
+    this[8] = a[o + 8];
+    this[9] = a[o + 9];
+    this[10] = a[o + 10];
+    this[11] = a[o + 11];
+    this[12] = a[o + 12];
+    this[13] = a[o + 13];
+    this[14] = a[o + 14];
+    this[15] = a[o + 15];
+    return this;
+  }
+
+  toArray(a = [], o = 0) {
+    a[o] = this[0];
+    a[o + 1] = this[1];
+    a[o + 2] = this[2];
+    a[o + 3] = this[3];
+    a[o + 4] = this[4];
+    a[o + 5] = this[5];
+    a[o + 6] = this[6];
+    a[o + 7] = this[7];
+    a[o + 8] = this[8];
+    a[o + 9] = this[9];
+    a[o + 10] = this[10];
+    a[o + 11] = this[11];
+    a[o + 12] = this[12];
+    a[o + 13] = this[13];
+    a[o + 14] = this[14];
+    a[o + 15] = this[15];
+    return a;
   }
 
 }
@@ -6290,7 +6369,7 @@ class Torus extends _core_Geometry_js__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
 
         center.x = radius * Math.cos(u);
         center.y = radius * Math.sin(u);
-        normal.sub(vertex).sub(center).normalize();
+        normal.sub(vertex, center).normalize();
         normals.set([normal.x, normal.y, normal.z], idx * 3); // uv
 
         uvs.set([i / tubularSegments, j / radialSegments], idx * 2);
@@ -6384,7 +6463,7 @@ function Orbit(object, {
   this.target = target; // Catch attempts to disable - set to 1 so has no effect
 
   ease = ease || 1;
-  inertia = inertia || 1;
+  inertia = inertia || 0;
   this.minDistance = minDistance;
   this.maxDistance = maxDistance; // current position in sphericalTarget coordinates
 
@@ -6711,20 +6790,33 @@ function Orbit(object, {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Raycast", function() { return Raycast; });
-/* harmony import */ var _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _math_Mat4_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
-// TODO: add barycentric ?
+/* harmony import */ var _math_Vec2_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _math_Mat4_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+// TODO: barycentric code shouldn't be here, but where?
+// TODO: SphereCast?
 
 
-const tempVec3a = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-const tempVec3b = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-const tempVec3c = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-const tempMat4 = new _math_Mat4_js__WEBPACK_IMPORTED_MODULE_1__["Mat4"]();
+
+const tempVec2a = new _math_Vec2_js__WEBPACK_IMPORTED_MODULE_0__["Vec2"]();
+const tempVec2b = new _math_Vec2_js__WEBPACK_IMPORTED_MODULE_0__["Vec2"]();
+const tempVec2c = new _math_Vec2_js__WEBPACK_IMPORTED_MODULE_0__["Vec2"]();
+const tempVec3a = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3b = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3c = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3d = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3e = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3f = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3g = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3h = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3i = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3j = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempVec3k = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+const tempMat4 = new _math_Mat4_js__WEBPACK_IMPORTED_MODULE_2__["Mat4"]();
 class Raycast {
-  constructor(gl) {
-    this.gl = gl;
-    this.origin = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
-    this.direction = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
+  constructor() {
+    this.origin = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+    this.direction = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
   } // Set ray from mouse unprojection
 
 
@@ -6758,39 +6850,178 @@ class Raycast {
     }
   }
 
-  intersectBounds(meshes) {
+  intersectBounds(meshes, {
+    maxDistance,
+    output = []
+  } = {}) {
     if (!Array.isArray(meshes)) meshes = [meshes];
     const invWorldMat4 = tempMat4;
     const origin = tempVec3a;
     const direction = tempVec3b;
-    const hits = [];
+    const hits = output;
+    hits.length = 0;
     meshes.forEach(mesh => {
       // Create bounds
-      if (!mesh.geometry.bounds) mesh.geometry.computeBoundingBox();
-      if (mesh.geometry.raycast === 'sphere' && mesh.geometry.bounds.radius === Infinity) mesh.geometry.computeBoundingSphere(); // Take world space ray and make it object space to align with bounding box
+      if (!mesh.geometry.bounds || mesh.geometry.bounds.radius === Infinity) mesh.geometry.computeBoundingSphere();
+      const bounds = mesh.geometry.bounds;
+      invWorldMat4.inverse(mesh.worldMatrix); // Get max distance locally
 
-      invWorldMat4.inverse(mesh.worldMatrix);
+      let localMaxDistance;
+
+      if (maxDistance) {
+        direction.copy(this.direction).scaleRotateMatrix4(invWorldMat4);
+        localMaxDistance = maxDistance * direction.len();
+      } // Take world space ray and make it object space to align with bounding box
+
+
       origin.copy(this.origin).applyMatrix4(invWorldMat4);
-      direction.copy(this.direction).transformDirection(invWorldMat4);
-      let localDistance = 0;
+      direction.copy(this.direction).transformDirection(invWorldMat4); // Break out early if bounds too far away from origin
 
-      if (mesh.geometry.raycast === 'sphere') {
-        localDistance = this.intersectSphere(mesh.geometry.bounds, origin, direction);
-      } else {
-        localDistance = this.intersectBox(mesh.geometry.bounds, origin, direction);
+      if (maxDistance) {
+        if (origin.distance(bounds.center) - bounds.radius > localMaxDistance) return;
       }
 
-      if (!localDistance) return; // Create object on mesh to avoid generating lots of objects
+      let localDistance = 0; // Check origin isn't inside bounds before testing intersection
+
+      if (mesh.geometry.raycast === 'sphere') {
+        if (origin.distance(bounds.center) > bounds.radius) {
+          localDistance = this.intersectSphere(bounds, origin, direction);
+          if (!localDistance) return;
+        }
+      } else {
+        if (origin.x < bounds.min.x || origin.x > bounds.max.x || origin.y < bounds.min.y || origin.y > bounds.max.y || origin.z < bounds.min.z || origin.z > bounds.max.z) {
+          localDistance = this.intersectBox(bounds, origin, direction);
+          if (!localDistance) return;
+        }
+      }
+
+      if (maxDistance && localDistance > localMaxDistance) return; // Create object on mesh to avoid generating lots of objects
 
       if (!mesh.hit) mesh.hit = {
-        localPoint: new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"](),
-        point: new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_0__["Vec3"]()
+        localPoint: new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"](),
+        point: new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]()
       };
       mesh.hit.localPoint.copy(direction).multiply(localDistance).add(origin);
       mesh.hit.point.copy(mesh.hit.localPoint).applyMatrix4(mesh.worldMatrix);
       mesh.hit.distance = mesh.hit.point.distance(this.origin);
       hits.push(mesh);
     });
+    hits.sort((a, b) => a.hit.distance - b.hit.distance);
+    return hits;
+  }
+
+  intersectMeshes(meshes, {
+    cullFace = true,
+    maxDistance,
+    includeUV = true,
+    includeNormal = true,
+    output = []
+  } = {}) {
+    // Test bounds first before testing geometry
+    const hits = this.intersectBounds(meshes, {
+      maxDistance,
+      output
+    });
+    if (!hits.length) return hits;
+    const invWorldMat4 = tempMat4;
+    const origin = tempVec3a;
+    const direction = tempVec3b;
+    const a = tempVec3c;
+    const b = tempVec3d;
+    const c = tempVec3e;
+    const closestFaceNormal = tempVec3f;
+    const faceNormal = tempVec3g;
+    const barycoord = tempVec3h;
+    const uvA = tempVec2a;
+    const uvB = tempVec2b;
+    const uvC = tempVec2c;
+
+    for (let i = hits.length - 1; i >= 0; i--) {
+      const mesh = hits[i];
+      invWorldMat4.inverse(mesh.worldMatrix); // Get max distance locally
+
+      let localMaxDistance;
+
+      if (maxDistance) {
+        direction.copy(this.direction).scaleRotateMatrix4(invWorldMat4);
+        localMaxDistance = maxDistance * direction.len();
+      } // Take world space ray and make it object space to align with bounding box
+
+
+      origin.copy(this.origin).applyMatrix4(invWorldMat4);
+      direction.copy(this.direction).transformDirection(invWorldMat4);
+      let localDistance = 0;
+      let closestA, closestB, closestC;
+      const geometry = mesh.geometry;
+      const attributes = geometry.attributes;
+      const index = attributes.index;
+      const start = Math.max(0, geometry.drawRange.start);
+      const end = Math.min(index ? index.count : attributes.position.count, geometry.drawRange.start + geometry.drawRange.count);
+
+      for (let j = start; j < end; j += 3) {
+        // Position attribute indices for each triangle
+        const ai = index ? index.data[j] : j;
+        const bi = index ? index.data[j + 1] : j + 1;
+        const ci = index ? index.data[j + 2] : j + 2;
+        a.fromArray(attributes.position.data, ai * 3);
+        b.fromArray(attributes.position.data, bi * 3);
+        c.fromArray(attributes.position.data, ci * 3);
+        const distance = this.intersectTriangle(a, b, c, cullFace, origin, direction, faceNormal);
+        if (!distance) continue; // Too far away
+
+        if (maxDistance && distance > localMaxDistance) continue;
+
+        if (!localDistance || distance < localDistance) {
+          localDistance = distance;
+          closestA = ai;
+          closestB = bi;
+          closestC = ci;
+          closestFaceNormal.copy(faceNormal);
+        }
+      }
+
+      if (!localDistance) hits.splice(i, 1); // Update hit values from bounds-test
+
+      mesh.hit.localPoint.copy(direction).multiply(localDistance).add(origin);
+      mesh.hit.point.copy(mesh.hit.localPoint).applyMatrix4(mesh.worldMatrix);
+      mesh.hit.distance = mesh.hit.point.distance(this.origin); // Add unique hit objects on mesh to avoid generating lots of objects
+
+      if (!mesh.hit.faceNormal) {
+        mesh.hit.localFaceNormal = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+        mesh.hit.faceNormal = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+        mesh.hit.uv = new _math_Vec2_js__WEBPACK_IMPORTED_MODULE_0__["Vec2"]();
+        mesh.hit.localNormal = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+        mesh.hit.normal = new _math_Vec3_js__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+      } // Add face normal data which is already computed
+
+
+      mesh.hit.localFaceNormal.copy(closestFaceNormal);
+      mesh.hit.faceNormal.copy(mesh.hit.localFaceNormal).transformDirection(mesh.worldMatrix); // Optional data, opt out to optimise a bit if necessary
+
+      if (includeUV || includeNormal) {
+        // Calculate barycoords to find uv values at hit point
+        a.fromArray(attributes.position.data, closestA * 3);
+        b.fromArray(attributes.position.data, closestB * 3);
+        c.fromArray(attributes.position.data, closestC * 3);
+        this.getBarycoord(mesh.hit.localPoint, a, b, c, barycoord);
+      }
+
+      if (includeUV && attributes.uv) {
+        uvA.fromArray(attributes.uv.data, closestA * 2);
+        uvB.fromArray(attributes.uv.data, closestB * 2);
+        uvC.fromArray(attributes.uv.data, closestC * 2);
+        mesh.hit.uv.set(uvA.x * barycoord.x + uvB.x * barycoord.y + uvC.x * barycoord.z, uvA.y * barycoord.x + uvB.y * barycoord.y + uvC.y * barycoord.z);
+      }
+
+      if (includeNormal && attributes.normal) {
+        a.fromArray(attributes.normal.data, closestA * 3);
+        b.fromArray(attributes.normal.data, closestB * 3);
+        c.fromArray(attributes.normal.data, closestC * 3);
+        mesh.hit.localNormal.set(a.x * barycoord.x + b.x * barycoord.y + c.x * barycoord.z, a.y * barycoord.x + b.y * barycoord.y + c.y * barycoord.z, a.z * barycoord.x + b.z * barycoord.y + c.z * barycoord.z);
+        mesh.hit.normal.copy(mesh.hit.localNormal).transformDirection(mesh.worldMatrix);
+      }
+    }
+
     hits.sort((a, b) => a.hit.distance - b.hit.distance);
     return hits;
   }
@@ -6832,6 +7063,61 @@ class Raycast {
     if (tZmax < tmax) tmax = tZmax;
     if (tmax < 0) return 0;
     return tmin >= 0 ? tmin : tmax;
+  }
+
+  intersectTriangle(a, b, c, backfaceCulling = true, origin = this.origin, direction = this.direction, normal = tempVec3g) {
+    // from https://github.com/mrdoob/three.js/blob/master/src/math/Ray.js
+    // which is from http://www.geometrictools.com/GTEngine/Include/Mathematics/GteIntrRay3Triangle3.h
+    const edge1 = tempVec3h;
+    const edge2 = tempVec3i;
+    const diff = tempVec3j;
+    edge1.sub(b, a);
+    edge2.sub(c, a);
+    normal.cross(edge1, edge2);
+    let DdN = direction.dot(normal);
+    if (!DdN) return 0;
+    let sign;
+
+    if (DdN > 0) {
+      if (backfaceCulling) return 0;
+      sign = 1;
+    } else {
+      sign = -1;
+      DdN = -DdN;
+    }
+
+    diff.sub(origin, a);
+    let DdQxE2 = sign * direction.dot(edge2.cross(diff, edge2));
+    if (DdQxE2 < 0) return 0;
+    let DdE1xQ = sign * direction.dot(edge1.cross(diff));
+    if (DdE1xQ < 0) return 0;
+    if (DdQxE2 + DdE1xQ > DdN) return 0;
+    let QdN = -sign * diff.dot(normal);
+    if (QdN < 0) return 0;
+    return QdN / DdN;
+  }
+
+  getBarycoord(point, a, b, c, target = tempVec3h) {
+    // From https://github.com/mrdoob/three.js/blob/master/src/math/Triangle.js
+    // static/instance method to calculate barycentric coordinates
+    // based on: http://www.blackpawn.com/texts/pointinpoly/default.html
+    const v0 = tempVec3i;
+    const v1 = tempVec3j;
+    const v2 = tempVec3k;
+    v0.sub(c, a);
+    v1.sub(b, a);
+    v2.sub(point, a);
+    const dot00 = v0.dot(v0);
+    const dot01 = v0.dot(v1);
+    const dot02 = v0.dot(v2);
+    const dot11 = v1.dot(v1);
+    const dot12 = v1.dot(v2);
+    const denom = dot00 * dot11 - dot01 * dot01;
+    if (denom === 0) return target.set(-2, -1, -1);
+    const invDenom = 1 / denom;
+    const u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+    const v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+    return target.set(1 - u - v, v, u);
   }
 
 }
@@ -8631,11 +8917,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GLTFLoader", function() { return GLTFLoader; });
 /* harmony import */ var _core_Geometry_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _core_Transform_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var _core_Mesh_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
-/* harmony import */ var _GLTFAnimation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(47);
-/* harmony import */ var _GLTFSkin_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(48);
-/* harmony import */ var _math_Mat4_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(12);
-/* harmony import */ var _NormalProgram_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(39);
+/* harmony import */ var _core_Texture_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
+/* harmony import */ var _core_Mesh_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(16);
+/* harmony import */ var _GLTFAnimation_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(47);
+/* harmony import */ var _GLTFSkin_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(48);
+/* harmony import */ var _math_Mat4_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(12);
+/* harmony import */ var _NormalProgram_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(39);
+
 
 
 
@@ -8646,23 +8934,30 @@ __webpack_require__.r(__webpack_exports__);
 // [x] Geometry
 // [ ] Sparse support
 // [x] Nodes and Hierarchy
+// [x] Instancing
 // [ ] Morph Targets
 // [x] Skins
 // [ ] Materials
-// [ ] Textures
+// [x] Textures
 // [x] Animation
 // [ ] Cameras
 // [ ] Extensions
+// [x] GLB support
 // TODO: Sparse accessor packing? For morph targets basically
 // TODO: init accessor missing bufferView with 0s
 // TODO: morph target animations
+// TODO: what to do if multiple instances are in different groups? Only uses local matrices
+// TODO: what if instancing isn't wanted? Eg collision maps
+// TODO: ie11 fallback for TextDecoder?
 
 const TYPE_ARRAY = {
   5121: Uint8Array,
   5122: Int16Array,
   5123: Uint16Array,
   5125: Uint32Array,
-  5126: Float32Array
+  5126: Float32Array,
+  'image/jpeg': Uint8Array,
+  'image/png': Uint8Array
 };
 const TYPE_SIZE = {
   SCALAR: 1,
@@ -8692,16 +8987,23 @@ class GLTFLoader {
   static async load(gl, src) {
     const dir = src.split('/').slice(0, -1).join('/') + '/'; // load main description json
 
-    const desc = await fetch(src).then(res => res.json());
+    const desc = await this.parseDesc(src);
     if (desc.asset === undefined || desc.asset.version[0] < 2) console.warn('Only GLTF >=2.0 supported. Attempting to parse.'); // Load buffers async
 
-    const buffers = await this.loadBuffers(desc, dir); // Create gl buffers from bufferViews
+    const buffers = await this.loadBuffers(desc, dir); // Unbind current VAO so that new buffers don't get added to active mesh
 
-    const bufferViews = this.parseBufferViews(gl, desc, buffers); // Create geometries for each mesh primitive
+    gl.renderer.bindVertexArray(null); // Create gl buffers from bufferViews
 
-    const meshes = this.parseMeshes(gl, desc, bufferViews); // Fetch the inverse bind matrices for skeleton joints
+    const bufferViews = this.parseBufferViews(gl, desc, buffers); // Create images from either bufferViews or separate image files
 
-    const skins = this.parseSkins(gl, desc, bufferViews); // Create transforms, meshes and hierarchy
+    const images = this.parseImages(gl, desc, dir, bufferViews);
+    const textures = this.parseTextures(gl, desc, images); // Just pass through material data for now
+
+    const materials = this.parseMaterials(gl, desc, textures); // Fetch the inverse bind matrices for skeleton joints
+
+    const skins = this.parseSkins(gl, desc, bufferViews); // Create geometries for each mesh primitive
+
+    const meshes = this.parseMeshes(gl, desc, bufferViews, materials, skins); // Create transforms, meshes and hierarchy
 
     const nodes = this.parseNodes(gl, desc, meshes, skins); // Place nodes in skeletons
 
@@ -8710,17 +9012,62 @@ class GLTFLoader {
     const animations = this.parseAnimations(gl, desc, nodes, bufferViews); // Get top level nodes for each scene
 
     const scenes = this.parseScenes(desc, nodes);
-    const scene = scenes[desc.scene];
+    const scene = scenes[desc.scene]; // Remove null nodes (instanced transforms)
+
+    for (let i = nodes.length; i >= 0; i--) if (!nodes[i]) nodes.splice(i, 1);
+
     return {
       json: desc,
       buffers,
       bufferViews,
+      images,
+      materials,
       meshes,
       nodes,
       animations,
       scenes,
       scene
     };
+  }
+
+  static async parseDesc(src) {
+    if (!src.match(/\.glb$/)) {
+      return await fetch(src).then(res => res.json());
+    } else {
+      return await fetch(src).then(res => res.arrayBuffer()).then(glb => this.unpackGLB(glb));
+    }
+  } // From https://github.com/donmccurdy/glTF-Transform/blob/e4108cc/packages/core/src/io/io.ts#L32
+
+
+  static unpackGLB(glb) {
+    // Decode and verify GLB header.
+    const header = new Uint32Array(glb, 0, 3);
+
+    if (header[0] !== 0x46546c67) {
+      throw new Error('Invalid glTF asset.');
+    } else if (header[1] !== 2) {
+      throw new Error(`Unsupported glTF binary version, "${header[1]}".`);
+    } // Decode and verify chunk headers.
+
+
+    const jsonChunkHeader = new Uint32Array(glb, 12, 2);
+    const jsonByteOffset = 20;
+    const jsonByteLength = jsonChunkHeader[0];
+    const binaryChunkHeader = new Uint32Array(glb, jsonByteOffset + jsonByteLength, 2);
+
+    if (jsonChunkHeader[1] !== 0x4e4f534a || binaryChunkHeader[1] !== 0x004e4942) {
+      throw new Error('Unexpected GLB layout.');
+    } // Decode content.
+
+
+    const jsonText = new TextDecoder().decode(glb.slice(jsonByteOffset, jsonByteOffset + jsonByteLength));
+    const json = JSON.parse(jsonText);
+    const binaryByteOffset = jsonByteOffset + jsonByteLength + 8;
+    const binaryByteLength = binaryChunkHeader[0];
+    const binary = glb.slice(binaryByteOffset, binaryByteOffset + binaryByteLength); // Attach binary to buffer
+
+    json.buffers[0].binary = binary;
+    return json;
   } // Threejs GLTF Loader https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/GLTFLoader.js#L1085
 
 
@@ -8743,16 +9090,20 @@ class GLTFLoader {
   }
 
   static async loadBuffers(desc, dir) {
+    if (!desc.buffers) return null;
     return await Promise.all(desc.buffers.map(buffer => {
+      // For GLB, binary buffer ready to go
+      if (buffer.binary) return buffer.binary;
       const uri = this.resolveURI(buffer.uri, dir);
       return fetch(uri).then(res => res.arrayBuffer());
     }));
   }
 
   static parseBufferViews(gl, desc, buffers) {
-    // Clone to leave description pure
+    if (!desc.bufferViews) return null; // Clone to leave description pure
+
     const bufferViews = desc.bufferViews.map(o => Object.assign({}, o));
-    desc.meshes.forEach(({
+    desc.meshes && desc.meshes.forEach(({
       primitives
     }) => {
       primitives.forEach(({
@@ -8774,6 +9125,15 @@ class GLTFLoader {
       componentType
     }) => {
       bufferViews[i].componentType = componentType;
+    }); // Get mimetype of bufferView from images
+
+    desc.images && desc.images.forEach(({
+      uri,
+      bufferView: i,
+      mimeType
+    }) => {
+      if (i === undefined) return;
+      bufferViews[i].mimeType = mimeType;
     }); // Push each bufferView to the GPU as a separate buffer
 
     bufferViews.forEach(({
@@ -8794,15 +9154,17 @@ class GLTFLoader {
       extras,
       // optional
       componentType,
-      // required, added from accessor above
+      // optional, added from accessor above
+      mimeType,
+      // optional, added from images above
       isAttribute
     }, i) => {
-      const TypeArray = TYPE_ARRAY[componentType];
+      const TypeArray = TYPE_ARRAY[componentType || mimeType];
       const elementBytes = TypeArray.BYTES_PER_ELEMENT;
       const data = new TypeArray(buffers[bufferIndex], byteOffset, byteLength / elementBytes);
-      bufferViews[i].data = data; // Create gl buffers for the bufferView, pushing it to the GPU
+      bufferViews[i].data = data;
+      if (!isAttribute) return; // Create gl buffers for the bufferView, pushing it to the GPU
 
-      if (!isAttribute) return;
       const buffer = gl.createBuffer();
       gl.bindBuffer(target, buffer);
       gl.renderer.state.boundBuffer = buffer;
@@ -8812,23 +9174,124 @@ class GLTFLoader {
     return bufferViews;
   }
 
-  static parseMeshes(gl, desc, bufferViews) {
-    return desc.meshes.map(({
-      primitives,
-      // required
-      weights,
-      // optional
-      name,
-      // optional
-      extensions,
-      // optional
-      extras // optional
-
+  static parseImages(gl, desc, dir, bufferViews) {
+    if (!desc.images) return null;
+    return desc.images.map(({
+      uri,
+      bufferView: bufferViewIndex,
+      mimeType,
+      name
     }) => {
+      const image = new Image();
+      image.name = name;
+
+      if (uri) {
+        image.src = this.resolveURI(uri, dir);
+      } else if (bufferViewIndex !== undefined) {
+        const {
+          data
+        } = bufferViews[bufferViewIndex];
+        const blob = new Blob([data], {
+          type: mimeType
+        });
+        image.src = URL.createObjectURL(blob);
+      }
+
+      image.ready = new Promise(res => {
+        image.onload = () => res();
+      });
+      return image;
+    });
+  }
+
+  static parseTextures(gl, desc, images) {
+    if (!desc.textures) return null;
+    return desc.textures.map(({
+      sampler: samplerIndex,
+      source: sourceIndex,
+      name,
+      extensions,
+      extras
+    }) => {
+      const options = {
+        flipY: false,
+        wrapS: gl.REPEAT,
+        // Repeat by default, opposed to OGL's clamp by default
+        wrapT: gl.REPEAT
+      };
+      const sampler = samplerIndex !== undefined ? desc.samplers[samplerIndex] : null;
+
+      if (sampler) {
+        ['magFilter', 'minFilter', 'wrapS', 'wrapT'].forEach(prop => {
+          if (sampler[prop]) options[prop] = sampler[prop];
+        });
+      }
+
+      const texture = new _core_Texture_js__WEBPACK_IMPORTED_MODULE_2__["Texture"](gl, options);
+      texture.name = name;
+      const image = images[sourceIndex];
+      image.ready.then(() => texture.image = image);
+      return texture;
+    });
+  }
+
+  static parseMaterials(gl, desc, textures) {
+    if (!desc.materials) return null;
+    return desc.materials.map(({
+      name,
+      extensions,
+      extras,
+      pbrMetallicRoughness = {},
+      normalTexture,
+      occlusionTexture,
+      emissiveTexture,
+      emissiveFactor = [0, 0, 0],
+      alphaMode = 'OPAQUE',
+      alphaCutoff = 0.5,
+      doubleSided = false
+    }) => {
+      const {
+        baseColorFactor = [1, 1, 1, 1],
+        baseColorTexture,
+        metallicFactor = 1,
+        roughnessFactor = 1,
+        metallicRoughnessTexture //   extensions,
+        //   extras,
+
+      } = pbrMetallicRoughness;
+
+      if (baseColorTexture) {
+        baseColorTexture.texture = textures[baseColorTexture.index]; // texCoord
+      }
+
+      if (normalTexture) {
+        normalTexture.texture = textures[normalTexture.index]; // scale: 1
+        // texCoord
+      }
+
+      if (occlusionTexture) {
+        occlusionTexture.texture = textures[occlusionTexture.index]; // strength 1
+        // texCoord
+      }
+
+      if (emissiveTexture) {
+        emissiveTexture.texture = textures[emissiveTexture.index]; // texCoord
+      }
+
       return {
-        primitives: this.parsePrimitives(gl, primitives, desc, bufferViews),
-        weights,
-        name
+        name,
+        baseColorFactor,
+        baseColorTexture,
+        metallicFactor,
+        roughnessFactor,
+        metallicRoughnessTexture,
+        normalTexture,
+        occlusionTexture,
+        emissiveTexture,
+        emissiveFactor,
+        alphaMode,
+        alphaCutoff,
+        doubleSided
       };
     });
   }
@@ -8854,25 +9317,76 @@ class GLTFLoader {
     });
   }
 
-  static populateSkins(skins, nodes) {
-    if (!skins) return;
-    skins.forEach(skin => {
-      skin.joints = skin.joints.map((i, index) => {
-        const joint = nodes[i];
-        joint.bindInverse = new _math_Mat4_js__WEBPACK_IMPORTED_MODULE_5__["Mat4"](...skin.inverseBindMatrices.data.slice(index * 16, (index + 1) * 16));
-        return joint;
+  static parseMeshes(gl, desc, bufferViews, materials, skins) {
+    if (!desc.meshes) return null;
+    return desc.meshes.map(({
+      primitives,
+      // required
+      weights,
+      // optional
+      name,
+      // optional
+      extensions,
+      // optional
+      extras // optional
+
+    }, meshIndex) => {
+      // TODO: weights stuff ?
+      // Parse through nodes to see how many instances there are
+      // and if there is a skin attached
+      let numInstances = 0;
+      let skinIndex = false;
+      desc.nodes && desc.nodes.forEach(({
+        mesh,
+        skin
+      }) => {
+        if (mesh === meshIndex) {
+          numInstances++;
+          if (skin !== undefined) skinIndex = skin;
+        }
       });
-      skin.skeleton = nodes[skin.skeleton];
+      primitives = this.parsePrimitives(gl, primitives, desc, bufferViews, materials, numInstances).map(({
+        geometry,
+        program,
+        mode
+      }) => {
+        // Create either skinned mesh or regular mesh
+        const mesh = typeof skinIndex === 'number' ? new _GLTFSkin_js__WEBPACK_IMPORTED_MODULE_5__["GLTFSkin"](gl, {
+          skeleton: skins[skinIndex],
+          geometry,
+          program,
+          mode
+        }) : new _core_Mesh_js__WEBPACK_IMPORTED_MODULE_3__["Mesh"](gl, {
+          geometry,
+          program,
+          mode
+        });
+        mesh.name = name;
+
+        if (mesh.geometry.isInstanced) {
+          // Tag mesh so that nodes can add their transforms to the instance attribute
+          mesh.numInstances = numInstances; // Avoid incorrect culling for instances
+
+          mesh.frustumCulled = false;
+        }
+
+        return mesh;
+      });
+      return {
+        primitives,
+        weights,
+        name
+      };
     });
   }
 
-  static parsePrimitives(gl, primitives, desc, bufferViews) {
+  static parsePrimitives(gl, primitives, desc, bufferViews, materials, numInstances) {
     return primitives.map(({
       attributes,
       // required
       indices,
       // optional
-      material,
+      material: materialIndex,
       // optional
       mode = 4,
       // optional
@@ -8890,9 +9404,26 @@ class GLTFLoader {
       } // Add index attribute if found
 
 
-      if (indices !== undefined) geometry.addAttribute('index', this.parseAccessor(indices, desc, bufferViews)); // TODO: materials
+      if (indices !== undefined) {
+        geometry.addAttribute('index', this.parseAccessor(indices, desc, bufferViews));
+      } // Add instanced transform attribute if multiple instances
 
-      const program = new _NormalProgram_js__WEBPACK_IMPORTED_MODULE_6__["NormalProgram"](gl);
+
+      if (numInstances > 1) {
+        geometry.addAttribute('instanceMatrix', {
+          instanced: 1,
+          size: 16,
+          data: new Float32Array(numInstances * 16)
+        });
+      } // TODO: materials
+
+
+      const program = new _NormalProgram_js__WEBPACK_IMPORTED_MODULE_7__["NormalProgram"](gl);
+
+      if (materialIndex !== undefined) {
+        program.gltfMaterial = materials[materialIndex];
+      }
+
       return {
         geometry,
         program,
@@ -8958,6 +9489,7 @@ class GLTFLoader {
   }
 
   static parseNodes(gl, desc, meshes, skins) {
+    if (!desc.nodes) return null;
     const nodes = desc.nodes.map(({
       camera,
       // optional
@@ -8994,32 +9526,52 @@ class GLTFLoader {
         if (rotation) node.quaternion.copy(rotation);
         if (scale) node.scale.copy(scale);
         if (translation) node.position.copy(translation);
-      } // add mesh if included
+        node.updateMatrix();
+      } // Flags for avoiding duplicate transforms and removing unused instance nodes
 
+
+      let isInstanced = false;
+      let isFirstInstance = true; // add mesh if included
 
       if (meshIndex !== undefined) {
-        meshes[meshIndex].primitives.forEach(({
-          geometry,
-          program,
-          mode
-        }) => {
-          if (typeof skinIndex === 'number') {
-            const skin = new _GLTFSkin_js__WEBPACK_IMPORTED_MODULE_4__["GLTFSkin"](gl, {
-              skeleton: skins[skinIndex],
-              geometry,
-              program,
-              mode
-            });
-            skin.setParent(node);
+        meshes[meshIndex].primitives.forEach(mesh => {
+          if (mesh.geometry.isInstanced) {
+            isInstanced = true;
+
+            if (!mesh.instanceCount) {
+              mesh.instanceCount = 0;
+            } else {
+              isFirstInstance = false;
+            }
+
+            node.matrix.toArray(mesh.geometry.attributes.instanceMatrix.data, mesh.instanceCount * 16);
+            mesh.instanceCount++;
+
+            if (mesh.instanceCount === mesh.numInstances) {
+              // Remove properties once all instances added
+              delete mesh.numInstances;
+              delete mesh.instanceCount; // Flag attribute as dirty
+
+              mesh.geometry.attributes.instanceMatrix.needsUpdate = true;
+            }
+          } // For instances, only the first node will actually have the mesh
+
+
+          if (isInstanced) {
+            if (isFirstInstance) mesh.setParent(node);
           } else {
-            const mesh = new _core_Mesh_js__WEBPACK_IMPORTED_MODULE_2__["Mesh"](gl, {
-              geometry,
-              program,
-              mode
-            });
             mesh.setParent(node);
           }
         });
+      } // Reset node if instanced to not duplicate transforms
+
+
+      if (isInstanced) {
+        // Remove unused nodes just providing an instance transform
+        if (!isFirstInstance) return null; // Avoid duplicate transform for node containing the instanced mesh
+
+        node.matrix.identity();
+        node.decompose();
       }
 
       return node;
@@ -9029,10 +9581,23 @@ class GLTFLoader {
     }, i) => {
       // Set hierarchy now all nodes created
       children.forEach(childIndex => {
+        if (!nodes[childIndex]) return;
         nodes[childIndex].setParent(nodes[i]);
       });
     });
     return nodes;
+  }
+
+  static populateSkins(skins, nodes) {
+    if (!skins) return;
+    skins.forEach(skin => {
+      skin.joints = skin.joints.map((i, index) => {
+        const joint = nodes[i];
+        joint.bindInverse = new _math_Mat4_js__WEBPACK_IMPORTED_MODULE_6__["Mat4"](...skin.inverseBindMatrices.data.slice(index * 16, (index + 1) * 16));
+        return joint;
+      });
+      if (skin.skeleton) skin.skeleton = nodes[skin.skeleton];
+    });
   }
 
   static parseAnimations(gl, desc, nodes, bufferViews) {
@@ -9088,12 +9653,13 @@ class GLTFLoader {
       });
       return {
         name,
-        animation: new _GLTFAnimation_js__WEBPACK_IMPORTED_MODULE_3__["GLTFAnimation"](data)
+        animation: new _GLTFAnimation_js__WEBPACK_IMPORTED_MODULE_4__["GLTFAnimation"](data)
       };
     });
   }
 
   static parseScenes(desc, nodes) {
+    if (!desc.scenes) return null;
     return desc.scenes.map(({
       nodes: nodesIndices = [],
       name,
@@ -9101,7 +9667,11 @@ class GLTFLoader {
       extensions,
       extras
     }) => {
-      return nodesIndices.map(i => nodes[i]);
+      return nodesIndices.reduce((map, i) => {
+        // Don't add null nodes (instanced transforms)
+        if (nodes[i]) map.push(nodes[i]);
+        return map;
+      }, []);
     });
   }
 
@@ -9296,7 +9866,7 @@ class GLTFSkin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
     this.updateUniforms(); // Switch this world matrix with root node's to populate uniforms
 
     const _worldMatrix = this.worldMatrix;
-    this.worldMatrix = this.skeleton.skeleton.worldMatrix;
+    if (this.skeleton.skeleton) this.worldMatrix = this.skeleton.skeleton.worldMatrix;
     super.draw({
       camera
     });
@@ -9661,7 +10231,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
 
     program.extraAttribute = program.extraAttribute || {};
 
-    if (program.attributeLocations.has('color') && !program.extraAttribute.color) {
+    if (gl.getAttribLocation(program.program, 'color') >= 0 && !program.extraAttribute.color) {
       program.extraAttribute.color = _helper_color_attribute__WEBPACK_IMPORTED_MODULE_7__["colorAttribute"];
     }
 
@@ -11828,7 +12398,7 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
       geometry = new _helper_geometry__WEBPACK_IMPORTED_MODULE_2__["default"](gl, model, false);
     }
 
-    if (!geometry.attributes.normal && program.attributeLocations.has('normal')) {
+    if (!geometry.attributes.normal && program.gl.getAttribLocation(program.program, 'normal') >= 0) {
       const position = geometry.attributes.position.data;
       const len = geometry.attributes.position.data.length;
       const normal = new Float32Array(len);
@@ -13138,8 +13708,9 @@ class Polyline3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
       uv,
       index
     };
+    const program = this.program;
 
-    if (this.program && this.program.attributeLocations.has('seg')) {
+    if (program && program.gl.getAttribLocation(program.program, 'seg') >= 0) {
       const seg = new Float32Array(count * 2);
       modle.seg = seg;
     } // Set static buffers
@@ -13513,7 +14084,7 @@ class Path3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
   }
 
   fromPoints(points) {
-    const d = `M${points.join('L')}Z`;
+    const d = `M${points.join('L')}Z`.replace(/,/g, ' ');
     this.attr('d', d);
   }
   /* override */
@@ -13535,7 +14106,12 @@ class Path3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
       capBack
     } = this.attributes;
     const path = new spritejs__WEBPACK_IMPORTED_MODULE_0__["Path"](d);
-    if (type === 'stroke') path.attr('strokeColor', 'rgba(0, 0, 0, 0)');
+
+    if (type === 'stroke') {
+      path.attr('strokeColor', 'rgba(0, 0, 0, 0)');
+      throw new Error('Not supported yet.');
+    }
+
     path.attr({
       fillColor: '#fff',
       d,
@@ -13574,11 +14150,34 @@ class Path3d extends _mesh3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
             offset = position.length / 3;
           }
         });
+      } else if (type === 'stroke') {
+        const points = mesh.meshData.position0.filter(([x, y, z]) => 1 / z < 0);
+        setData({
+          points,
+          position,
+          index,
+          normal,
+          uv,
+          offset,
+          depth
+        });
+        const len = points.length;
+
+        if (len > 1) {
+          offset = position.length / 3;
+        }
       }
 
       if (capFront || capBack) {
-        const points = mesh.meshData.position0;
-        const cells = mesh.meshData.cells;
+        let points = mesh.meshData.position0;
+        let cells = mesh.meshData.cells;
+
+        if (type === 'stroke') {
+          const totalLen = points.length;
+          points = points.filter(([x, y, z]) => 1 / z < 0);
+          const diff = totalLen - points.length;
+          cells = cells.map(([x, y, z]) => [x - diff, z - diff, y - diff]).filter(([x]) => x >= 0);
+        }
 
         const _uv = generateUV(mesh.boundingBox, points);
 
@@ -14148,7 +14747,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);;\n  vColor = color;\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);;\n  vColor = color;\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 88 */
@@ -14164,7 +14763,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 90 */
@@ -14180,7 +14779,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vDir = normalize(position);\n  vColor = color;\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vDir = normalize(position);\n  vColor = color;\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 92 */
@@ -14196,7 +14795,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 94 */
@@ -14212,7 +14811,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 96 */
@@ -14260,7 +14859,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 102 */
@@ -14276,7 +14875,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec3 vMPos;\nout vec4 vColor;\nout vec4 vPos;\nout vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec3 vMPos;\nout vec4 vColor;\nout vec4 vPos;\nout vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 104 */
@@ -14292,7 +14891,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec3 vMPos;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 106 */
@@ -14308,7 +14907,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec3 vMPos;\nout vec4 vColor;\nout vec4 vPos;\nout vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec3 vMPos;\nout vec4 vColor;\nout vec4 vPos;\nout vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vMPos = (modelMatrix * vec4(position, 1.0)).xyz;\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ })
 /******/ ]);

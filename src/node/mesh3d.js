@@ -248,7 +248,8 @@ export default class Mesh3d extends Group3d {
     } else {
       geometry = new Geometry(gl, model, false);
     }
-    if(!geometry.attributes.normal && program.attributeLocations.has('normal')) {
+
+    if(!geometry.attributes.normal && program.gl.getAttribLocation(program.program, 'normal') >= 0) {
       const position = geometry.attributes.position.data;
       const len = geometry.attributes.position.data.length;
       const normal = new Float32Array(len);

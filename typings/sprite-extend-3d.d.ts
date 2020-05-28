@@ -149,7 +149,7 @@ declare namespace ext3d {
     blendEquation: any;
     program: WebGLProgram;
     uniformLocations: Map<any, any>;
-    attributeLocations: Map<string, any>;
+    attributeLocations: Map<any, any>;
     attributeOrder: string;
     setBlendFunc(src: any, dst: any, srcAlpha: any, dstAlpha: any): void;
     setBlendEquation(modeRGB: any, modeAlpha: any): void;

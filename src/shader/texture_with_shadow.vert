@@ -8,6 +8,7 @@ attribute vec2 uv;
 
 uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
+uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 uniform mat3 normalMatrix;
 uniform vec3 cameraPosition;
@@ -36,6 +37,6 @@ void main() {
   vColor = color;
   vUv = uv;
   vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);
-  vCameraPos = (modelViewMatrix * vec4(cameraPosition, 1.0)).xyz;
+  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;
   gl_Position = projectionMatrix * vPos;
 }

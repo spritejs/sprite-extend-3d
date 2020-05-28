@@ -117,7 +117,9 @@ export default class Polyline3d extends Mesh3d {
       index,
     };
 
-    if(this.program && this.program.attributeLocations.has('seg')) {
+    const program = this.program;
+
+    if(program && program.gl.getAttribLocation(program.program, 'seg') >= 0) {
       const seg = new Float32Array(count * 2);
       modle.seg = seg;
     }
