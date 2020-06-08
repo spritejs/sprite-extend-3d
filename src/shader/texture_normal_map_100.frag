@@ -16,7 +16,6 @@ uniform float uNormalUVScale;
 
 varying vec2 vUv;
 varying vec3 vNormal;
-varying vec3 vMPos;
 varying vec4 vColor;
 varying vec4 vPos;
 varying vec3 vCameraPos;
@@ -101,8 +100,8 @@ vec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {
 }
 
 vec3 getNormal(float depth) {
-  vec3 pos_dx = dFdx(vMPos.xyz);
-  vec3 pos_dy = dFdy(vMPos.xyz);
+  vec3 pos_dx = dFdx(vPos.xyz);
+  vec3 pos_dy = dFdy(vPos.xyz);
   vec2 tex_dx = dFdx(vUv);
   vec2 tex_dy = dFdy(vUv);
 
