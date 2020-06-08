@@ -60,8 +60,7 @@ export default class Geometry extends _Geometry {
   }
 
   static createTB(geometry) {
-    geometry = Geometry.extract(geometry);
-    const {position, uv} = geometry.attributes;
+    const {position, index, uv} = geometry.attributes;
     if(!uv) throw new Error('NO uv.');
     function getTBNTriangle(p1, p2, p3, uv1, uv2, uv3) {
       const edge1 = new Vec3().sub(p2, p1);
@@ -96,10 +95,12 @@ export default class Geometry extends _Geometry {
     const tang = new Float32Array(len * 3);
     const bitang = new Float32Array(len * 3);
 
-    for(let i = 0; i < len; i += 3) {
-      const i1 = i;
-      const i2 = i + 1;
-      const i3 = i + 2;
+    const ilen = index ? index.data.length : len;
+
+    for(let i = 0; i < ilen; i += 3) {
+      const i1 = index ? index.data[i] : i;
+      const i2 = index ? index.data[i + 1] : i + 1;
+      const i3 = index ? index.data[i + 2] : i + 2;
 
       const p1 = [position.data[i1 * size], position.data[i1 * size + 1], position.data[i1 * size + 2]];
       const p2 = [position.data[i2 * size], position.data[i2 * size + 1], position.data[i2 * size + 2]];
@@ -110,12 +111,12 @@ export default class Geometry extends _Geometry {
       const u3 = [uv.data[i3 * 2], uv.data[i3 * 2 + 1]];
 
       const {tang: t, bitang: b} = getTBNTriangle(p1, p2, p3, u1, u2, u3);
-      tang.set(t, i * 3);
-      tang.set(t, (i + 1) * 3);
-      tang.set(t, (i + 2) * 3);
-      bitang.set(b, i * 3);
-      bitang.set(b, (i + 1) * 3);
-      bitang.set(b, (i + 2) * 3);
+      tang.set(t, i1 * 3);
+      tang.set(t, i2 * 3);
+      tang.set(t, i3 * 3);
+      bitang.set(b, i1 * 3);
+      bitang.set(b, i2 * 3);
+      bitang.set(b, i3 * 3);
     }
     geometry.addAttribute('tang', {data: tang, size: 3});
     geometry.addAttribute('bitang', {data: bitang, size: 3});
