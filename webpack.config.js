@@ -36,6 +36,10 @@ module.exports = function (env = {}) {
 
   if(env.module) {
     plugins.push(new EsmWebpackPlugin());
+    plugins.push(new webpack.BannerPlugin({
+      banner: "import * as spritejs from 'https://unpkg.com/spritejs/dist/spritejs.esm.js';",
+      raw: true,
+    }));
   }
 
   return {
@@ -69,7 +73,7 @@ module.exports = function (env = {}) {
     },
 
     externals: {
-      spritejs: env.module ? 'require(\'spritejs\')' : 'spritejs',
+      spritejs: 'spritejs',
     },
     // Don't follow/bundle these modules, but request them at runtime from the environment
 
