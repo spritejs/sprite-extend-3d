@@ -104,7 +104,7 @@ declare namespace ext3d {
   }
 
   export class Camera extends Group3d {
-    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, options?: Attrs);
+    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, options?: Partial<Attrs>);
     gl: WebGL2RenderingContext|WebGLRenderingContext;
     orbit: any;
     get projectionMatrix(): Array<number>;
@@ -247,7 +247,7 @@ declare namespace ext3d {
   }
 
   export class Group3d extends Node3d {
-    constructor(attrs?: Attrs);
+    constructor(attrs?: Partial<Attrs>);
     camera?: Camera;
     get childNodes(): Array<Node3d>;
     get children(): Array<Node3d>;
@@ -327,7 +327,7 @@ declare namespace ext3d {
     get sublayers(): Array<Group3d>;
     get autoClear(): boolean;
     set autoClear(value: boolean);
-    get ambientColor(): Array<number>;
+    get ambientColor(): any;
     set ambientColor(color: any);
     bindTarget(target: RenderTarget, options?: Record<string, any>): void;
     bindTime(program: Program, options?: Record<string, any>): void;
@@ -404,7 +404,7 @@ declare namespace ext3d {
      * @param program 
      * @param options 
      */
-    constructor(program: Program, attrs?: Attrs);
+    constructor(program: Program, attrs?: Partial<Attrs>);
     get geometry(): Geometry;
     get meshes(): Array<Mesh3d>;
     get model(): any;
@@ -472,7 +472,7 @@ declare namespace ext3d {
   }
 
   export class RenderTarget extends Group3d {
-    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, attrs: Attrs);
+    constructor(gl: WebGL2RenderingContext|WebGLRenderingContext, attrs: Partial<Attrs>);
     options: Record<string, any>;
     camera?: Camera;
     get texture(): Texture;
@@ -519,7 +519,7 @@ declare namespace ext3d {
   }
 
   export class Skin extends Mesh3d {
-    constructor(program: Program, attrs?: Attrs);
+    constructor(program: Program, attrs?: Partial<Attrs>);
     get bones(): any;
     addAnimation(animationData: any): AnimationFrames;
     setGeometry(model: any): void;
@@ -558,7 +558,7 @@ declare namespace ext3d {
   }
 
   export class Polyline3d extends Mesh3d {
-    constructor(program: Program, attrs?: Attrs);
+    constructor(program: Program, attrs?: Partial<Attrs>);
     get points(): Array<number>;
     onPropertyChange(key: string, newValue: any, oldValue: any): void;
     updateGeometry(): void;
