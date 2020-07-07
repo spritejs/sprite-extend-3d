@@ -1,9 +1,9 @@
 {
   "name": "sprite-extend-3d",
-  "version": "0.14.3",
+  "version": "0.14.4",
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
-  "module": "dist/sprite-extend-3d.esm.js",
+  "module": "lib/index.js",
   "typings": "typings/sprite-extend-3d.js",
   "scripts": {
     "start": "webpack-dev-server --env.server=examples --watch-poll",
