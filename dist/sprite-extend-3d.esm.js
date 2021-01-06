@@ -113,64 +113,62 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FrameBuffer", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["RenderTarget"]; });
 
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(50);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layer3d", function() { return _node_layer3d__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layer3d", function() { return _node_layer3d__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
-/* harmony import */ var _node_mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(59);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mesh3d", function() { return _node_mesh3d__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+/* harmony import */ var _node_mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mesh3d", function() { return _node_mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _node_skin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(63);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Skin", function() { return _node_skin__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony import */ var _node_skin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(63);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Skin", function() { return _node_skin__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _node_sphere__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(64);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Sphere", function() { return _node_sphere__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+/* harmony import */ var _node_sphere__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(64);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Sphere", function() { return _node_sphere__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _node_torus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(66);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Torus", function() { return _node_torus__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+/* harmony import */ var _node_torus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(66);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Torus", function() { return _node_torus__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony import */ var _node_camera__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(54);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return _node_camera__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+/* harmony import */ var _node_camera__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(54);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return _node_camera__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
-/* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(68);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cube", function() { return _node_cube__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+/* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(68);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cube", function() { return _node_cube__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(70);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return _helper_curve__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(70);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return _helper_curve__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(71);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return _node_plane__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(71);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return _node_plane__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(73);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Polyline3d", function() { return _node_polyline3d__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(73);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Polyline3d", function() { return _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(75);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cylinder", function() { return _node_cylinder__WEBPACK_IMPORTED_MODULE_12__["default"]; });
+/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(75);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cylinder", function() { return _node_cylinder__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _node_path3d__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(77);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Path3d", function() { return _node_path3d__WEBPACK_IMPORTED_MODULE_13__["default"]; });
+/* harmony import */ var _node_path3d__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(77);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Path3d", function() { return _node_path3d__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
-/* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(55);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group3d", function() { return _node_group3d__WEBPACK_IMPORTED_MODULE_14__["default"]; });
+/* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(55);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group3d", function() { return _node_group3d__WEBPACK_IMPORTED_MODULE_13__["default"]; });
 
-/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(79);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return _node_render_target__WEBPACK_IMPORTED_MODULE_15__["default"]; });
+/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(79);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return _node_render_target__WEBPACK_IMPORTED_MODULE_14__["default"]; });
 
-/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(53);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return _helper_shadow__WEBPACK_IMPORTED_MODULE_16__["default"]; });
+/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(53);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return _helper_shadow__WEBPACK_IMPORTED_MODULE_15__["default"]; });
 
-/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(80);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return _helper_texture_loader__WEBPACK_IMPORTED_MODULE_17__["default"]; });
+/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(80);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__["default"]; });
 
-/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(60);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return _helper_geometry__WEBPACK_IMPORTED_MODULE_18__["default"]; });
+/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(60);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return _helper_geometry__WEBPACK_IMPORTED_MODULE_17__["default"]; });
 
-/* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(51);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Light", function() { return _helper_light__WEBPACK_IMPORTED_MODULE_19__["default"]; });
+/* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(51);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Light", function() { return _helper_light__WEBPACK_IMPORTED_MODULE_18__["default"]; });
 
-/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(81);
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "shaders", function() { return _shader__WEBPACK_IMPORTED_MODULE_20__; });
+/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(81);
+/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "shaders", function() { return _shader__WEBPACK_IMPORTED_MODULE_19__; });
 
 
 
@@ -190,27 +188,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-spritejs__WEBPACK_IMPORTED_MODULE_1__["Scene"].prototype.layer3d = function (id = 'default3d', options = {}) {
-  const {
-    displayRatio
-  } = this.options;
-  options = Object.assign({
-    dpr: displayRatio
-  }, this.options, options);
-  options.id = id;
-  const layers = this.orderedChildren;
-
-  for (let i = 0; i < layers.length; i++) {
-    if (layers[i].id === id) return layers[i];
-  }
-
-  const layer = new _node_layer3d__WEBPACK_IMPORTED_MODULE_2__["default"](options);
-  this.appendChild(layer);
-  return layer;
-};
 
 
 
@@ -9897,18 +9874,12 @@ class GLTFSkin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
 
 /***/ }),
 /* 49 */
-/***/ (function(module, exports) {
-
-module.exports = spritejs;
-
-/***/ }),
-/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Layer3D; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
@@ -10947,7 +10918,33 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
   }
 
 }
+
+spritejs__WEBPACK_IMPORTED_MODULE_0__["Scene"].prototype.layer3d = function (id = 'default3d', options = {}) {
+  const {
+    displayRatio
+  } = this.options;
+  options = Object.assign({
+    dpr: displayRatio
+  }, this.options, options);
+  options.id = id;
+  const layers = this.orderedChildren;
+
+  for (let i = 0; i < layers.length; i++) {
+    if (layers[i].id === id) return layers[i];
+  }
+
+  const layer = new Layer3D(options);
+  this.appendChild(layer);
+  return layer;
+};
+
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Layer3D, 'layer3d');
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports) {
+
+module.exports = spritejs;
 
 /***/ }),
 /* 51 */
@@ -11003,7 +11000,7 @@ _defineProperty(Light, "SPOT_LIGHT", 2);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseColor", function() { return parseColor; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 
 function parseColor(colors) {
@@ -11066,7 +11063,7 @@ class Shadow extends ogl__WEBPACK_IMPORTED_MODULE_0__["Shadow"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(55);
@@ -11251,7 +11248,7 @@ Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Camera, 'camera');
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Group3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(56);
@@ -11447,7 +11444,7 @@ Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Group3d, 'group3d'
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Node3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _attribute_node3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -11807,7 +11804,7 @@ Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Node3d, 'node3d');
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Node3dAttr; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 
 const Attr = spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"].Attr;
@@ -12093,7 +12090,7 @@ class GameraAttr extends _node3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mesh3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
@@ -12304,7 +12301,7 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
   cloneNode(deep = false) {
     const attrs = this.attributes[changedAttrs];
     const model = this[_geometry].preserveBuffers ? this[_geometry] : this[_model];
-    const cloned = new this.constructor(this[_program], _objectSpread({}, attrs, {
+    const cloned = new this.constructor(this[_program], _objectSpread(_objectSpread({}, attrs), {}, {
       model
     }));
 
@@ -12784,7 +12781,7 @@ class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mesh3dAttr; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
 
@@ -12905,7 +12902,7 @@ function colorAttribute(node, geometry) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Skin; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
@@ -13043,7 +13040,7 @@ Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Skin, 'skin');
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Sphere; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
@@ -13189,7 +13186,7 @@ class SphereAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Torus; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _attribute_torus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(67);
@@ -13312,7 +13309,7 @@ class TorusAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cube; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
@@ -13490,7 +13487,7 @@ class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Plane; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(72);
@@ -13602,7 +13599,7 @@ class PlaneAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Polyline3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(59);
 /* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(74);
@@ -13816,7 +13813,7 @@ class PolylineAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cylinder; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(76);
@@ -13984,7 +13981,7 @@ class CylinderAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Path3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _attribute_path3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(78);
@@ -14392,7 +14389,7 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RenderTarget; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(55);
@@ -14934,6 +14931,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ ]);
 
 
+ext3d === undefined && console.error('esm-webpack-plugin: nothing exported!');
 const _ext3d$Layer3d = ext3d['Layer3d'];
 const _ext3d$Sphere = ext3d['Sphere'];
 const _ext3d$Torus = ext3d['Torus'];

@@ -1,4 +1,4 @@
-import {Layer, registerNode, ENV, Block} from 'spritejs';
+import {Scene, Layer, registerNode, ENV, Block} from 'spritejs';
 import {Renderer, Program, Texture, Orbit, Vec3, Vec2, Raycast, Post, GLTFLoader, Mesh} from 'ogl';
 import Light from '../helper/light';
 import Shadow from '../helper/shadow';
@@ -774,5 +774,19 @@ export default class Layer3D extends Layer {
     return false;
   }
 }
+
+Scene.prototype.layer3d = function (id = 'default3d', options = {}) {
+  const {displayRatio} = this.options;
+  options = Object.assign({dpr: displayRatio}, this.options, options);
+  options.id = id;
+  const layers = this.orderedChildren;
+  for(let i = 0; i < layers.length; i++) {
+    if(layers[i].id === id) return layers[i];
+  }
+
+  const layer = new Layer3D(options);
+  this.appendChild(layer);
+  return layer;
+};
 
 registerNode(Layer3D, 'layer3d');
