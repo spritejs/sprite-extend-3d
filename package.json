@@ -1,6 +1,6 @@
 {
   "name": "sprite-extend-3d",
-  "version": "0.14.6",
+  "version": "0.14.7",
   "description": "The 3d part of spritejs v3.",
   "main": "dist/sprite-extend-3d.js",
   "module": "lib/index.js",
@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --env.server=examples --watch-poll",
     "compile": "rm -rf lib/* && babel src -d lib && node ./scripts/compile-shaders.js",
     "spritejs:update": "cp ./node_modules/spritejs/dist/spritejs.es.js ./examples/js/spritejs.js",
-    "build": "webpack --env.mode=production & webpack --env.mode=none --env.module && cp ./dist/sprite-extend-3d.esm.js ./examples/lib",
+    "build": "webpack --env.mode=none & webpack --env.mode=production & webpack --env.mode=none --env.module && cp ./dist/sprite-extend-3d.esm.js ./examples/lib",
     "build:dev": "webpack --env.mode=none",
     "docs": "rm -rf ./docs && cp -R ./examples ./docs && cp -R ./dist/* ./docs/js/ && echo '3d.spritejs.org' > ./docs/CNAME",
     "prepublishOnly": "npm run compile && npm run build",

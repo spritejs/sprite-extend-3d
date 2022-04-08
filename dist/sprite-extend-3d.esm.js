@@ -113,61 +113,61 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FrameBuffer", function() { return ogl__WEBPACK_IMPORTED_MODULE_0__["RenderTarget"]; });
 
-/* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
+/* harmony import */ var _node_layer3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(50);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layer3d", function() { return _node_layer3d__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
-/* harmony import */ var _node_mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
+/* harmony import */ var _node_mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mesh3d", function() { return _node_mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _node_skin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(63);
+/* harmony import */ var _node_skin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(64);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Skin", function() { return _node_skin__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _node_sphere__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(64);
+/* harmony import */ var _node_sphere__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(65);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Sphere", function() { return _node_sphere__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _node_torus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(66);
+/* harmony import */ var _node_torus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(67);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Torus", function() { return _node_torus__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony import */ var _node_camera__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(54);
+/* harmony import */ var _node_camera__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(55);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return _node_camera__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
-/* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(68);
+/* harmony import */ var _node_cube__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(69);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cube", function() { return _node_cube__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(70);
+/* harmony import */ var _helper_curve__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(71);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return _helper_curve__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(71);
+/* harmony import */ var _node_plane__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(72);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return _node_plane__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(73);
+/* harmony import */ var _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(74);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Polyline3d", function() { return _node_polyline3d__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(75);
+/* harmony import */ var _node_cylinder__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(76);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cylinder", function() { return _node_cylinder__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _node_path3d__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(77);
+/* harmony import */ var _node_path3d__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(78);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Path3d", function() { return _node_path3d__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
-/* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(55);
+/* harmony import */ var _node_group3d__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(56);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group3d", function() { return _node_group3d__WEBPACK_IMPORTED_MODULE_13__["default"]; });
 
-/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(79);
+/* harmony import */ var _node_render_target__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(80);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return _node_render_target__WEBPACK_IMPORTED_MODULE_14__["default"]; });
 
-/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(53);
+/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(54);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return _helper_shadow__WEBPACK_IMPORTED_MODULE_15__["default"]; });
 
-/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(80);
+/* harmony import */ var _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(81);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return _helper_texture_loader__WEBPACK_IMPORTED_MODULE_16__["default"]; });
 
-/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(60);
+/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(61);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return _helper_geometry__WEBPACK_IMPORTED_MODULE_17__["default"]; });
 
-/* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(51);
+/* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(52);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Light", function() { return _helper_light__WEBPACK_IMPORTED_MODULE_18__["default"]; });
 
-/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(81);
+/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(82);
 /* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "shaders", function() { return _shader__WEBPACK_IMPORTED_MODULE_19__; });
 
 
@@ -308,6 +308,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _extras_GLTFLoader_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(46);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GLTFLoader", function() { return _extras_GLTFLoader_js__WEBPACK_IMPORTED_MODULE_36__["GLTFLoader"]; });
 
+/* harmony import */ var _extras_GLTFSkin_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(48);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GLTFSkin", function() { return _extras_GLTFSkin_js__WEBPACK_IMPORTED_MODULE_37__["GLTFSkin"]; });
+
+/* harmony import */ var _extras_BasisManager_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(49);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BasisManager", function() { return _extras_BasisManager_js__WEBPACK_IMPORTED_MODULE_38__["BasisManager"]; });
+
 // Core
 
 
@@ -329,6 +335,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // Extras
+
+
 
 
 
@@ -534,7 +542,7 @@ class Geometry {
 
     if (this.isInstanced) {
       if (this.attributes.index) {
-        this.gl.renderer.drawElementsInstanced(mode, this.drawRange.count, this.attributes.index.type, this.drawRange.start, this.instancedCount);
+        this.gl.renderer.drawElementsInstanced(mode, this.drawRange.count, this.attributes.index.type, this.attributes.index.offset + this.drawRange.start * 2, this.instancedCount);
       } else {
         this.gl.renderer.drawArraysInstanced(mode, this.drawRange.start, this.drawRange.count, this.instancedCount);
       }
@@ -547,18 +555,21 @@ class Geometry {
     }
   }
 
-  getPositionArray() {
+  getPosition() {
     // Use position buffer, or min/max if available
-    const attr = this.attributes.position;
-    if (attr.min) return [...attr.min, ...attr.max];
-    if (attr.data) return attr.data;
+    const attr = this.attributes.position; // if (attr.min) return [...attr.min, ...attr.max];
+
+    if (attr.data) return attr;
     if (isBoundsWarned) return;
     console.warn('No position buffer data found to compute bounds');
     return isBoundsWarned = true;
   }
 
-  computeBoundingBox(array) {
-    if (!array) array = this.getPositionArray();
+  computeBoundingBox(attr) {
+    if (!attr) attr = this.getPosition();
+    const array = attr.data;
+    const offset = attr.offset || 0;
+    const stride = attr.stride || attr.size;
 
     if (!this.bounds) {
       this.bounds = {
@@ -575,10 +586,9 @@ class Geometry {
     const center = this.bounds.center;
     const scale = this.bounds.scale;
     min.set(+Infinity);
-    max.set(-Infinity); // TODO: use offset/stride if exists
-    // TODO: check size of position (eg triangle with Vec2)
+    max.set(-Infinity); // TODO: check size of position (eg triangle with Vec2)
 
-    for (let i = 0, l = array.length; i < l; i += 3) {
+    for (let i = offset, l = array.length; i < l; i += stride) {
       const x = array[i];
       const y = array[i + 1];
       const z = array[i + 2];
@@ -594,12 +604,15 @@ class Geometry {
     center.add(min, max).divide(2);
   }
 
-  computeBoundingSphere(array) {
-    if (!array) array = this.getPositionArray();
-    if (!this.bounds) this.computeBoundingBox(array);
+  computeBoundingSphere(attr) {
+    if (!attr) attr = this.getPosition();
+    const array = attr.data;
+    const offset = attr.offset || 0;
+    const stride = attr.stride || attr.size;
+    if (!this.bounds) this.computeBoundingBox(attr);
     let maxRadiusSq = 0;
 
-    for (let i = 0, l = array.length; i < l; i += 3) {
+    for (let i = offset, l = array.length; i < l; i += stride) {
       tempVec3.fromArray(array, i);
       maxRadiusSq = Math.max(maxRadiusSq, this.bounds.center.squaredDistance(tempVec3));
     }
@@ -608,7 +621,10 @@ class Geometry {
   }
 
   remove() {
-    if (this.vao) this.gl.renderer.deleteVertexArray(this.vao);
+    for (let key in this.VAOs) {
+      this.gl.renderer.deleteVertexArray(this.VAOs[key]);
+      delete this.VAOs[key];
+    }
 
     for (let key in this.attributes) {
       this.gl.deleteBuffer(this.attributes[key].buffer);
@@ -1347,7 +1363,7 @@ class Program {
     this.gl.renderer.setDepthMask(this.depthWrite);
     this.gl.renderer.setDepthFunc(this.depthFunc);
     if (this.blendFunc.src) this.gl.renderer.setBlendFunc(this.blendFunc.src, this.blendFunc.dst, this.blendFunc.srcAlpha, this.blendFunc.dstAlpha);
-    if (this.blendEquation.modeRGB) this.gl.renderer.setBlendEquation(this.blendEquation.modeRGB, this.blendEquation.modeAlpha);
+    this.gl.renderer.setBlendEquation(this.blendEquation.modeRGB, this.blendEquation.modeAlpha);
   }
 
   use({
@@ -1596,11 +1612,8 @@ class Renderer {
 
     if (webgl === 2) this.gl = canvas.getContext('webgl2', attributes);
     this.isWebgl2 = !!this.gl;
-
-    if (!this.gl) {
-      this.gl = canvas.getContext('webgl', attributes) || canvas.getContext('experimental-webgl', attributes);
-    } // Attach renderer to gl so that all classes have access to internal state functions
-
+    if (!this.gl) this.gl = canvas.getContext('webgl', attributes);
+    if (!this.gl) console.error('unable to create webgl context'); // Attach renderer to gl so that all classes have access to internal state functions
 
     this.gl.renderer = this; // initialise size values
 
@@ -1702,6 +1715,7 @@ class Renderer {
   }
 
   setBlendEquation(modeRGB, modeAlpha) {
+    modeRGB = modeRGB || this.gl.FUNC_ADD;
     if (this.state.blendEquation.modeRGB === modeRGB && this.state.blendEquation.modeAlpha === modeAlpha) return;
     this.state.blendEquation.modeRGB = modeRGB;
     this.state.blendEquation.modeAlpha = modeAlpha;
@@ -2118,7 +2132,7 @@ class Transform {
   }
 
   setParent(parent, notifyParent = true) {
-    if (notifyParent && this.parent && parent !== this.parent) this.parent.removeChild(this, false);
+    if (this.parent && parent !== this.parent) this.parent.removeChild(this, false);
     this.parent = parent;
     if (notifyParent && parent) parent.addChild(this, false);
   }
@@ -4132,6 +4146,13 @@ class Euler extends Array {
     return this.fromRotationMatrix(tmpMat4, order);
   }
 
+  toArray(a = [], o = 0) {
+    a[o] = this[0];
+    a[o + 1] = this[1];
+    a[o + 2] = this[2];
+    return a;
+  }
+
 }
 
 /***/ }),
@@ -5098,10 +5119,7 @@ class Texture {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RenderTarget", function() { return RenderTarget; });
 /* harmony import */ var _Texture_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
-// TODO: multi target rendering
 // TODO: test stencil and depth
-// TODO: destroy
-// TODO: blit on resize?
 
 class RenderTarget {
   constructor(gl, {
@@ -5197,6 +5215,50 @@ class RenderTarget {
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthStencilBuffer);
         this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_STENCIL, width, height);
         this.gl.framebufferRenderbuffer(this.target, this.gl.DEPTH_STENCIL_ATTACHMENT, this.gl.RENDERBUFFER, this.depthStencilBuffer);
+      }
+    }
+
+    this.gl.bindFramebuffer(this.target, null);
+  }
+
+  setSize(width, height) {
+    if (this.width === width && this.height === height) return;
+    this.width = width;
+    this.height = height;
+    this.gl.bindFramebuffer(this.target, this.buffer);
+
+    for (let i = 0; i < this.textures.length; i++) {
+      this.textures[i].width = width;
+      this.textures[i].height = height;
+      this.textures[i].needsUpdate = true;
+      this.textures[i].update();
+      this.gl.framebufferTexture2D(this.target, this.gl.COLOR_ATTACHMENT0 + i, this.gl.TEXTURE_2D, this.textures[i].texture, 0
+      /* level */
+      );
+    }
+
+    if (this.depthTexture) {
+      this.depthTexture.width = width;
+      this.depthTexture.height = height;
+      this.depthTexture.needsUpdate = true;
+      this.depthTexture.update();
+      this.gl.framebufferTexture2D(this.target, this.gl.DEPTH_ATTACHMENT, this.gl.TEXTURE_2D, this.depthTexture.texture, 0
+      /* level */
+      );
+    } else {
+      if (this.depthBuffer) {
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthBuffer);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+      }
+
+      if (this.stencilBuffer) {
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.stencilBuffer);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.STENCIL_INDEX8, width, height);
+      }
+
+      if (this.depthStencilBuffer) {
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthStencilBuffer);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_STENCIL, width, height);
       }
     }
 
@@ -5436,6 +5498,7 @@ class Vec2 extends Array {
 
   lerp(v, a) {
     _functions_Vec2Func_js__WEBPACK_IMPORTED_MODULE_0__["lerp"](this, this, v, a);
+    return this;
   }
 
   clone() {
@@ -5906,7 +5969,7 @@ class Plane extends _core_Geometry_js__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
     const position = new Float32Array(num * 3);
     const normal = new Float32Array(num * 3);
     const uv = new Float32Array(num * 2);
-    const index = num > 65536 ? new Uint32Array(numIndices) : new Uint16Array(numIndices);
+    const index = numIndices > 65536 ? new Uint32Array(numIndices) : new Uint16Array(numIndices);
     Plane.buildPlane(position, normal, uv, index, width, height, 0, wSegs, hSegs);
     Object.assign(attributes, {
       position: {
@@ -5998,13 +6061,23 @@ class Box extends _core_Geometry_js__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
     let ii = 0; // left, right
 
     _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, depth, height, width, dSegs, hSegs, 2, 1, 0, -1, -1, i, ii);
-    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, depth, height, -width, dSegs, hSegs, 2, 1, 0, 1, -1, i += (dSegs + 1) * (hSegs + 1), ii += dSegs * hSegs); // top, bottom
+    i += (dSegs + 1) * (hSegs + 1);
+    ii += dSegs * hSegs;
+    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, depth, height, -width, dSegs, hSegs, 2, 1, 0, 1, -1, i, ii);
+    i += (dSegs + 1) * (hSegs + 1);
+    ii += dSegs * hSegs; // top, bottom
 
-    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, depth, height, dSegs, hSegs, 0, 2, 1, 1, 1, i += (dSegs + 1) * (hSegs + 1), ii += dSegs * hSegs);
-    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, depth, -height, dSegs, hSegs, 0, 2, 1, 1, -1, i += (wSegs + 1) * (dSegs + 1), ii += wSegs * dSegs); // front, back
+    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, depth, height, dSegs, wSegs, 0, 2, 1, 1, 1, i, ii);
+    i += (wSegs + 1) * (dSegs + 1);
+    ii += wSegs * dSegs;
+    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, depth, -height, dSegs, wSegs, 0, 2, 1, 1, -1, i, ii);
+    i += (wSegs + 1) * (dSegs + 1);
+    ii += wSegs * dSegs; // front, back
 
-    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, height, -depth, wSegs, hSegs, 0, 1, 2, -1, -1, i += (wSegs + 1) * (dSegs + 1), ii += wSegs * dSegs);
-    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, height, depth, wSegs, hSegs, 0, 1, 2, 1, -1, i += (wSegs + 1) * (hSegs + 1), ii += wSegs * hSegs);
+    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, height, -depth, wSegs, hSegs, 0, 1, 2, -1, -1, i, ii);
+    i += (wSegs + 1) * (hSegs + 1);
+    ii += wSegs * hSegs;
+    _Plane_js__WEBPACK_IMPORTED_MODULE_1__["Plane"].buildPlane(position, normal, uv, index, width, height, depth, wSegs, hSegs, 0, 1, 2, 1, -1, i, ii);
     Object.assign(attributes, {
       position: {
         size: 3,
@@ -6428,6 +6501,7 @@ function Orbit(object, {
   autoRotateSpeed = 1.0,
   enableZoom = true,
   zoomSpeed = 1,
+  zoomStyle = 'dolly',
   enablePan = true,
   panSpeed = 0.1,
   minPolarAngle = 0,
@@ -6438,7 +6512,8 @@ function Orbit(object, {
   maxDistance = Infinity
 } = {}) {
   this.enabled = enabled;
-  this.target = target; // Catch attempts to disable - set to 1 so has no effect
+  this.target = target;
+  this.zoomStyle = zoomStyle; // Catch attempts to disable - set to 1 so has no effect
 
   ease = ease || 1;
   inertia = inertia || 0;
@@ -6467,6 +6542,7 @@ function Orbit(object, {
   spherical.radius = sphericalTarget.radius = offset.distance();
   spherical.theta = sphericalTarget.theta = Math.atan2(offset.x, offset.z);
   spherical.phi = sphericalTarget.phi = Math.acos(Math.min(Math.max(offset.y / sphericalTarget.radius, -1), 1));
+  this.offset = offset;
 
   this.update = () => {
     if (autoRotate) {
@@ -6501,6 +6577,15 @@ function Orbit(object, {
     panDelta.multiply(inertia); // Reset scale every frame to avoid applying scale multiple times
 
     sphericalDelta.radius = 1;
+  }; // Updates internals with new position
+
+
+  this.forcePosition = () => {
+    offset.copy(object.position).sub(this.target);
+    spherical.radius = sphericalTarget.radius = offset.distance();
+    spherical.theta = sphericalTarget.theta = Math.atan2(offset.x, offset.z);
+    spherical.phi = sphericalTarget.phi = Math.acos(Math.min(Math.max(offset.y / sphericalTarget.radius, -1), 1));
+    object.lookAt(this.target);
   }; // Everything below here just updates panDelta and sphericalDelta
   // Using those two objects' values, the orbit is calculated
 
@@ -6540,9 +6625,12 @@ function Orbit(object, {
     panUp(2 * deltaY * targetDistance / el.clientHeight, object.matrix);
   };
 
-  function dolly(dollyScale) {
-    sphericalDelta.radius /= dollyScale;
-  }
+  const dolly = dollyScale => {
+    if (this.zoomStyle === 'dolly') sphericalDelta.radius /= dollyScale;else {
+      object.fov /= dollyScale;
+      if (object.type === 'orthographic') object.orthographic();else object.perspective();
+    }
+  };
 
   function handleAutoRotate() {
     const angle = 2 * Math.PI / 60 / 60 * autoRotateSpeed;
@@ -7407,35 +7495,40 @@ class Post {
     }
 
     dpr = this.dpr || this.gl.renderer.dpr;
-    width = (this.width || this.gl.renderer.width) * dpr;
-    height = (this.height || this.gl.renderer.height) * dpr;
+    width = Math.floor((this.width || this.gl.renderer.width) * dpr);
+    height = Math.floor((this.height || this.gl.renderer.height) * dpr);
     this.options.width = width;
     this.options.height = height;
     this.fbo.read = new _core_RenderTarget_js__WEBPACK_IMPORTED_MODULE_2__["RenderTarget"](this.gl, this.options);
     this.fbo.write = new _core_RenderTarget_js__WEBPACK_IMPORTED_MODULE_2__["RenderTarget"](this.gl, this.options);
-  } // Uses same arguments as renderer.render
+  } // Uses same arguments as renderer.render, with addition of optional texture passed in to avoid scene render
 
 
   render({
     scene,
     camera,
+    texture,
     target = null,
     update = true,
     sort = true,
     frustumCull = true
   }) {
     const enabledPasses = this.passes.filter(pass => pass.enabled);
-    this.gl.renderer.render({
-      scene,
-      camera,
-      target: enabledPasses.length || !target && this.targetOnly ? this.fbo.write : target,
-      update,
-      sort,
-      frustumCull
-    });
-    this.fbo.swap();
+
+    if (!texture) {
+      this.gl.renderer.render({
+        scene,
+        camera,
+        target: enabledPasses.length || !target && this.targetOnly ? this.fbo.write : target,
+        update,
+        sort,
+        frustumCull
+      });
+      this.fbo.swap();
+    }
+
     enabledPasses.forEach((pass, i) => {
-      pass.mesh.program.uniforms[pass.textureUniform].value = this.fbo.read.texture;
+      pass.mesh.program.uniforms[pass.textureUniform].value = !i && texture ? texture : this.fbo.read.texture;
       this.gl.renderer.render({
         scene: pass.mesh,
         target: i === enabledPasses.length - 1 && (target || !this.targetOnly) ? target : this.fbo.write,
@@ -7555,7 +7648,9 @@ class Skin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
       image: this.boneMatrices,
       generateMipmaps: false,
       type: this.gl.FLOAT,
-      internalFormat: this.gl.renderer.isWebgl2 ? this.gl.RGBA16F : this.gl.RGBA,
+      internalFormat: this.gl.renderer.isWebgl2 ? this.gl.RGBA32F : this.gl.RGBA,
+      minFilter: this.gl.NEAREST,
+      magFilter: this.gl.NEAREST,
       flipY: false,
       width: size
     });
@@ -7750,7 +7845,7 @@ function Text({
         continue;
       }
 
-      const glyph = glyphs[char]; // Find any applicable kern pairs
+      const glyph = glyphs[char] || glyphs[' ']; // Find any applicable kern pairs
 
       if (line.glyphs.length) {
         const prevGlyph = line.glyphs[line.glyphs.length - 1][0];
@@ -7795,7 +7890,9 @@ function Text({
         }
       }
 
-      cursor++;
+      cursor++; // Reset infinite loop catch
+
+      count = 0;
     } // Remove last line if empty
 
 
@@ -7848,6 +7945,7 @@ function Text({
     _this.buffers = buffers;
     _this.numLines = lines.length;
     _this.height = _this.numLines * size * lineHeight;
+    _this.width = Math.max(...lines.map(line => line.width));
   }
 
   function getKernPairOffset(id1, id2) {
@@ -8544,7 +8642,7 @@ class Shadow {
     } // Create custom override program
 
 
-    mesh.depthProgram = new _core_Program_js__WEBPACK_IMPORTED_MODULE_1__["Program"](gl, {
+    mesh.depthProgram = new _core_Program_js__WEBPACK_IMPORTED_MODULE_1__["Program"](this.gl, {
       vertex,
       fragment,
       cullFace: null
@@ -8630,13 +8728,17 @@ class KTXTexture extends _core_Texture_js__WEBPACK_IMPORTED_MODULE_0__["Texture"
     buffer,
     wrapS = gl.CLAMP_TO_EDGE,
     wrapT = gl.CLAMP_TO_EDGE,
-    anisotropy = 0
+    anisotropy = 0,
+    minFilter,
+    magFilter
   } = {}) {
     super(gl, {
       generateMipmaps: false,
       wrapS,
       wrapT,
-      anisotropy
+      anisotropy,
+      minFilter,
+      magFilter
     });
     if (buffer) return this.parseBuffer(buffer);
   }
@@ -8647,8 +8749,14 @@ class KTXTexture extends _core_Texture_js__WEBPACK_IMPORTED_MODULE_0__["Texture"
 
     this.image = ktx.mipmaps;
     this.internalFormat = ktx.glInternalFormat;
-    this.minFilter = ktx.numberOfMipmapLevels > 1 ? this.gl.NEAREST_MIPMAP_LINEAR : this.gl.LINEAR; // TODO: support cube maps
+
+    if (ktx.numberOfMipmapLevels > 1) {
+      if (this.minFilter === this.gl.LINEAR) this.minFilter = this.gl.NEAREST_MIPMAP_LINEAR;
+    } else {
+      if (this.minFilter === this.gl.NEAREST_MIPMAP_LINEAR) this.minFilter = this.gl.LINEAR;
+    } // TODO: support cube maps
     // ktx.numberOfFaces
+
   }
 
 }
@@ -8774,7 +8882,9 @@ class TextureLoader {
           src,
           wrapS,
           wrapT,
-          anisotropy
+          anisotropy,
+          minFilter,
+          magFilter
         });
         texture.loaded = this.loadKTX(src, texture);
         break;
@@ -8813,16 +8923,17 @@ class TextureLoader {
     if (supportedExtensions.length) return supportedExtensions;
     const extensions = {
       pvrtc: gl.renderer.getExtension('WEBGL_compressed_texture_pvrtc') || gl.renderer.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc'),
-      s3tc: gl.renderer.getExtension('WEBGL_compressed_texture_s3tc') || gl.renderer.getExtension('MOZ_WEBGL_compressed_texture_s3tc') || gl.renderer.getExtension('WEBKIT_WEBGL_compressed_texture_s3tc'),
-      etc: gl.renderer.getExtension('WEBGL_compressed_texture_etc'),
+      s3tc: gl.renderer.getExtension('WEBGL_compressed_texture_s3tc'),
+      // etc: gl.renderer.getExtension('WEBGL_compressed_texture_etc'),
       etc1: gl.renderer.getExtension('WEBGL_compressed_texture_etc1'),
-      astc: gl.renderer.getExtension('WEBGL_compressed_texture_astc')
+      astc: gl.renderer.getExtension('WEBGL_compressed_texture_astc'),
+      bc7: gl.renderer.getExtension('EXT_texture_compression_bptc')
     };
 
     for (const ext in extensions) if (extensions[ext]) supportedExtensions.push(ext); // Check for WebP support
 
 
-    if (detectWebP) supportedExtensions.push('webp'); // Formats supported by all
+    if (detectWebP()) supportedExtensions.push('webp'); // Formats supported by all
 
     supportedExtensions.push('png', 'jpg');
     return supportedExtensions;
@@ -8863,26 +8974,27 @@ function detectWebP() {
 }
 
 function powerOfTwo(value) {
+  // (width & (width - 1)) !== 0
   return Math.log2(value) % 1 === 0;
 }
 
 function decodeImage(src) {
   return new Promise(resolve => {
-    const img = new Image();
-    img.src = src; // Only chrome's implementation of createImageBitmap is fully supported
-
+    // Only chrome's implementation of createImageBitmap is fully supported
     const isChrome = navigator.userAgent.toLowerCase().includes('chrome');
 
     if (!!window.createImageBitmap && isChrome) {
-      img.onload = () => {
-        createImageBitmap(img, {
-          imageOrientation: 'flipY',
-          premultiplyAlpha: 'none'
-        }).then(imgBmp => {
-          resolve(imgBmp);
-        });
-      };
+      fetch(src, {
+        mode: 'cors'
+      }).then(r => r.blob()).then(b => createImageBitmap(b, {
+        imageOrientation: 'flipY',
+        premultiplyAlpha: 'none'
+      })).then(resolve);
     } else {
+      const img = new Image();
+      img.crossOrigin = '';
+      img.src = src;
+
       img.onload = () => resolve(img);
     }
   });
@@ -8923,6 +9035,7 @@ __webpack_require__.r(__webpack_exports__);
 // [ ] Cameras
 // [ ] Extensions
 // [x] GLB support
+// [x] Basis/ktx2 support
 // TODO: Sparse accessor packing? For morph targets basically
 // TODO: init accessor missing bufferView with 0s
 // TODO: morph target animations
@@ -8964,6 +9077,10 @@ const TRANSFORMS = {
   scale: 'scale'
 };
 class GLTFLoader {
+  static setBasisManager(manager) {
+    this.basisManager = manager;
+  }
+
   static async load(gl, src) {
     const dir = src.split('/').slice(0, -1).join('/') + '/'; // load main description json
 
@@ -8972,7 +9089,10 @@ class GLTFLoader {
   }
 
   static async parse(gl, desc, dir) {
-    if (desc.asset === undefined || desc.asset.version[0] < 2) console.warn('Only GLTF >=2.0 supported. Attempting to parse.'); // Load buffers async
+    var _desc$extensionsRequi;
+
+    if (desc.asset === undefined || desc.asset.version[0] < 2) console.warn('Only GLTF >=2.0 supported. Attempting to parse.');
+    if ((_desc$extensionsRequi = desc.extensionsRequired) !== null && _desc$extensionsRequi !== void 0 && _desc$extensionsRequi.includes('KHR_texture_basisu') && !this.basisManager) console.warn('KHR_texture_basisu extension required but no manager supplied. Use .setBasisManager()'); // Load buffers async
 
     const buffers = await this.loadBuffers(desc, dir); // Unbind current VAO so that new buffers don't get added to active mesh
 
@@ -8980,7 +9100,7 @@ class GLTFLoader {
 
     const bufferViews = this.parseBufferViews(gl, desc, buffers); // Create images from either bufferViews or separate image files
 
-    const images = this.parseImages(gl, desc, dir, bufferViews);
+    const images = await this.parseImages(gl, desc, dir, bufferViews);
     const textures = this.parseTextures(gl, desc, images); // Just pass through material data for now
 
     const materials = this.parseMaterials(gl, desc, textures); // Fetch the inverse bind matrices for skeleton joints
@@ -9016,7 +9136,7 @@ class GLTFLoader {
   }
 
   static async parseDesc(src) {
-    if (!src.match(/\.glb$/)) {
+    if (!src.match(/\.glb/)) {
       return await fetch(src).then(res => res.json());
     } else {
       return await fetch(src).then(res => res.arrayBuffer()).then(glb => this.unpackGLB(glb));
@@ -9152,10 +9272,17 @@ class GLTFLoader {
       // optional, added from images above
       isAttribute
     }, i) => {
+      // For basis, just slice buffer
+      if (mimeType === 'image/ktx2') {
+        bufferViews[i].data = buffers[bufferIndex].slice(byteOffset, byteOffset + byteLength);
+        return;
+      }
+
       const TypeArray = TYPE_ARRAY[componentType || mimeType];
       const elementBytes = TypeArray.BYTES_PER_ELEMENT;
       const data = new TypeArray(buffers[bufferIndex], byteOffset, byteLength / elementBytes);
       bufferViews[i].data = data;
+      bufferViews[i].originalBuffer = buffers[bufferIndex];
       if (!isAttribute) return; // Create gl buffers for the bufferView, pushing it to the GPU
 
       const buffer = gl.createBuffer();
@@ -9167,14 +9294,23 @@ class GLTFLoader {
     return bufferViews;
   }
 
-  static parseImages(gl, desc, dir, bufferViews) {
+  static async parseImages(gl, desc, dir, bufferViews) {
     if (!desc.images) return null;
-    return desc.images.map(({
+    return await Promise.all(desc.images.map(async ({
       uri,
       bufferView: bufferViewIndex,
       mimeType,
       name
     }) => {
+      if (mimeType === 'image/ktx2') {
+        const {
+          data
+        } = bufferViews[bufferViewIndex];
+        const image = await this.basisManager.parseTexture(data);
+        return image;
+      } // jpg / png
+
+
       const image = new Image();
       image.name = name;
 
@@ -9194,7 +9330,7 @@ class GLTFLoader {
         image.onload = () => res();
       });
       return image;
-    });
+    }));
   }
 
   static parseTextures(gl, desc, images) {
@@ -9206,6 +9342,11 @@ class GLTFLoader {
       extensions,
       extras
     }) => {
+      if (sourceIndex === undefined && !!extensions) {
+        // Basis extension source index
+        if (extensions.KHR_texture_basisu) sourceIndex = extensions.KHR_texture_basisu.source;
+      }
+
       const options = {
         flipY: false,
         wrapS: gl.REPEAT,
@@ -9220,10 +9361,27 @@ class GLTFLoader {
         });
       }
 
+      const image = images[sourceIndex]; // For compressed textures
+
+      if (image.isBasis) {
+        options.image = image;
+        options.internalFormat = image.internalFormat;
+
+        if (image.isCompressedTexture) {
+          options.generateMipmaps = false;
+          if (image.length > 1) this.minFilter = gl.NEAREST_MIPMAP_LINEAR;
+        }
+
+        const texture = new _core_Texture_js__WEBPACK_IMPORTED_MODULE_2__["Texture"](gl, options);
+        texture.name = name;
+        return texture;
+      }
+
       const texture = new _core_Texture_js__WEBPACK_IMPORTED_MODULE_2__["Texture"](gl, options);
       texture.name = name;
-      const image = images[sourceIndex];
-      image.ready.then(() => texture.image = image);
+      image.ready.then(() => {
+        texture.image = image;
+      });
       return texture;
     });
   }
@@ -9458,9 +9616,11 @@ class GLTFLoader {
     const {
       data,
       // attached in parseBufferViews
+      originalBuffer,
+      // attached in parseBufferViews
       buffer,
       // replaced to be the actual GL buffer
-      // byteOffset = 0, // applied in parseBufferViews
+      byteOffset: bufferByteOffset = 0,
       // byteLength, // applied in parseBufferViews
       byteStride = 0,
       target // name,
@@ -9468,11 +9628,18 @@ class GLTFLoader {
       // extras,
 
     } = bufferViews[bufferViewIndex];
-    const size = TYPE_SIZE[type]; // Return attribute data
+    const size = TYPE_SIZE[type]; // Parse data from joined buffers
+
+    const TypeArray = TYPE_ARRAY[componentType];
+    const elementBytes = data.BYTES_PER_ELEMENT;
+    const componentOffset = byteOffset / elementBytes;
+    const componentStride = byteStride / elementBytes;
+    const isInterleaved = !!byteStride && componentStride !== size; // TODO: interleaved
+
+    const newData = isInterleaved ? data : new TypeArray(originalBuffer, byteOffset + bufferByteOffset, count * size); // Return attribute data
 
     return {
-      data,
-      // Optional. Used for computing bounds if no min/max
+      data: newData,
       size,
       type: componentType,
       normalized,
@@ -9636,10 +9803,8 @@ class GLTFLoader {
         } = target;
         const node = nodes[nodeIndex];
         const transform = TRANSFORMS[path];
-        const timesAcc = this.parseAccessor(inputIndex, desc, bufferViews);
-        const times = timesAcc.data.slice(timesAcc.offset / 4, timesAcc.offset / 4 + timesAcc.count * timesAcc.size);
-        const valuesAcc = this.parseAccessor(outputIndex, desc, bufferViews);
-        const values = valuesAcc.data.slice(valuesAcc.offset / 4, valuesAcc.offset / 4 + valuesAcc.count * valuesAcc.size);
+        const times = this.parseAccessor(inputIndex, desc, bufferViews).data;
+        const values = this.parseAccessor(outputIndex, desc, bufferViews).data;
         return {
           node,
           transform,
@@ -9699,16 +9864,21 @@ class GLTFAnimation {
     this.elapsed = 0;
     this.weight = weight; // Set to false to not apply modulo to elapsed against duration
 
-    this.loop = true; // Get duration from largest final time in all channels
+    this.loop = true; // Find starting time as exports from blender (perhaps others too) don't always start from 0
 
-    this.duration = data.reduce((a, {
+    this.startTime = data.reduce((a, {
+      times
+    }) => Math.min(a, times[0]), Infinity); // Get largest final time in all channels to calculate duration
+
+    this.endTime = data.reduce((a, {
       times
     }) => Math.max(a, times[times.length - 1]), 0);
+    this.duration = this.endTime - this.startTime;
   }
 
   update(totalWeight = 1, isSet) {
     const weight = isSet ? 1 : this.weight / totalWeight;
-    const elapsed = this.loop ? this.elapsed % this.duration : Math.min(this.elapsed, this.duration);
+    const elapsed = (this.loop ? this.elapsed % this.duration : Math.min(this.elapsed, this.duration - 0.001)) + this.startTime;
     this.data.forEach(({
       node,
       transform,
@@ -9789,6 +9959,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const tempMat4 = new _math_Mat4_js__WEBPACK_IMPORTED_MODULE_1__["Mat4"]();
+const identity = new _math_Mat4_js__WEBPACK_IMPORTED_MODULE_1__["Mat4"]();
 class GLTFSkin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
   constructor(gl, {
     skeleton,
@@ -9816,7 +9987,9 @@ class GLTFSkin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
       image: this.boneMatrices,
       generateMipmaps: false,
       type: this.gl.FLOAT,
-      internalFormat: this.gl.renderer.isWebgl2 ? this.gl.RGBA16F : this.gl.RGBA,
+      internalFormat: this.gl.renderer.isWebgl2 ? this.gl.RGBA32F : this.gl.RGBA,
+      minFilter: this.gl.NEAREST,
+      magFilter: this.gl.NEAREST,
       flipY: false,
       width: size
     });
@@ -9860,13 +10033,15 @@ class GLTFSkin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
       });
     }
 
-    this.updateUniforms(); // Switch this world matrix with root node's to populate uniforms
+    this.updateUniforms(); // Switch the world matrix with identity to ignore any transforms
+    // on the mesh itself - only use skeleton's transforms
 
     const _worldMatrix = this.worldMatrix;
-    if (this.skeleton.skeleton) this.worldMatrix = this.skeleton.skeleton.worldMatrix;
+    this.worldMatrix = identity;
     super.draw({
       camera
-    });
+    }); // Switch back to leave identity untouched
+
     this.worldMatrix = _worldMatrix;
   }
 
@@ -9878,24 +10053,105 @@ class GLTFSkin extends _core_Mesh_js__WEBPACK_IMPORTED_MODULE_0__["Mesh"] {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasisManager", function() { return BasisManager; });
+let supportedFormat;
+let id = 0;
+class BasisManager {
+  constructor(workerSrc) {
+    if (!supportedFormat) supportedFormat = this.getSupportedFormat();
+    this.onMessage = this.onMessage.bind(this);
+    this.queue = new Map();
+    this.initWorker(workerSrc);
+  }
+
+  getSupportedFormat() {
+    const gl = document.createElement('canvas').getContext('webgl');
+
+    if (!!gl.getExtension('WEBGL_compressed_texture_etc')) {
+      return 'etc2';
+    } else if (!!gl.getExtension('WEBGL_compressed_texture_astc')) {
+      return 'astc';
+    } else if (!!gl.getExtension('EXT_texture_compression_bptc')) {
+      return 'bptc';
+    } else if (!!gl.getExtension('WEBGL_compressed_texture_s3tc')) {
+      return 's3tc';
+    } else if (!!gl.getExtension('WEBGL_compressed_texture_etc1')) {
+      return 'etc1';
+    } else if (!!gl.getExtension('WEBGL_compressed_texture_pvrtc') || !!gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc')) {
+      return 'pvrtc'; // } else if (!!gl.getExtension('WEBGL_compressed_texture_atc')) {
+      //     return 'atc';
+    }
+
+    return 'none';
+  }
+
+  initWorker(workerSrc) {
+    this.worker = new Worker(workerSrc);
+    this.worker.onmessage = this.onMessage;
+  }
+
+  onMessage({
+    data
+  }) {
+    const {
+      id,
+      error,
+      image
+    } = data;
+
+    if (error) {
+      console.log(error, id);
+      return;
+    }
+
+    const textureResolve = this.queue.get(id);
+    this.queue.delete(id);
+    image.isBasis = true;
+    textureResolve(image);
+  }
+
+  parseTexture(buffer) {
+    id++;
+    this.worker.postMessage({
+      id,
+      buffer,
+      supportedFormat
+    });
+    let textureResolve;
+    const promise = new Promise(res => textureResolve = res);
+    this.queue.set(id, textureResolve);
+    return promise;
+  }
+
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Layer3D; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
-/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(53);
-/* harmony import */ var _camera__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(54);
-/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(55);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(59);
-/* harmony import */ var _helper_color_attribute__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(62);
-/* harmony import */ var _helper_parse_color__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(52);
+/* harmony import */ var _helper_light__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+/* harmony import */ var _helper_shadow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54);
+/* harmony import */ var _camera__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(55);
+/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(56);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(60);
+/* harmony import */ var _helper_color_attribute__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(63);
+/* harmony import */ var _helper_parse_color__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(53);
+const _excluded = ["attributes", "texture", "normalMap", "bumpMap", "uniforms"],
+      _excluded2 = ["camera"];
+
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -10118,7 +10374,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
       bumpMap,
       uniforms
     } = _ref,
-        options = _objectWithoutProperties(_ref, ["attributes", "texture", "normalMap", "bumpMap", "uniforms"]);
+        options = _objectWithoutProperties(_ref, _excluded);
 
     const gl = this.renderer.gl;
 
@@ -10234,7 +10490,7 @@ class Layer3D extends spritejs__WEBPACK_IMPORTED_MODULE_0__["Layer"] {
     let {
       camera = null
     } = _ref2,
-        attrs = _objectWithoutProperties(_ref2, ["camera"]);
+        attrs = _objectWithoutProperties(_ref2, _excluded2);
 
     if (!camera && this.camera) camera = this.camera.cloneNode();
     const root = new _group3d__WEBPACK_IMPORTED_MODULE_5__["default"](attrs);
@@ -10941,19 +11197,19 @@ spritejs__WEBPACK_IMPORTED_MODULE_0__["Scene"].prototype.layer3d = function (id 
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Layer3D, 'layer3d');
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = spritejs;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Light; });
-/* harmony import */ var _parse_color__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
+/* harmony import */ var _parse_color__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(53);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -10994,13 +11250,13 @@ _defineProperty(Light, "POINT_LIGHT", 1);
 _defineProperty(Light, "SPOT_LIGHT", 2);
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseColor", function() { return parseColor; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 
 function parseColor(colors) {
@@ -11018,7 +11274,7 @@ function parseColor(colors) {
 }
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11057,18 +11313,20 @@ class Shadow extends ogl__WEBPACK_IMPORTED_MODULE_0__["Shadow"] {
 }
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(55);
-/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
-/* harmony import */ var _attribute_camera__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(58);
+/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(56);
+/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
+/* harmony import */ var _attribute_camera__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(59);
+const _excluded = ["fov", "near", "far", "aspect", "left", "right", "bottom", "top"];
+
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
@@ -11094,7 +11352,7 @@ class Camera extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
       bottom,
       top
     } = _ref,
-        attrs = _objectWithoutProperties(_ref, ["fov", "near", "far", "aspect", "left", "right", "bottom", "top"]);
+        attrs = _objectWithoutProperties(_ref, _excluded);
 
     super({
       fov,
@@ -11242,16 +11500,16 @@ _defineProperty(Camera, "Attr", _attribute_camera__WEBPACK_IMPORTED_MODULE_4__["
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Camera, 'camera');
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Group3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(56);
+/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(57);
 
 
 
@@ -11438,15 +11696,15 @@ class Group3d extends _node3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Group3d, 'group3d');
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Node3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _attribute_node3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
+/* harmony import */ var _attribute_node3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -11798,13 +12056,13 @@ _defineProperty(Node3d, "Attr", _attribute_node3d__WEBPACK_IMPORTED_MODULE_1__["
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Node3d, 'node3d');
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Node3dAttr; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 
 const Attr = spritejs__WEBPACK_IMPORTED_MODULE_0__["Node"].Attr;
@@ -11968,13 +12226,13 @@ class Node3dAttr extends Attr {
 }
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameraAttr; });
-/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(57);
+/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(58);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -12084,22 +12342,24 @@ class GameraAttr extends _node3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mesh3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
-/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
-/* harmony import */ var _attribute_mesh3d__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(61);
-/* harmony import */ var _helper_parse_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(52);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
+/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+/* harmony import */ var _attribute_mesh3d__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(62);
+/* harmony import */ var _helper_parse_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(53);
+const _excluded = ["model"];
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
@@ -12167,7 +12427,7 @@ class Mesh3d extends _group3d__WEBPACK_IMPORTED_MODULE_3__["default"] {
     let {
       model
     } = _ref,
-        attrs = _objectWithoutProperties(_ref, ["model"]);
+        attrs = _objectWithoutProperties(_ref, _excluded);
 
     if (program && !(program instanceof ogl__WEBPACK_IMPORTED_MODULE_1__["Program"])) {
       attrs = program;
@@ -12561,13 +12821,15 @@ _defineProperty(Mesh3d, "Attr", _attribute_mesh3d__WEBPACK_IMPORTED_MODULE_4__["
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Mesh3d, 'mesh3d');
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Geometry; });
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+const _excluded = ["position", "uv", "normal", "index"];
+
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
@@ -12729,7 +12991,7 @@ class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
       normal,
       index
     } = model,
-          others = _objectWithoutProperties(model, ["position", "uv", "normal", "index"]);
+          others = _objectWithoutProperties(model, _excluded);
 
     const attributes = {};
     if (position) attributes.position = parseData(position);
@@ -12775,15 +13037,15 @@ class Geometry extends ogl__WEBPACK_IMPORTED_MODULE_0__["Geometry"] {
 }
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mesh3dAttr; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
+/* harmony import */ var _node3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58);
 
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
@@ -12863,7 +13125,7 @@ class Mesh3dAttr extends _node3d__WEBPACK_IMPORTED_MODULE_1__["default"] {
 }
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12896,19 +13158,21 @@ function colorAttribute(node, geometry) {
 }
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Skin; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
+const _excluded = ["model"];
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -12965,7 +13229,7 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
     let {
       model
     } = _ref,
-        attrs = _objectWithoutProperties(_ref, ["model"]);
+        attrs = _objectWithoutProperties(_ref, _excluded);
 
     super(program, _objectSpread({
       model
@@ -13034,17 +13298,17 @@ class Skin extends _mesh3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Skin, 'skin');
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Sphere; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(59);
+/* harmony import */ var _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(66);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13095,13 +13359,13 @@ _defineProperty(Sphere, "Attr", _attribute_sphere__WEBPACK_IMPORTED_MODULE_2__["
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Sphere, 'sphere');
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SphereAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -13180,17 +13444,17 @@ class SphereAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Torus; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_torus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(67);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(59);
+/* harmony import */ var _attribute_torus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(68);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13237,13 +13501,13 @@ _defineProperty(Torus, "Attr", _attribute_torus__WEBPACK_IMPORTED_MODULE_2__["de
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Torus, 'torus');
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TorusAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -13303,17 +13567,17 @@ class TorusAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cube; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
-/* harmony import */ var _attribute_cube__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(69);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
+/* harmony import */ var _attribute_cube__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(70);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13362,13 +13626,13 @@ _defineProperty(Cube, "Attr", _attribute_cube__WEBPACK_IMPORTED_MODULE_3__["defa
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Cube, 'cube');
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CubeAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -13453,7 +13717,7 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13481,17 +13745,17 @@ class Curve extends ogl__WEBPACK_IMPORTED_MODULE_0__["Curve"] {
 }
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Plane; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(72);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(59);
+/* harmony import */ var _attribute_plane__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13536,13 +13800,13 @@ _defineProperty(Plane, "Attr", _attribute_plane__WEBPACK_IMPORTED_MODULE_2__["de
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Plane, 'plane');
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PlaneAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -13593,16 +13857,16 @@ class PlaneAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Polyline3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(59);
-/* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(74);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(60);
+/* harmony import */ var _attribute_polyline3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(75);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13756,13 +14020,13 @@ _defineProperty(Polyline3d, "Attr", _attribute_polyline3d__WEBPACK_IMPORTED_MODU
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Polyline3d, 'polyline3d');
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PolylineAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -13807,17 +14071,17 @@ class PolylineAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cylinder; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(76);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(59);
+/* harmony import */ var _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(77);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13870,13 +14134,13 @@ _defineProperty(Cylinder, "Attr", _attribute_cylinder__WEBPACK_IMPORTED_MODULE_2
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Cylinder, 'cylinder');
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CylinderAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -13975,18 +14239,18 @@ class CylinderAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Path3d; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _attribute_path3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(78);
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(59);
-/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(60);
+/* harmony import */ var _attribute_path3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(79);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60);
+/* harmony import */ var _helper_geometry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(61);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -14256,13 +14520,13 @@ _defineProperty(Path3d, "Attr", _attribute_path3d__WEBPACK_IMPORTED_MODULE_2__["
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(Path3d, 'path3d');
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CubeAttr; });
-/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61);
+/* harmony import */ var _mesh3d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 const setAttribute = Symbol.for('spritejs_setAttribute');
 const getAttribute = Symbol.for('spritejs_getAttribute');
@@ -14383,20 +14647,23 @@ class CubeAttr extends _mesh3d__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RenderTarget; });
-/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50);
+/* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 /* harmony import */ var spritejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(spritejs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ogl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(55);
-/* harmony import */ var _camera__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/* harmony import */ var _group3d__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(56);
+/* harmony import */ var _camera__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
+const _excluded = ["width", "height", "target", "color", "depth", "stencil", "depthTexture", "wrapS", "wrapT", "minFilter", "magFilter", "type", "format", "internalFormat", "unpackAlignment", "premultiplyAlpha", "camera", "buffer"],
+      _excluded2 = ["root"];
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -14437,7 +14704,7 @@ class RenderTarget extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
       camera: cameraOptions,
       buffer = false
     } = _ref,
-        attrs = _objectWithoutProperties(_ref, ["width", "height", "target", "color", "depth", "stencil", "depthTexture", "wrapS", "wrapT", "minFilter", "magFilter", "type", "format", "internalFormat", "unpackAlignment", "premultiplyAlpha", "camera", "buffer"]);
+        attrs = _objectWithoutProperties(_ref, _excluded);
 
     super(attrs);
     const options = {
@@ -14480,7 +14747,7 @@ class RenderTarget extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
     let {
       root = this
     } = _ref2,
-        options = _objectWithoutProperties(_ref2, ["root"]);
+        options = _objectWithoutProperties(_ref2, _excluded2);
 
     const camera = this.camera ? this.camera.body : null;
     const target = this[_target];
@@ -14520,7 +14787,7 @@ class RenderTarget extends _group3d__WEBPACK_IMPORTED_MODULE_2__["default"] {
 Object(spritejs__WEBPACK_IMPORTED_MODULE_0__["registerNode"])(RenderTarget, 'rendertarget');
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14550,7 +14817,7 @@ class TextureLoader {
 }
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14577,32 +14844,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_300", function() { return GEOMETRY_NORMAL_MAP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GEOMETRY_NORMAL_MAP_WITH_BUMP_300", function() { return GEOMETRY_NORMAL_MAP_WITH_BUMP_300; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGeometryNormalMap", function() { return getGeometryNormalMap; });
-/* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(82);
-/* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(83);
-/* harmony import */ var _base_geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(84);
-/* harmony import */ var _base_geometry_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(85);
-/* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(86);
-/* harmony import */ var _geometry_vert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(87);
-/* harmony import */ var _texture_frag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(88);
-/* harmony import */ var _texture_vert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(89);
-/* harmony import */ var _texture_cube_frag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(90);
-/* harmony import */ var _texture_cube_vert__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(91);
-/* harmony import */ var _texture_with_shadow_frag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(92);
-/* harmony import */ var _texture_with_shadow_vert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(93);
-/* harmony import */ var _geometry_with_shadow_frag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(94);
-/* harmony import */ var _geometry_with_shadow_vert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(95);
-/* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(96);
-/* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(97);
-/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(98);
-/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(99);
-/* harmony import */ var _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(100);
-/* harmony import */ var _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(101);
-/* harmony import */ var _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(102);
-/* harmony import */ var _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(103);
-/* harmony import */ var _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(104);
-/* harmony import */ var _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(105);
-/* harmony import */ var _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(106);
-/* harmony import */ var _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(107);
+/* harmony import */ var _normal_frag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(83);
+/* harmony import */ var _normal_vert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(84);
+/* harmony import */ var _base_geometry_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(85);
+/* harmony import */ var _base_geometry_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(86);
+/* harmony import */ var _geometry_frag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(87);
+/* harmony import */ var _geometry_vert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(88);
+/* harmony import */ var _texture_frag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(89);
+/* harmony import */ var _texture_vert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(90);
+/* harmony import */ var _texture_cube_frag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(91);
+/* harmony import */ var _texture_cube_vert__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(92);
+/* harmony import */ var _texture_with_shadow_frag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(93);
+/* harmony import */ var _texture_with_shadow_vert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(94);
+/* harmony import */ var _geometry_with_shadow_frag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(95);
+/* harmony import */ var _geometry_with_shadow_vert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(96);
+/* harmony import */ var _polyline_frag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(97);
+/* harmony import */ var _polyline_vert__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(98);
+/* harmony import */ var _dashline_frag__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(99);
+/* harmony import */ var _dashline_vert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(100);
+/* harmony import */ var _texture_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(101);
+/* harmony import */ var _texture_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(102);
+/* harmony import */ var _texture_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(103);
+/* harmony import */ var _texture_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(104);
+/* harmony import */ var _geometry_normal_map_100_frag__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(105);
+/* harmony import */ var _geometry_normal_map_100_vert__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(106);
+/* harmony import */ var _geometry_normal_map_300_frag__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(107);
+/* harmony import */ var _geometry_normal_map_300_vert__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(108);
 
 
 
@@ -14720,7 +14987,7 @@ function getGeometryNormalMap(layer, bump = false) {
 }
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14728,7 +14995,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nvoid main() {\n    gl_FragColor.rgb = normalize(vNormal);\n    gl_FragColor.a = 1.0;\n}");
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14736,7 +15003,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec3 vNormal;\n\nvoid main() {\n    vNormal = normalize(normalMatrix * normal);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}");
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14744,7 +15011,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec4 vColor;\n\nvoid main() {\n  gl_FragColor = vColor;\n}");
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14752,7 +15019,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nvarying vec4 vColor;\n\nvoid main() {\n  vColor = color;\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);;\n}");
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14760,7 +15027,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 dir = -invDirectional.xyz;\n    vec3 halfLE = normalize(dir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    float _dl = max(dot(normal, normalize(dir)), 0.0);\n    dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    \n    pl += pointLightColor[i].a * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vNormal;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vec4 color = vColor;\n  // ambientColor.a 是强度\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  // 漫反射\n  vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);\n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14768,7 +15035,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);;\n  vColor = color;\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14776,7 +15043,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform sampler2D tMap;\nvarying vec2 vUv;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 dir = -invDirectional.xyz;\n    vec3 halfLE = normalize(dir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    float _dl = max(dot(normal, normalize(dir)), 0.0);\n    dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    \n    pl += pointLightColor[i].a * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);\n\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14784,7 +15051,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14792,7 +15059,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\nvarying vec4 vColor;\n\nuniform samplerCube tMap;\n\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 dir = -invDirectional.xyz;\n    vec3 halfLE = normalize(dir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    float _dl = max(dot(normal, normalize(dir)), 0.0);\n    dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    \n    pl += pointLightColor[i].a * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = textureCube(tMap, vDir);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);\n\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14800,7 +15067,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec3 vDir;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vDir = normalize(position);\n  vColor = color;\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14808,7 +15075,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\n\nuniform sampler2D tMap;\nuniform sampler2D tShadow;\nuniform float uShadow;\nvarying vec2 vUv;\n\nvarying float fCos;\nvarying float fShading;\nvarying vec4 vColor;\nvarying vec3 vCameraPos;\n\nvarying vec4 vLightNDC; // 阴影\nvarying vec4 vPos;\n\nuniform mat4 viewMatrix;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 dir = -invDirectional.xyz;\n    vec3 halfLE = normalize(dir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    float _dl = max(dot(normal, normalize(dir)), 0.0);\n    dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    \n    pl += pointLightColor[i].a * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);\n\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  color = vec4((diffuse + ambient) * color.rgb, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadowDept;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14816,7 +15083,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\nattribute vec2 uv;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vUv = uv;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14824,7 +15091,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\n\nuniform sampler2D tShadow;\nuniform float uShadow;\nuniform mat4 viewMatrix;\n\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 dir = -invDirectional.xyz;\n    vec3 halfLE = normalize(dir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    float _dl = max(dot(normal, normalize(dir)), 0.0);\n    dl += directionalLightColor[j].a * (_dl * directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalize(invPoint), normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    \n    pl += pointLightColor[i].a * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nfloat unpackRGBA (vec4 v) {\n    return dot(v, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0));\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  vec3 lightPos = vLightNDC.xyz / vLightNDC.w;\n  \n  float bias = 0.001;\n  float depth = lightPos.z - bias;\n  float occluder = unpackRGBA(texture2D(tShadow, lightPos.xy));\n\n  // Compare actual depth from light to the occluded depth rendered in the depth map\n  // If the occluded depth is smaller, we must be in uShadow\n  float uShadowDept = mix(uShadow, 1.0, step(depth, occluder));\n\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, vNormal, eyeDirection);\n\n  color = vec4((diffuse + ambient) * color.rgb, color.a);\n\n  gl_FragColor.rgb = color.rgb * uShadowDept;\n  gl_FragColor.a = color.a;\n}");
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14832,7 +15099,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform mat4 shadowViewMatrix;\nuniform mat4 shadowProjectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vLightNDC;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n// Matrix to shift range from -1->1 to 0->1\nconst mat4 depthScaleMatrix = mat4(\n    0.5, 0, 0, 0, \n    0, 0.5, 0, 0, \n    0, 0, 0.5, 0, \n    0.5, 0.5, 0.5, 1\n);\n\nvoid main() {\n  vNormal = normalize(normalMatrix * normal);\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vColor = color;\n  vLightNDC = depthScaleMatrix * shadowProjectionMatrix * shadowViewMatrix * modelMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14840,7 +15107,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nvarying vec4 vColor;\n\nvoid main() {\n    gl_FragColor = vColor;\n}");
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14848,7 +15115,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute float side;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec4 vColor;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    gl_Position = getPosition();\n    vColor = color;\n}");
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14856,7 +15123,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\n\nuniform float uTotalLength;\nuniform float uDashLength;\nuniform float uDashOffset;\n\nvarying vec4 vColor;\nvarying vec2 vUv;\nvarying float fSeg;\n\nvoid main() {\n    float f = fract((uDashOffset + fSeg) / (2.0 * uDashLength));\n    f = 1.0 - step(0.5, f);\n    gl_FragColor = vColor * f;\n}");
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14864,7 +15131,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nattribute vec3 position;\nattribute vec3 next;\nattribute vec3 prev;\nattribute vec2 uv;\nattribute float side;\nattribute vec4 color;\nattribute float seg;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec2 uResolution;\nuniform float uDPR;\nuniform float uThickness;\nuniform float uMiter;\n\nvarying vec2 vUv;\nvarying vec4 vColor;\nvarying float fSeg;\n\nvec4 getPosition() {\n    mat4 mvp = projectionMatrix * modelViewMatrix;\n    vec4 current = mvp * vec4(position, 1);\n    vec4 nextPos = mvp * vec4(next, 1);\n    vec4 prevPos = mvp * vec4(prev, 1);\n    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);    \n    vec2 currentScreen = current.xy / current.w * aspect;\n    vec2 nextScreen = nextPos.xy / nextPos.w * aspect;\n    vec2 prevScreen = prevPos.xy / prevPos.w * aspect;\n\n    vec2 dir1 = normalize(currentScreen - prevScreen);\n    vec2 dir2 = normalize(nextScreen - currentScreen);\n    vec2 dir = normalize(dir1 + dir2);\n\n    vec2 normal = vec2(-dir.y, dir.x);\n    normal /= mix(1.0, max(0.3, dot(normal, vec2(-dir1.y, dir1.x))), uMiter);\n    normal /= aspect;\n    float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);\n    float pixelWidth = current.w * pixelWidthRatio;\n    normal *= pixelWidth * uThickness;\n    current.xy -= normal * side;\n    return current;\n}\n\nvoid main() {\n    vUv = uv;\n    gl_Position = getPosition();\n    vColor = color;\n    fSeg = seg;\n}");
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14872,20 +15139,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture2D(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  \n  gl_FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
-/* 101 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
-
-/***/ }),
 /* 102 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec4 vColor;\nin vec4 vPos;\nin vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 103 */
@@ -14893,7 +15152,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec4 vColor;\nout vec4 vPos;\nout vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\nuniform sampler2D tMap;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec4 vColor;\nin vec4 vPos;\nin vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n  vec4 texColor = texture(tMap, vUv);\n\n  float alpha = texColor.a;\n  color.rgb = mix(color.rgb, texColor.rgb, alpha);\n  color.rgb = mix(texColor.rgb, color.rgb, clamp(color.a / max(0.0001, texColor.a), 0.0, 1.0));\n  color.a = texColor.a + (1.0 - texColor.a) * color.a;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  FragColor = vec4((diffuse + ambient) * color.rgb, color.a);\n}");
 
 /***/ }),
 /* 104 */
@@ -14901,7 +15160,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  // 微光\n  float dl = 0.1 * ambientColor.a * max(dot(normal, vNormal), 0.0);\n\n  gl_FragColor = vec4((diffuse + ambient + dl) * color.rgb, color.a);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nin vec3 position;\nin vec2 uv;\nin vec3 normal;\nin vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nout vec2 vUv;\nout vec3 vNormal;\nout vec4 vColor;\nout vec4 vPos;\nout vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 105 */
@@ -14909,7 +15168,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("#extension GL_OES_standard_derivatives : enable\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture2D(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture2D(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n\n  // 微光\n  float dl = 0.1 * ambientColor.a * max(dot(normal, vNormal), 0.0);\n\n  gl_FragColor = vec4((diffuse + ambient + dl) * color.rgb, color.a);\n}");
 
 /***/ }),
 /* 106 */
@@ -14917,10 +15176,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec4 vColor;\nin vec4 vPos;\nin vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  \n  // 微光\n  float dl = 0.1 * ambientColor.a * max(dot(normal, vNormal), 0.0);\n\n  FragColor = vec4((diffuse + ambient + dl) * color.rgb, color.a);\n}");
+/* harmony default export */ __webpack_exports__["default"] = ("precision highp float;\nprecision highp int;\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec4 color;\n\nuniform mat3 normalMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\nuniform vec3 cameraPosition;\n\nvarying vec2 vUv;\nvarying vec3 vNormal;\nvarying vec4 vColor;\nvarying vec4 vPos;\nvarying vec3 vCameraPos;\n\nvoid main() {\n  vUv = uv;\n  vNormal = normalize(normalMatrix * normal);\n  vColor = color;\n  vPos = modelViewMatrix * vec4(position, 1.0);\n  vCameraPos = (viewMatrix * vec4(cameraPosition, 1.0)).xyz;\n\n  gl_Position = projectionMatrix * vPos;\n}");
 
 /***/ }),
 /* 107 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("#version 300 es\nprecision highp float;\nprecision highp int;\n\nuniform mat4 viewMatrix;\n\n#ifdef FLAG_BUMP\nuniform sampler2D tBump;\n#endif\n\nuniform sampler2D tNormal;\nuniform float uNormalScale;\nuniform float uNormalUVScale;\n\nin vec2 vUv;\nin vec3 vNormal;\nin vec4 vColor;\nin vec4 vPos;\nin vec3 vCameraPos;\n\n#define DL_NUMBER 8\n#define PL_NUMBER 16\n#define SP_NUMBER 16\n\nuniform vec3 directionalLight[DL_NUMBER]; //平行光 xyz - 向量位置\nuniform vec4 directionalLightColor[DL_NUMBER]; // 平行光颜色, a - 强度\n\nuniform vec3 pointLightPosition[PL_NUMBER]; //点光源位置\nuniform vec4 pointLightColor[PL_NUMBER]; // 点光源颜色\nuniform vec3 pointLightDecay[PL_NUMBER]; // 点光源衰减系数\n\nuniform vec3 spotLightPosition[SP_NUMBER];  // 聚光灯位置\nuniform vec4 spotLightColor[SP_NUMBER]; // 聚光灯颜色\nuniform vec3 spotLightDirection[SP_NUMBER]; // 聚光灯方向\nuniform vec3 spotLightDecay[SP_NUMBER];  // 聚光灯衰减系数\nuniform float spotLightAngle[SP_NUMBER];  // 聚光灯角度\nuniform float spotLightBlur[SP_NUMBER]; // 聚关灯散射系数\n\nuniform vec4 ambientColor; // 环境光\nuniform float specularFocus; // 镜面反射聚焦度\nuniform float specularIntensity; // 镜面反射强度\n\nvec3 getDiffuse(in vec3 pos, in vec3 normal, in vec3 eye) {\n  // 多个平行光\n  vec3 dl = vec3(0);\n  for(int j = 0; j < DL_NUMBER; j++) {\n    if(directionalLightColor[j].a <= 0.0) continue;\n    vec4 invDirectional = viewMatrix * vec4(directionalLight[j], 0.0);\n    vec3 invDir = -invDirectional.xyz;\n    vec3 halfLE = normalize(invDir + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invDir);\n    float _dl = max(dot(normal, dir), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    dl += directionalLightColor[j].a * _dln * _dl * (directionalLightColor[j].rgb + specular);\n  }\n\n  // 多个点光源\n  vec3 pl = vec3(0);\n  for(int i = 0; i < PL_NUMBER; i++) {\n    if(pointLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(pointLightPosition[i], 1.0)).xyz - pos;\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n    vec3 dir = normalize(invPoint);// 计算点光源入射光线反方向并归一化\n    float cos = max(dot(dir, normal), 0.0);\n    float _dln = max(dot(vNormal, dir), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (pointLightDecay[i].x * pow(dis, 2.0) + pointLightDecay[i].y * dis + pointLightDecay[i].z));\n    pl += pointLightColor[i].a * _dln * cos * decay * (pointLightColor[i].rgb + specular);\n  }\n\n  vec3 sl = vec3(0);\n\n  for(int i = 0; i < SP_NUMBER; i++) {\n    if(spotLightColor[i].a <= 0.0) continue;\n    vec3 invPoint = (viewMatrix * vec4(spotLightPosition[i], 1.0)).xyz - pos;\n    vec3 normalInv = normalize(invPoint);\n\n    vec3 dir = (viewMatrix * vec4(spotLightDirection[i], 0.0)).xyz;\n    float ang = cos(spotLightAngle[i]);\n    float r = smoothstep(ang * (1.0 - spotLightBlur[i]), ang, dot(normalInv, normalize(-dir)));\n    if(r <= 0.0) continue;\n\n    vec3 halfLE = normalize(invPoint + eye);\n    float specular = specularIntensity * pow(clamp(dot(normal, halfLE), 0.0, 1.0), 100.0 * specularFocus);\n\n    float cos = max(dot(normalInv, normal), 0.0);\n    float _dln = max(dot(vNormal, normalInv), 0.0);\n    float dis = length(invPoint);\n    float decay = min(1.0, 1.0 / (spotLightDecay[i].x * pow(dis, 2.0) + spotLightDecay[i].y * dis + spotLightDecay[i].z));\n    decay *= r;\n    \n    sl += spotLightColor[i].a * _dln * cos * decay * (spotLightColor[i].rgb + specular);\n  }\n\n  return dl + pl + sl;\n}\n\nout vec4 FragColor;\n\nvec3 getNormal(float depth) {\n  vec3 pos_dx = dFdx(vPos.xyz);\n  vec3 pos_dy = dFdy(vPos.xyz);\n  vec2 tex_dx = dFdx(vUv);\n  vec2 tex_dy = dFdy(vUv);\n\n  vec3 t = normalize(pos_dx * tex_dy.t - pos_dy * tex_dx.t);\n  vec3 b = normalize(-pos_dx * tex_dy.s + pos_dy * tex_dx.s);\n  mat3 tbn = mat3(t, b, normalize(vNormal));\n\n  vec3 n = texture(tNormal, vUv * uNormalUVScale).rgb * 2.0 - 1.0;\n  n.xy *= depth * uNormalScale;\n  vec3 normal = normalize(tbn * n);\n\n  // Get world normal from view normal\n  return normal;\n  // return normalize((vec4(normal, 0.0) * viewMatrix).xyz);\n}\n\nvoid main() {\n  vec4 color = vColor;\n\n  float depth = 1.0;\n#ifdef FLAG_BUMP\n  depth = texture(tBump, vUv).x;\n#endif\n  vec3 normal = getNormal(depth);\n  vec3 eyeDirection = normalize(vCameraPos - vPos.xyz);\n  vec3 diffuse = getDiffuse(vPos.xyz, normal, eyeDirection);\n  vec3 ambient = ambientColor.rgb * ambientColor.a;// 计算环境光反射颜色\n  \n  // 微光\n  float dl = 0.1 * ambientColor.a * max(dot(normal, vNormal), 0.0);\n\n  FragColor = vec4((diffuse + ambient + dl) * color.rgb, color.a);\n}");
+
+/***/ }),
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

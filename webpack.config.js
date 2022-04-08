@@ -5,9 +5,11 @@ const fs = require('fs');
 const packageConfig = require('./package.json');
 
 module.exports = function (env = {}) {
+  let filename = env.module ? `${packageConfig.name}.esm` : `${packageConfig.name}`;
+  if(env.mode === 'production') filename = `${filename}.min`;
   const output = {
     path: path.resolve(__dirname, env.outputPath || 'dist'),
-    filename: env.module ? `${packageConfig.name}.esm.js` : `${packageConfig.name}.js`,
+    filename: `${filename}.js`,
     publicPath: '/js/',
     library: env.module ? 'ext3d' : {
       commonjs: 'sprite-extend-3d',
