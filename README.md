@@ -93,7 +93,7 @@ layer.camera.lookAt([0, 1.5, 0]);
 }());
 ```
 
-For more details, see [here](https://spritejs.org/#/zh-cn/guide/3d).
+For more details, see [here](https://spritejs.com/#/zh-cn/guide/3d).
 
 ## Roadmap
 
